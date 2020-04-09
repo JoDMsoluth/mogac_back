@@ -1,7 +1,7 @@
 import { ObjectType, Field, Int, ID } from "type-graphql";
 
 @ObjectType()
-export class User {
+export default class User {
   @Field(() => ID)
   id: string;
 

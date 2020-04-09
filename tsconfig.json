@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    // Decorator를 위한 metadata를 컴파일시에 내보내줍니다.
+    "emitDecoratorMetadata": true,
+    // ES7의 Decorator문법을 허용해줍니다.
+    "experimentalDecorators": true
+  },
+  "include": ["src/**/*"]
+}
