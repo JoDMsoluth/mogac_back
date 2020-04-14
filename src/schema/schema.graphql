@@ -3,13 +3,19 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+input AddSeriesRequestType {
+  title: String
+  description: String
+  contents: String
+}
+
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
 scalar DateTime
 
 input LoginRequestType {
-  username: String!
+  email: String!
   password: String!
 }
 
@@ -20,21 +26,109 @@ type LoginResponseType {
 
 type Mutation {
   login(req: LoginRequestType!): LoginResponseType
-  createUser(password: String!, name: String!): User!
+  createSeries(req: AddSeriesRequestType!): Series!
+  updateSeries(req: AddSeriesRequestType, id: ObjectId!): Series!
+  deleteSeries(id: ObjectId!): Series!
+  createTeams(category: String!, description: String!, title: String!, adminId: ObjectId!): Team!
+  updateTeams(category: String, description: String, title: String, id: ObjectId!): Team!
+  deleteTeams(id: ObjectId!): Team!
+  createUser(req: SignupRequestType!): User!
+  updateUser(req: UpdateUserRequest, id: ObjectId!): User!
+  deleteUser(id: ObjectId!): User!
 }
 
 """Bson ObjectId unique identifier (hexadecimal string)."""
 scalar ObjectId
 
+type Post {
+  id: ObjectId!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  description: String!
+  contents: String!
+  cover_Img: String!
+  image_url: [String!]!
+  views: Int!
+  category: String!
+  comments: [String!]!
+  followUser: [String!]!
+  series: String!
+  postedBy: String!
+  tags: [String!]!
+}
+
 type Query {
+  getSeries(id: ObjectId!): Series!
+  getTeams(id: ObjectId!): Team!
   getUser(id: ObjectId!): User!
+  getUsersByTeam(id: ObjectId!): [User!]!
+}
+
+type Series {
+  id: ObjectId!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  description: String!
+  contents: String!
+  posts: [String!]!
+}
+
+input SignupRequestType {
+  email: String!
+  password: String!
+  name: String!
+  phone: String!
+  address: String!
+  birth: String!
+  image_url: String!
+}
+
+type Team {
+  id: ObjectId!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  description: String!
+  adminId: String!
+  users: [String!]!
+  category: String!
+}
+
+input UpdateUserRequest {
+  email: String
+  password: String
+  name: String
+  phone: String
+  address: String
+  birth: String
+  image_url: String
 }
 
 type User {
   id: ObjectId!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  email: String!
+  password: String!
+  name: String!
+  phone: String!
+  address: String!
+  birth: String!
+  image_url: String!
+  point: Int!
+  level: Int!
+  check_Found: Boolean!
+  position: [Float!]!
+  favorites: [String!]!
+  friendsId: [String!]!
+  blackListId: [String!]!
+  likePostsId: [String!]!
+  posts: [String!]!
+  teams: [String!]!
+  token: String!
   role: UserRole!
-  username: String!
-  init_date: DateTime!
 }
 
 """Identifies user access level"""

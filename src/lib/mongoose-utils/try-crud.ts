@@ -46,7 +46,7 @@ export class TryCrud<TDoc extends Mongoose.Document = Mongoose.Document> {
    * @throws IdNotFoundError | Error
    * If no such document was found or mongoose ODM throws an error.
    */
-  async tryUpdateById(id: ObjectId, update: Vts.BasicObject) {
+  async tryUpdateById(id: ObjectId, update: any) {
     const updatedDoc = await this.model
       .findByIdAndUpdate(id, update, { new: true })
       .lean()

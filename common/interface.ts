@@ -15,7 +15,7 @@ export namespace JWT {
   export interface Payload {
     sub: string; // user id
   }
-  export const PayloadTD: Vts.TypeDescrObject<any> = {
+  export const PayloadTD: Vts.TypeDescrObject<{ sub: string }> = {
     sub: Vts.isBsonObjectIdString,
   };
 }

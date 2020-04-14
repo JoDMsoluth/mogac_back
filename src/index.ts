@@ -7,7 +7,7 @@ const createServer = async () => {
 
   server.app.listen({ port: config.Port }, () =>
     console.log(
-      `🚀 Server ready at http://localhost:${config.Port}${server.apolloServer.graphqlPath}`
+      `🚀 Server ready at http://localhost:${config.Port}${server.apolloServer.graphqlPath}ql`
     )
   );
 };

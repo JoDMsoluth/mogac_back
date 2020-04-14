@@ -9,5 +9,6 @@
     // ES7의 Decorator문법을 허용해줍니다.
     "experimentalDecorators": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
