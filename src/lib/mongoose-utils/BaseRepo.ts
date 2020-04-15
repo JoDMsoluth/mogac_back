@@ -1,6 +1,6 @@
 import * as Mongoose from "mongoose";
 import * as Vts from "vee-type-safe";
-import { ObjectId } from "../helper/interfaces";
+import { ObjectId, TypegooseModel } from "../helper/interfaces";
 import { NotFoundError } from "../helper/statused-error";
 
 export class IdNotFoundError extends NotFoundError {
@@ -13,12 +13,12 @@ export class IdNotFoundError extends NotFoundError {
  * Simple utility class that provides exception-driven mongoose CRUD functionality.
  * @param TDoc Type of target mongoose documents.
  */
-export class TryCrud<TDoc extends Mongoose.Document = Mongoose.Document> {
+export class BaseRepo<T extends Mongoose.Model<InstanceType<any>>> {
   /**
    * Instanciates TryCrud utility class that is bound to the given `model`
    * @param model Target `Mongoose.Model` to bind to.
    */
-  constructor(private readonly model: Mongoose.Model<TDoc>) {}
+  constructor(protected readonly model: TypegooseModel<T>) {}
 
   /**
    * Tries to find document by `id` and call `doc.remove()`.

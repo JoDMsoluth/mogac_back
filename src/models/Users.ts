@@ -15,7 +15,7 @@ import {
 } from "@hasezoey/typegoose";
 import { Field, ObjectType, registerEnumType, Int, Float } from "type-graphql";
 import { index, unique } from "../lib/helper/flags";
-import { TryCrud } from "../lib/mongoose-utils/try-crud";
+import { BaseRepo } from "../lib/mongoose-utils/BaseRepo";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
 import { PostType } from "./Posts";
@@ -216,8 +216,7 @@ export class UserType extends Typegoose implements IUser {
 }
 
 export const User = Utils.getModelFromTypegoose(UserType);
-
-export const UserTryCrud = new TryCrud(User);
+export const UserTryCrud = new BaseRepo(User);
 export const UserPaginator = new Paginator<UserData, User>({ model: User });
 
 export type User = InstanceType<UserModel>;

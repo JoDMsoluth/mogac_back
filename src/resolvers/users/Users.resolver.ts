@@ -4,7 +4,7 @@ import { Resolver, Query, Arg, Mutation } from "type-graphql";
 import { Team } from "../../models/Teams";
 import { NotFoundError } from "../../lib/helper/statused-error";
 import { SignupRequestType } from "./signupRequestType";
-import { IdNotFoundError } from "../../lib/mongoose-utils/try-crud";
+import { IdNotFoundError } from "../../lib/mongoose-utils/BaseRepo";
 import { UpdateUserRequest } from "./updateUserRequest";
 
 @Resolver()
