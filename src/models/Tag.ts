@@ -3,7 +3,7 @@ import * as I from "../lib/helper/interfaces";
 
 import { Typegoose, prop, arrayProp, Ref } from "@hasezoey/typegoose";
 import { Field, ObjectType } from "type-graphql";
-import { TryCrud } from "../lib/mongoose-utils/BaseRepo";
+import { BaseRepo } from "../repositorys/BaseRepo";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
 import { PostType } from "./Posts";
@@ -38,7 +38,7 @@ export class TagType extends Typegoose implements ITag {
 
 export const Tag = Utils.getModelFromTypegoose(TagType);
 
-export const TagTryCrud = new TryCrud(Tag);
+export const TagBaseRepo = new BaseRepo(Tag);
 export const TagPaginator = new Paginator<TagData, Tag>({
   model: Tag,
 });

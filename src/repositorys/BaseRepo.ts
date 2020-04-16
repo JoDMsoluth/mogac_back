@@ -1,7 +1,7 @@
 import * as Mongoose from "mongoose";
-import * as Vts from "vee-type-safe";
-import { ObjectId, TypegooseModel } from "../helper/interfaces";
-import { NotFoundError } from "../helper/statused-error";
+import { ObjectId, TypegooseModel } from "../lib/helper/interfaces";
+import { NotFoundError } from "../lib/helper/statused-error";
+import { Service } from "typedi";
 
 export class IdNotFoundError extends NotFoundError {
   constructor(id: ObjectId, targetName = "instance") {
@@ -13,6 +13,7 @@ export class IdNotFoundError extends NotFoundError {
  * Simple utility class that provides exception-driven mongoose CRUD functionality.
  * @param TDoc Type of target mongoose documents.
  */
+@Service()
 export class BaseRepo<T extends Mongoose.Model<InstanceType<any>>> {
   /**
    * Instanciates TryCrud utility class that is bound to the given `model`

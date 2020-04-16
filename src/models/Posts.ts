@@ -3,7 +3,7 @@ import * as I from "../lib/helper/interfaces";
 
 import { Typegoose, prop, arrayProp, Ref } from "@hasezoey/typegoose";
 import { Field, ObjectType, Int } from "type-graphql";
-import { TryCrud } from "../lib/mongoose-utils/BaseRepo";
+import { BaseRepo } from "../repositorys/BaseRepo";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
 import { TCategory } from "../types/ts/modelTypes";
@@ -95,7 +95,7 @@ export class PostType extends Typegoose implements IPost {
 
 export const Post = Utils.getModelFromTypegoose(PostType);
 
-export const PostTryCrud = new TryCrud(Post);
+export const PostTryCrud = new BaseRepo(Post);
 export const PostPaginator = new Paginator<PostData, Post>({ model: Post });
 
 export type Post = InstanceType<PostModel>;

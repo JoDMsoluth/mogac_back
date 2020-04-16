@@ -4,7 +4,7 @@ import * as I from "../lib/helper/interfaces";
 import "reflect-metadata";
 import { Typegoose, prop, arrayProp, Ref } from "@hasezoey/typegoose";
 import { Field, ObjectType } from "type-graphql";
-import { TryCrud } from "../lib/mongoose-utils/BaseRepo";
+import { BaseRepo } from "../repositorys/BaseRepo";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
 import { UserType } from "./Users";
@@ -62,7 +62,7 @@ export class CommentType extends Typegoose implements IComment {
 
 export const Comment = Utils.getModelFromTypegoose(CommentType);
 
-export const CommentTryCrud = new TryCrud(Comment);
+export const CommentTryCrud = new BaseRepo(Comment);
 export const CommentPaginator = new Paginator<CommentData, Comment>({
   model: Comment,
 });

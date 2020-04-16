@@ -4,9 +4,15 @@
 # -----------------------------------------------
 
 input AddSeriesRequestType {
-  title: String
-  description: String
-  contents: String
+  title: String!
+  description: String!
+  contents: String!
+}
+
+input AddTeamRequestType {
+  title: String!
+  description: String!
+  category: String!
 }
 
 """
@@ -26,15 +32,15 @@ type LoginResponseType {
 
 type Mutation {
   login(req: LoginRequestType!): LoginResponseType
-  createSeries(req: AddSeriesRequestType!): Series!
-  updateSeries(req: AddSeriesRequestType, id: ObjectId!): Series!
-  deleteSeries(id: ObjectId!): Series!
-  createTeams(category: String!, description: String!, title: String!, adminId: ObjectId!): Team!
-  updateTeams(category: String, description: String, title: String, id: ObjectId!): Team!
-  deleteTeams(id: ObjectId!): Team!
-  createUser(req: SignupRequestType!): User!
-  updateUser(req: UpdateUserRequest, id: ObjectId!): User!
-  deleteUser(id: ObjectId!): User!
+  createUser(data: SignupRequestType!): User!
+  updateUser(data: UpdateUserRequest!, id: ObjectId!): User!
+  deleteUser(id: ObjectId!): String!
+  createTeam(data: AddTeamRequestType!): Team!
+  updateTeam(data: UpdateTeamRequestType!, id: ObjectId!): Team!
+  deleteTeam(id: ObjectId!): String!
+  createSeries(data: AddSeriesRequestType!): Series!
+  updateSeries(data: updateSeriesRequestType!, id: ObjectId!): Series!
+  deleteSeries(id: ObjectId!): String!
 }
 
 """Bson ObjectId unique identifier (hexadecimal string)."""
@@ -59,9 +65,9 @@ type Post {
 }
 
 type Query {
-  getSeries(id: ObjectId!): Series!
-  getTeams(id: ObjectId!): Team!
-  getUser(id: ObjectId!): User!
+  getUserById(id: ObjectId!): User!
+  getTeamById(id: ObjectId!): Team!
+  getSeriesById(id: ObjectId!): Series!
   getUsersByTeam(id: ObjectId!): [User!]!
 }
 
@@ -94,6 +100,18 @@ type Team {
   adminId: String!
   users: [String!]!
   category: String!
+}
+
+input updateSeriesRequestType {
+  title: String
+  description: String
+  contents: String
+}
+
+input UpdateTeamRequestType {
+  title: String
+  description: String
+  category: String
 }
 
 input UpdateUserRequest {

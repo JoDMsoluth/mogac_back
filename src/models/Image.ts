@@ -3,7 +3,7 @@ import * as I from "../lib/helper/interfaces";
 
 import { Typegoose, prop } from "@hasezoey/typegoose";
 import { Field, ObjectType } from "type-graphql";
-import { TryCrud } from "../lib/mongoose-utils/BaseRepo";
+import { BaseRepo } from "../repositorys/BaseRepo";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
 
@@ -37,7 +37,7 @@ export class ImageType extends Typegoose implements IImage {
 
 export const Image = Utils.getModelFromTypegoose(ImageType);
 
-export const ImageTryCrud = new TryCrud(Image);
+export const ImageTryCrud = new BaseRepo(Image);
 export const ImagePaginator = new Paginator<ImageData, Image>({
   model: Image,
 });

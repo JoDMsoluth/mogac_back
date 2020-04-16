@@ -4,16 +4,16 @@ import { LengthRange } from "../../lib/decorators/length-range";
 import { SeriesPropLimits } from "../../models/Series";
 
 @InputType()
-export class AddSeriesRequestType {
-  @Field()
+export class updateSeriesRequestType {
+  @Field({ nullable: true })
   @LengthRange(SeriesPropLimits.TitleLength)
-  title: string;
+  title?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @LengthRange(SeriesPropLimits.DescriptionLength)
-  description: string;
+  description?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @LengthRange(SeriesPropLimits.ContentsLength)
-  contents: string;
+  contents?: string;
 }

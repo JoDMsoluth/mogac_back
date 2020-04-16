@@ -9,7 +9,6 @@ export interface ResolveContext {
 
 export interface ResolveContextFactoryOptions {
   req: Express.Request;
-  // res: Express.Response;
 }
 
 export async function makeContext({

@@ -15,7 +15,7 @@ import {
 } from "@hasezoey/typegoose";
 import { Field, ObjectType, registerEnumType, Int, Float } from "type-graphql";
 import { index, unique } from "../lib/helper/flags";
-import { BaseRepo } from "../lib/mongoose-utils/BaseRepo";
+import { BaseRepo } from "../repositorys/BaseRepo";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
 import { PostType } from "./Posts";

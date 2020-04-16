@@ -3,7 +3,7 @@ import * as I from "../lib/helper/interfaces";
 
 import { Typegoose, prop, arrayProp, Ref } from "@hasezoey/typegoose";
 import { Field, ObjectType } from "type-graphql";
-import { TryCrud } from "../lib/mongoose-utils/BaseRepo";
+import { BaseRepo } from "../repositorys/BaseRepo";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
 import { UserType } from "./Users";
@@ -11,7 +11,7 @@ import { UserType } from "./Users";
 export namespace TeamPropLimits {
   export const TitleLength = new IntegerRange(6, 70);
   export const DescriptionLength = new IntegerRange(3, 2000);
-  export const ContentsLength = new IntegerRange(3, 10000);
+  export const CategoryLength = new IntegerRange(3, 10000);
 }
 
 export interface ITeam {
@@ -65,7 +65,7 @@ export class TeamType extends Typegoose implements ITeam {
 
 export const Team = Utils.getModelFromTypegoose(TeamType);
 
-export const TeamTryCrud = new TryCrud(Team);
+export const TeamTryCrud = new BaseRepo(Team);
 export const TeamPaginator = new Paginator<TeamData, Team>({
   model: Team,
 });

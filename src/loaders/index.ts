@@ -2,20 +2,24 @@ import * as express from "express";
 import expressInit from "./expressInit";
 import { MongoDb } from "./MongoDb";
 import { ApolloServer } from "./ApolloServer";
+import { Log } from "../lib/helper/debug";
+import ContainerProvier from "./ContainerProvider";
 
 export default async () => {
+  ContainerProvier();
+
   const app = express();
 
   await expressInit({ app });
-  console.log("Express Intialized");
+  Log.info("Express Intialized");
 
   const apolloServer = await ApolloServer.createApolloServer();
-  console.log("Create Apollo Server");
+  Log.info("Create Apollo Server");
 
   apolloServer.applyMiddleware({ app, path: "/graphql" });
 
   await MongoDb.connect();
-  console.log("MongoDB Intialized");
+  Log.info("MongoDB Intialized");
   // ... more loaders can be here
 
   // ... Initialize agenda
