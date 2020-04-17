@@ -20,6 +20,21 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+type GetAllSeriesResponseType {
+  lastPage: String!
+  series: [Series!]!
+}
+
+type GetAllTeamResponseType {
+  lastPage: String!
+  teams: [Team!]!
+}
+
+type GetAllUserResponseType {
+  lastPage: String!
+  users: [User!]!
+}
+
 input LoginRequestType {
   email: String!
   password: String!
@@ -46,6 +61,11 @@ type Mutation {
 """Bson ObjectId unique identifier (hexadecimal string)."""
 scalar ObjectId
 
+input PaginateArgType {
+  page: Float!
+  limit: Float!
+}
+
 type Post {
   id: ObjectId!
   createdAt: DateTime!
@@ -68,7 +88,10 @@ type Query {
   getUserById(id: ObjectId!): User!
   getTeamById(id: ObjectId!): Team!
   getSeriesById(id: ObjectId!): Series!
-  getUsersByTeam(id: ObjectId!): [User!]!
+  getAllSeries(data: PaginateArgType!): GetAllSeriesResponseType!
+  getAllTeam(data: PaginateArgType!): GetAllTeamResponseType!
+  getAllUser(data: PaginateArgType!): GetAllUserResponseType!
+  getUsersByTeam(data: PaginateArgType!, id: ObjectId!): [User!]!
 }
 
 type Series {

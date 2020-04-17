@@ -7,7 +7,8 @@ import { ForbiddenError } from "./statused-error";
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 
 import * as Config from "../../configs";
-import { User, UserTryCrud } from "../../models/Users";
+import { User } from "../../models/Users";
+import { UserRepo } from "../../repositorys/UserRepo";
 
 Passport.use(
   new JWTStrategy(
@@ -23,7 +24,9 @@ Passport.use(
         );
       }
       const jwtPayload = untrustedJwtPayload as I.JWT.Payload;
-      return UserTryCrud.tryFindById(new I.ObjectId(jwtPayload.sub))
+      const model = new UserRepo();
+      return model
+        .tryFindById(new I.ObjectId(jwtPayload.sub))
         .then((user) => done(null, user))
         .catch(done);
     }

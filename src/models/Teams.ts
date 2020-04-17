@@ -3,7 +3,6 @@ import * as I from "../lib/helper/interfaces";
 
 import { Typegoose, prop, arrayProp, Ref } from "@hasezoey/typegoose";
 import { Field, ObjectType } from "type-graphql";
-import { BaseRepo } from "../repositorys/BaseRepo";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
 import { UserType } from "./Users";
@@ -64,8 +63,6 @@ export class TeamType extends Typegoose implements ITeam {
 }
 
 export const Team = Utils.getModelFromTypegoose(TeamType);
-
-export const TeamTryCrud = new BaseRepo(Team);
 export const TeamPaginator = new Paginator<TeamData, Team>({
   model: Team,
 });

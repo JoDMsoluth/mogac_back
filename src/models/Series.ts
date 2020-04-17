@@ -3,7 +3,6 @@ import * as I from "../lib/helper/interfaces";
 
 import { Typegoose, prop, arrayProp, Ref } from "@hasezoey/typegoose";
 import { Field, ObjectType } from "type-graphql";
-import { BaseRepo } from "../repositorys/BaseRepo";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
 import { PostType } from "./Posts";
@@ -56,7 +55,6 @@ export class SeriesType extends Typegoose implements ISeries {
 
 export const Series = Utils.getModelFromTypegoose(SeriesType);
 
-export const SeriesTryCrud = new BaseRepo(Series);
 export const SeriesPaginator = new Paginator<SeriesData, Series>({
   model: Series,
 });

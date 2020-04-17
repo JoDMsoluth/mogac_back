@@ -1,7 +1,7 @@
 import { Field, InputType } from "type-graphql";
-import { IsEmail } from "class-validator";
-import { UserPropLimits, Credentials } from "../../models/Users";
-import { LengthRange } from "../../lib/decorators/length-range";
+import { IsEmail, IsPhoneNumber } from "class-validator";
+import { UserPropLimits, Credentials } from "../../../models/Users";
+import { LengthRange } from "../../../lib/decorators/length-range";
 
 @InputType()
 export class SignupRequestType implements Credentials {
@@ -19,6 +19,7 @@ export class SignupRequestType implements Credentials {
   name!: string;
 
   @Field()
+  @IsPhoneNumber("KR")
   @LengthRange(UserPropLimits.PhoneLength)
   phone!: string;
 

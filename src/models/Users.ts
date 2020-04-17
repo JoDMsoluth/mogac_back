@@ -15,7 +15,6 @@ import {
 } from "@hasezoey/typegoose";
 import { Field, ObjectType, registerEnumType, Int, Float } from "type-graphql";
 import { index, unique } from "../lib/helper/flags";
-import { BaseRepo } from "../repositorys/BaseRepo";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
 import { PostType } from "./Posts";
@@ -210,13 +209,11 @@ export class UserType extends Typegoose implements IUser {
     return JWT.sign(customPayload, Config.JWT.KeyPair.private_key, {
       expiresIn: Config.JWT.ExpirationTime,
       algorithm: Config.JWT.EncodingAlgorithm,
-      //   algorithm: Config.JWT.EncodingAlgorithm,
     });
   }
 }
 
 export const User = Utils.getModelFromTypegoose(UserType);
-export const UserTryCrud = new BaseRepo(User);
 export const UserPaginator = new Paginator<UserData, User>({ model: User });
 
 export type User = InstanceType<UserModel>;

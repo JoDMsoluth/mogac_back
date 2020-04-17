@@ -2,6 +2,7 @@ import { UserService } from "../services/Users.service";
 import { SeriesService } from "../services/Series.service";
 import { TeamService } from "../services/Team.service";
 import { PostService } from "../services/post.service";
+import { UserRepo } from "../repositorys/UserRepo";
 
 const Container = require("typedi").Container;
 
@@ -13,4 +14,5 @@ export default function ContainerProvier() {
   Container.set("SeriesService", new SeriesService());
   Container.set("TeamService", new TeamService());
   Container.set("PostService", new PostService());
+  Container.set("PostService", new UserRepo());
 }

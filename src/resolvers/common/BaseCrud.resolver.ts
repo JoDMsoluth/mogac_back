@@ -1,16 +1,16 @@
 import { Resolver, Mutation, Arg, Query } from "type-graphql";
 import * as I from "../../lib/helper/interfaces";
-import { SignupRequestType } from "../users/signupRequestType";
+import { SignupRequestType } from "../users/dto/signupRequestType";
 import { UserType } from "../../models/Users";
-import { UpdateUserRequest } from "../users/updateUserRequest";
+import { UpdateUserRequest } from "../users/dto/updateUserRequest";
 import { Typegoose } from "@hasezoey/typegoose";
 import { Inject } from "typedi";
 import { TeamType } from "../../models/Teams";
 import { SeriesType } from "../../models/Series";
-import { AddTeamRequestType } from "../teams/addTeamRequestType";
-import { UpdateTeamRequestType } from "../teams/updateTeamRequestType";
-import { AddSeriesRequestType } from "../series/addSeriesRequestType";
-import { updateSeriesRequestType } from "../series/updateSeriesRequestType";
+import { AddTeamRequestType } from "../teams/dto/addTeamRequestType";
+import { UpdateTeamRequestType } from "../teams/dto/updateTeamRequestType";
+import { AddSeriesRequestType } from "../series/dto/addSeriesRequestType";
+import { updateSeriesRequestType } from "../series/dto/updateSeriesRequestType";
 
 function createBaseCrudResolver<
   T extends I.ClassType<Typegoose>,

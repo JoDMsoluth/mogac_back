@@ -3,6 +3,9 @@ import * as config from "../configs";
 import * as express from "express";
 import * as cors from "cors";
 import * as bodyParser from "body-parser";
+import * as cookieParser from "cookie-parser";
+import * as session from "express-session";
+import * as passport from "passport";
 
 export default async ({ app }: { app: express.Application }) => {
   app.get("/status", (req, res) => {
@@ -16,6 +19,11 @@ export default async ({ app }: { app: express.Application }) => {
   app.use(cors());
   app.use(require("morgan")("dev"));
   app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(cookieParser());
+  app.use(session({ secret: "secret" })); // session 방식 구현시 필요
+  app.use(passport.initialize());
+
+  app.use(passport.session()); // session 방식 구현 시 필요
   app.use(morgan("dev"));
   app.use(express.static(config.Frontend.DistDir));
   app.use(express.static(config.Frontend.AssetsDir));

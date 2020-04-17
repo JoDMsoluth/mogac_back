@@ -2,6 +2,7 @@ import * as Mongoose from "mongoose";
 import { ObjectId, TypegooseModel } from "../lib/helper/interfaces";
 import { NotFoundError } from "../lib/helper/statused-error";
 import { Service } from "typedi";
+import { Log } from "../lib/helper/debug";
 
 export class IdNotFoundError extends NotFoundError {
   constructor(id: ObjectId, targetName = "instance") {
@@ -87,5 +88,27 @@ export class BaseRepo<T extends Mongoose.Model<InstanceType<any>>> {
       throw new NotFoundError();
     }
     return doc;
+  }
+
+  async getAll(page, limit, query) {
+    const docs = await this.model
+      .find(query)
+      .sort({ likes: -1 })
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .lean()
+      .exec();
+
+    const totalDoc: number = await this.model.find(query).count();
+    const lastPage: string = Math.ceil(totalDoc / limit).toString();
+    return { lastPage, docs };
+  }
+
+  async create(data) {
+    try {
+      return this.model.create(data);
+    } catch (e) {
+      Log.error(e);
+    }
   }
 }
