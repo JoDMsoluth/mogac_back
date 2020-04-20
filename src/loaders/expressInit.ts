@@ -20,10 +20,15 @@ export default async ({ app }: { app: express.Application }) => {
   app.use(require("morgan")("dev"));
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(cookieParser());
-  app.use(session({ secret: "secret" })); // session 방식 구현시 필요
+  app.use(
+    session({
+      secret: "secret",
+      name: "qid",
+    })
+  ); // session 방식 구현시 필요
   app.use(passport.initialize());
 
-  app.use(passport.session()); // session 방식 구현 시 필요
+  // app.use(passport.session()); // session 방식 구현 시 필요
   app.use(morgan("dev"));
   app.use(express.static(config.Frontend.DistDir));
   app.use(express.static(config.Frontend.AssetsDir));

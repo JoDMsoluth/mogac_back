@@ -6,6 +6,7 @@ import { authenticateJWT } from "../helper/authentication";
 export interface ResolveContext {
   user?: I.Maybe<User>;
   res: Express.Response;
+  req: Express.Request;
 }
 
 export interface ResolveContextFactoryOptions {
@@ -17,5 +18,5 @@ export async function makeContext({
   req,
   res,
 }: ResolveContextFactoryOptions): Promise<ResolveContext> {
-  return { user: await authenticateJWT(req), res };
+  return { user: await authenticateJWT(req), res, req };
 }

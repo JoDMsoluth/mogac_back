@@ -57,6 +57,7 @@ export interface IUser extends Credentials {
   point: number;
   level: number;
   check_Found: boolean;
+  comfirmed: boolean;
   position: number[];
   favorites: string[];
   friendsId: any[];
@@ -65,7 +66,7 @@ export interface IUser extends Credentials {
   likePostsId: any[];
   teams: any[];
   role: UserRole;
-  token: string;
+  jwt: string;
 }
 
 @pre<UserType>("save", function (next: CallableFunction) {
@@ -131,6 +132,10 @@ export class UserType extends Typegoose implements IUser {
   @prop({ default: true })
   check_Found: boolean;
 
+  @Field(() => Boolean)
+  @prop({ default: false })
+  comfirmed: boolean;
+
   @Field(() => [Float])
   @arrayProp({ items: String })
   position: number[];
@@ -161,7 +166,7 @@ export class UserType extends Typegoose implements IUser {
 
   @Field()
   @prop()
-  token: string;
+  jwt: string;
 
   @Field((_type) => UserRole) // must be explicitly forwarded when using enums
   @prop({

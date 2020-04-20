@@ -47,6 +47,7 @@ type LoginResponseType {
 
 type Mutation {
   login(req: LoginRequestType!): LoginResponseType
+  logout: Boolean!
   createUser(data: SignupRequestType!): User!
   updateUser(data: UpdateUserRequest!, id: ObjectId!): User!
   deleteUser(id: ObjectId!): String!
@@ -85,6 +86,7 @@ type Post {
 }
 
 type Query {
+  getCurrentUser: User!
   getUserById(id: ObjectId!): User!
   getTeamById(id: ObjectId!): Team!
   getSeriesById(id: ObjectId!): Series!
@@ -161,6 +163,7 @@ type User {
   point: Int!
   level: Int!
   check_Found: Boolean!
+  comfirmed: Boolean!
   position: [Float!]!
   favorites: [String!]!
   friendsId: [String!]!
@@ -168,7 +171,7 @@ type User {
   likePostsId: [String!]!
   posts: [String!]!
   teams: [String!]!
-  token: String!
+  jwt: String!
   role: UserRole!
 }
 
