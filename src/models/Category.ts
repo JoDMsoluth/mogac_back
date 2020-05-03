@@ -1,17 +1,15 @@
 import * as Utils from "../lib/helper/utils";
 import * as I from "../lib/helper/interfaces";
 
-import { Typegoose, prop, pre, arrayProp, Ref } from "@hasezoey/typegoose";
+import { Typegoose, prop, arrayProp, Ref } from "@hasezoey/typegoose";
 import { Field, ObjectType } from "type-graphql";
-import { BaseRepo } from "../repositorys/BaseRepo";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
 import { PostType } from "./Posts";
+import { ISkill, SkillType } from "./type/Skill";
 
 export namespace CategoryPropLimits {
-  export const TitleLength = new IntegerRange(6, 70);
-  export const DescriptionLength = new IntegerRange(3, 2000);
-  export const ContentsLength = new IntegerRange(3, 10000);
+  export const NameLength = new IntegerRange(1, 20);
 }
 
 export interface ICategory {
@@ -19,13 +17,6 @@ export interface ICategory {
   posts: any[];
 }
 
-@pre<CategoryType>("save", function (next: CallableFunction) {
-  if (!this.isModified("contents") || !this.isModified("title")) {
-    return next();
-  }
-  this.updatedAt = (Date.now() as unknown) as Date;
-  next();
-})
 @ObjectType("Category")
 export class CategoryType extends Typegoose implements ICategory {
   @Field()
@@ -43,17 +34,20 @@ export class CategoryType extends Typegoose implements ICategory {
   updatedAt!: Date;
 
   @Field()
-  @prop({ required: true })
+  @prop({ required: true, unique: true })
   name!: string;
 
   @Field((_type) => PostType)
-  @arrayProp({ itemsRef: PostType })
+  @arrayProp({ itemsRef: "PostType" })
   posts: Ref<PostType>[];
+
+  @Field((_type) => [SkillType])
+  @prop({ default: [] })
+  skillset: ISkill[];
 }
 
 export const Category = Utils.getModelFromTypegoose(CategoryType);
 
-export const CategoryTryCrud = new BaseRepo(Category);
 export const CategoryPaginator = new Paginator<CategoryData, Category>({
   model: Category,
 });

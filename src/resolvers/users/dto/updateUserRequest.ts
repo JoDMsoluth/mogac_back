@@ -18,6 +18,10 @@ export class UpdateUserRequest {
   @LengthRange(UserPropLimits.NameLength)
   name?: string;
 
+  @Field()
+  @LengthRange(UserPropLimits.GenderLength)
+  gender!: string;
+
   @Field({ nullable: true })
   @LengthRange(UserPropLimits.PhoneLength)
   phone?: string;

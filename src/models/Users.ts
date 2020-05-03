@@ -23,6 +23,7 @@ import { TeamType } from "./Teams";
 export namespace UserPropLimits {
   export const EmailLength = new IntegerRange(5, 50);
   export const PasswordLength = new IntegerRange(6, 30);
+  export const GenderLength = new IntegerRange(2, 6);
   export const NameLength = new IntegerRange(2, 20);
   export const PhoneLength = new IntegerRange(10, 20);
   export const AddressLength = new IntegerRange(15, 255);
@@ -111,6 +112,10 @@ export class UserType extends Typegoose implements IUser {
   @Field()
   @prop({ required: true })
   address!: string;
+
+  @Field()
+  @prop({ required: true })
+  gender!: string;
 
   @Field()
   @prop({ required: true })

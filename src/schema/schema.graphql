@@ -15,6 +15,24 @@ input AddTeamRequestType {
   category: String!
 }
 
+type Category {
+  id: ObjectId!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  posts: [Post!]!
+  skillset: [Skill!]!
+}
+
+input createSkillSetRequestType {
+  categoryName: String!
+  skill: String!
+}
+
+input CuCategoryRequestType {
+  name: String!
+}
+
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
@@ -48,6 +66,8 @@ type LoginResponseType {
 type Mutation {
   login(req: LoginRequestType!): LoginResponseType
   logout: Boolean!
+  createSkillSet(data: createSkillSetRequestType!): [Skill!]!
+  deleteSkillSet(skill: String!, categoryName: String!): [Skill!]!
   createUser(data: SignupRequestType!): User!
   updateUser(data: UpdateUserRequest!, id: ObjectId!): User!
   deleteUser(id: ObjectId!): String!
@@ -57,6 +77,9 @@ type Mutation {
   createSeries(data: AddSeriesRequestType!): Series!
   updateSeries(data: updateSeriesRequestType!, id: ObjectId!): Series!
   deleteSeries(id: ObjectId!): String!
+  createCategory(data: CuCategoryRequestType!): Category!
+  updateCategory(data: CuCategoryRequestType!, id: ObjectId!): Category!
+  deleteCategory(id: ObjectId!): String!
 }
 
 """Bson ObjectId unique identifier (hexadecimal string)."""
@@ -87,9 +110,11 @@ type Post {
 
 type Query {
   getCurrentUser: User!
+  getAllCategory: [Category!]!
   getUserById(id: ObjectId!): User!
   getTeamById(id: ObjectId!): Team!
   getSeriesById(id: ObjectId!): Series!
+  getCategoryById(id: ObjectId!): Category!
   getAllSeries(data: PaginateArgType!): GetAllSeriesResponseType!
   getAllTeam(data: PaginateArgType!): GetAllTeamResponseType!
   getAllUser(data: PaginateArgType!): GetAllUserResponseType!
@@ -110,10 +135,16 @@ input SignupRequestType {
   email: String!
   password: String!
   name: String!
+  gender: String!
   phone: String!
   address: String!
   birth: String!
   image_url: String!
+}
+
+type Skill {
+  skill: String!
+  level: Int!
 }
 
 type Team {
@@ -143,6 +174,7 @@ input UpdateUserRequest {
   email: String
   password: String
   name: String
+  gender: String!
   phone: String
   address: String
   birth: String
@@ -158,6 +190,7 @@ type User {
   name: String!
   phone: String!
   address: String!
+  gender: String!
   birth: String!
   image_url: String!
   point: Int!

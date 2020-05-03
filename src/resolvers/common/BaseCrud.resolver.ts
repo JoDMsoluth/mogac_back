@@ -11,6 +11,8 @@ import { AddTeamRequestType } from "../teams/dto/addTeamRequestType";
 import { UpdateTeamRequestType } from "../teams/dto/updateTeamRequestType";
 import { AddSeriesRequestType } from "../series/dto/addSeriesRequestType";
 import { updateSeriesRequestType } from "../series/dto/updateSeriesRequestType";
+import { CategoryType } from "../../models/Category";
+import { CuCategoryRequestType } from "../category/dto/cuCategoryRequestType";
 
 function createBaseCrudResolver<
   T extends I.ClassType<Typegoose>,
@@ -79,4 +81,12 @@ export const SeriesCrudResolver = createBaseCrudResolver(
   AddSeriesRequestType,
   updateSeriesRequestType,
   "SeriesService"
+);
+
+export const CategoryCrudResolver = createBaseCrudResolver(
+  "Category",
+  CategoryType,
+  CuCategoryRequestType,
+  CuCategoryRequestType,
+  "CategoryService"
 );

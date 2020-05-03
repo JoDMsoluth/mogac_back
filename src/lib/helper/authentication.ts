@@ -25,7 +25,6 @@ Passport.use(
         );
       }
       const jwtPayload = untrustedJwtPayload as I.JWT.Payload;
-      console.log("jwtPayload", jwtPayload);
       const model = new UserRepo();
       return model
         .tryFindById(new I.ObjectId(jwtPayload.sub))
@@ -36,7 +35,6 @@ Passport.use(
 );
 
 export async function authenticateJWT(req: Express.Request) {
-  console.log("header", req.headers.authorization);
   return req.headers.authorization == null
     ? null
     : new Promise<I.Maybe<User>>((resolve, reject) =>
@@ -44,7 +42,6 @@ export async function authenticateJWT(req: Express.Request) {
           "jwt",
           { session: false },
           (err, user?: I.Maybe<User>) => {
-            console.log(user, err);
             return err != null ? reject(err) : resolve(user);
           }
         )(req)
@@ -58,7 +55,6 @@ Passport.serializeUser(function (user: UserType, done) {
 // user ID를 클라이언트한테 쿠키로 보내기 설정
 
 Passport.deserializeUser(function (id, done) {
-  console.log("deserialize", id);
   User.findById(id, function (err, user) {
     done(err, user);
   });
