@@ -3,7 +3,7 @@ import BaseServiceMixin from "./BaseServiceMixin";
 import { CategoryRepo } from "../repositorys/CategoryRepo";
 import { Category, CategoryType, CategoryModel } from "../models/Category";
 import * as I from "../lib/helper/interfaces";
-import { ISkill } from "../models/type/Skill";
+import { ISkillSet, SkillSetType } from "../models/SkillSet";
 import { Log } from "../lib/helper/debug";
 import { IdNotFoundError } from "../repositorys/BaseRepo";
 
@@ -18,22 +18,16 @@ export class CategoryService extends BaseServiceMixin(CategoryRepo) {
     return categorys;
   }
 
-  async pushSkill({ categoryName, skill }) {
-    const findQuery = { name: categoryName };
-    const category = (await this.tryFindOne(findQuery)) as I.Maybe<
+  async pushSkill({ categoryId, skillSetId }) {
+    const category = (await this.tryFindById(categoryId)) as I.Maybe<
       CategoryType
     >;
     if (!category) return;
 
-    const pushingSkillSet = {
-      skill,
-      level: 0,
-    } as ISkill;
-    console.log("category", category);
-    category.skillset.push(pushingSkillSet);
+    category.skillset.push(skillSetId);
 
-    const updateDoc = await this.model.findOneAndUpdate(
-      findQuery,
+    const updateDoc = await this.model.findByIdAndUpdate(
+      categoryId,
       {
         skillset: category.skillset,
       },
@@ -41,31 +35,9 @@ export class CategoryService extends BaseServiceMixin(CategoryRepo) {
     );
     console.log("updateDoc", updateDoc);
     if (updateDoc == null) {
-      throw new IdNotFoundError(categoryName);
+      throw new IdNotFoundError(categoryId);
     }
 
-    return updateDoc.skillset;
-  }
-
-  async filterSkill({ categoryName, skill }) {
-    const findQuery = { name: categoryName };
-    const category = (await this.tryFindOne(findQuery)) as I.Maybe<
-      CategoryType
-    >;
-
-    console.log("category", category);
-    const removedSkillSet = category.skillset.filter((v) => v.skill !== skill);
-    const updateDoc = await this.model.findOneAndUpdate(
-      findQuery,
-      {
-        skillset: removedSkillSet,
-      },
-      { new: true }
-    );
-    console.log("updateDoc", updateDoc);
-    if (updateDoc == null) {
-      throw new IdNotFoundError(categoryName);
-    }
     return updateDoc.skillset;
   }
 }

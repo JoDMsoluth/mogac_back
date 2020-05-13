@@ -2,10 +2,10 @@ import * as Vts from "vee-type-safe";
 import * as Mongoose from "mongoose";
 import { Typegoose } from "@hasezoey/typegoose";
 import { ClassType } from "../../types/ts/interfaces";
+import mongoose from "../../models";
 
 export * from "../../types/ts/interfaces";
 export { ObjectId } from "mongodb";
-
 /**
  * Defines a type that filters function (method) properties from the given
  * instance type.

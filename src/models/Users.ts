@@ -19,6 +19,9 @@ import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
 import { PostType } from "./Posts";
 import { TeamType } from "./Teams";
+import { SnsType, ISns } from "./type/Sns";
+import { MessageType } from "./Message";
+import { NotificationType } from "./Notification";
 
 export namespace UserPropLimits {
   export const EmailLength = new IntegerRange(5, 50);
@@ -168,6 +171,18 @@ export class UserType extends Typegoose implements IUser {
   @Field((_type) => [String])
   @arrayProp({ itemsRef: "TeamType" })
   teams: Ref<TeamType>[];
+
+  @Field((_type) => [SnsType])
+  @prop()
+  sns: ISns[];
+
+  @Field((_type) => [MessageType])
+  @arrayProp({ itemsRef: "MessageType" })
+  messages: Ref<MessageType>[];
+
+  @Field((_type) => [NotificationType])
+  @arrayProp({ itemsRef: "NotificationType" })
+  notifications: Ref<NotificationType>[];
 
   @Field()
   @prop()

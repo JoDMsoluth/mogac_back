@@ -13,6 +13,12 @@ import { AddSeriesRequestType } from "../series/dto/addSeriesRequestType";
 import { updateSeriesRequestType } from "../series/dto/updateSeriesRequestType";
 import { CategoryType } from "../../models/Category";
 import { CuCategoryRequestType } from "../category/dto/cuCategoryRequestType";
+import { NotificationType } from "../../models/Notification";
+import { MessageType } from "../../models/Message";
+import { SkillSetType } from "../../models/SkillSet";
+import { AddNotificationRequestType } from "../notification/dto/addNotificationRequestType";
+import { AddSkillSetRequestType } from "../skillset/dto/addSkillSetRequestType";
+import { AddMessageRequestType } from "../message/dto/addMessageRequestType";
 
 function createBaseCrudResolver<
   T extends I.ClassType<Typegoose>,
@@ -89,4 +95,20 @@ export const CategoryCrudResolver = createBaseCrudResolver(
   CuCategoryRequestType,
   CuCategoryRequestType,
   "CategoryService"
+);
+
+export const MessageCrudResolver = createBaseCrudResolver(
+  "Message",
+  MessageType,
+  AddMessageRequestType,
+  AddMessageRequestType,
+  "MessageService"
+);
+
+export const NotificationCrudResolver = createBaseCrudResolver(
+  "Notification",
+  NotificationType,
+  AddNotificationRequestType,
+  AddNotificationRequestType,
+  "NotificationService"
 );

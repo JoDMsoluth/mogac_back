@@ -4,6 +4,9 @@ import { CategoryService } from "../services/Category.service";
 import { TeamService } from "../services/Team.service";
 import { PostService } from "../services/post.service";
 import { UserRepo } from "../repositorys/UserRepo";
+import { NotificationService } from "../services/Notification.service";
+import { MessageService } from "../services/Message.service";
+import { SkillSetService } from "../services/SkillSet.service";
 
 const Container = require("typedi").Container;
 
@@ -16,5 +19,8 @@ export default function ContainerProvier() {
   Container.set("TeamService", new TeamService());
   Container.set("PostService", new PostService());
   Container.set("CategoryService", new CategoryService());
+  Container.set("NotificationService", new NotificationService());
+  Container.set("MessageService", new MessageService());
+  Container.set("SkillSetService", new SkillSetService());
   Container.set("UserRepo", new UserRepo());
 }

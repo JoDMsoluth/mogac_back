@@ -3,6 +3,21 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+input AddMessageRequestType {
+  sendUser: String!
+  receiveUser: String!
+  title: String!
+  contents: String!
+}
+
+input AddNotificationRequestType {
+  url: String!
+  kinds: String!
+  receiveUser: String!
+  title: String!
+  contents: String!
+}
+
 input AddSeriesRequestType {
   title: String!
   description: String!
@@ -20,13 +35,8 @@ type Category {
   createdAt: DateTime!
   updatedAt: DateTime!
   name: String!
-  posts: [Post!]!
-  skillset: [Skill!]!
-}
-
-input createSkillSetRequestType {
-  categoryName: String!
-  skill: String!
+  skillset: [SkillSet!]!
+  points: Int!
 }
 
 input CuCategoryRequestType {
@@ -63,11 +73,19 @@ type LoginResponseType {
   user: User!
 }
 
+type Message {
+  id: ObjectId!
+  sendDate: DateTime!
+  receiveDate: DateTime!
+  title: String!
+  contents: String!
+  sendUser: User!
+  receiveUser: User!
+}
+
 type Mutation {
   login(req: LoginRequestType!): LoginResponseType
   logout: Boolean!
-  createSkillSet(data: createSkillSetRequestType!): [Skill!]!
-  deleteSkillSet(skill: String!, categoryName: String!): [Skill!]!
   createUser(data: SignupRequestType!): User!
   updateUser(data: UpdateUserRequest!, id: ObjectId!): User!
   deleteUser(id: ObjectId!): String!
@@ -80,6 +98,23 @@ type Mutation {
   createCategory(data: CuCategoryRequestType!): Category!
   updateCategory(data: CuCategoryRequestType!, id: ObjectId!): Category!
   deleteCategory(id: ObjectId!): String!
+  createMessage(data: AddMessageRequestType!): Message!
+  updateMessage(data: AddMessageRequestType!, id: ObjectId!): Message!
+  deleteMessage(id: ObjectId!): String!
+  createNotification(data: AddNotificationRequestType!): Notification!
+  updateNotification(data: AddNotificationRequestType!, id: ObjectId!): Notification!
+  deleteNotification(id: ObjectId!): String!
+  createSkillSet(skill: String!, categoryId: ObjectId!): SkillSet!
+}
+
+type Notification {
+  id: ObjectId!
+  sendDate: DateTime!
+  receiveDate: DateTime!
+  title: String!
+  contents: String!
+  url: String!
+  kinds: String!
 }
 
 """Bson ObjectId unique identifier (hexadecimal string)."""
@@ -115,6 +150,8 @@ type Query {
   getTeamById(id: ObjectId!): Team!
   getSeriesById(id: ObjectId!): Series!
   getCategoryById(id: ObjectId!): Category!
+  getMessageById(id: ObjectId!): Message!
+  getNotificationById(id: ObjectId!): Notification!
   getAllSeries(data: PaginateArgType!): GetAllSeriesResponseType!
   getAllTeam(data: PaginateArgType!): GetAllTeamResponseType!
   getAllUser(data: PaginateArgType!): GetAllUserResponseType!
@@ -142,9 +179,16 @@ input SignupRequestType {
   image_url: String!
 }
 
-type Skill {
+type SkillSet {
+  id: ObjectId!
   skill: String!
+  posts: [Post!]!
   level: Int!
+}
+
+type Sns {
+  sns: String!
+  url: String!
 }
 
 type Team {
@@ -204,6 +248,9 @@ type User {
   likePostsId: [String!]!
   posts: [String!]!
   teams: [String!]!
+  sns: [Sns!]!
+  messages: [Message!]!
+  notifications: [Notification!]!
   jwt: String!
   role: UserRole!
 }

@@ -2,11 +2,11 @@ import * as Utils from "../lib/helper/utils";
 import * as I from "../lib/helper/interfaces";
 
 import { Typegoose, prop, arrayProp, Ref } from "@hasezoey/typegoose";
-import { Field, ObjectType } from "type-graphql";
+import { Field, ObjectType, Int } from "type-graphql";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
 import { PostType } from "./Posts";
-import { ISkill, SkillType } from "./type/Skill";
+import { SkillSetType } from "./SkillSet";
 
 export namespace CategoryPropLimits {
   export const NameLength = new IntegerRange(1, 20);
@@ -14,7 +14,6 @@ export namespace CategoryPropLimits {
 
 export interface ICategory {
   name: string;
-  posts: any[];
 }
 
 @ObjectType("Category")
@@ -37,13 +36,13 @@ export class CategoryType extends Typegoose implements ICategory {
   @prop({ required: true, unique: true })
   name!: string;
 
-  @Field((_type) => PostType)
-  @arrayProp({ itemsRef: "PostType" })
-  posts: Ref<PostType>[];
+  @Field((_type) => [SkillSetType])
+  @arrayProp({ itemsRef: "SkillSetType" })
+  skillset: Ref<SkillSetType>[];
 
-  @Field((_type) => [SkillType])
-  @prop({ default: [] })
-  skillset: ISkill[];
+  @Field((_type) => Int)
+  @prop()
+  points: number;
 }
 
 export const Category = Utils.getModelFromTypegoose(CategoryType);

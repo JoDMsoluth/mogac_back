@@ -17,6 +17,6 @@ export class SeriesResolver {
     @Arg("data") data: PaginateArgType
   ): Promise<I.Maybe<GetAllSeriesResponseType>> {
     // 최대 페이지, 현제 페이지 내용 받기
-    return await this.SeriesService.getAllSeriess(data);
+    return await this.SeriesService.getAllSeries(data);
   }
 }
