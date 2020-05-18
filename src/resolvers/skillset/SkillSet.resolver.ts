@@ -7,6 +7,7 @@ import { AddSkillSetRequestType } from "./dto/addSkillSetRequestType";
 import { CategoryService } from "../../services/Category.service";
 import { CategoryType } from "../../models/Category";
 import mongoose from "../../models";
+import { Log } from "../../lib/helper/debug";
 
 @Resolver((of) => SkillSetType)
 export class SkillSetResolver {
@@ -26,6 +27,14 @@ export class SkillSetResolver {
       categoryId,
       skillSetId: skillset.id,
     });
+    return skillset;
+  }
+
+  @Mutation((_type) => SkillSetType)
+  async deleteSkillSet(
+    @Arg("skillSetId") skillSetId: string
+  ): Promise<SkillSetType> {
+    const skillset = await this.SkillSetService.deleteSkillSet(skillSetId);
     return skillset;
   }
 }

@@ -18,5 +18,12 @@ export class SkillSetService extends BaseServiceMixin(SkillSetRepo) {
     return;
   }
 
-  async deleteSkillSet() {}
+  async deleteSkillSet(skillSetId) {
+    try {
+      return await this.model.findByIdAndRemove(skillSetId);
+    } catch (e) {
+      Log.error(e);
+    }
+    return;
+  }
 }

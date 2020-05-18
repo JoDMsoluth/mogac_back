@@ -5,6 +5,11 @@ import { User, UserType } from "../models/Users";
 import { Team } from "../models/Teams";
 import { NotFoundError } from "../lib/helper/statused-error";
 import * as I from "../lib/helper/interfaces";
+import { Arg } from "type-graphql";
+import { GraphQLUpload } from "graphql-upload";
+import { rejects } from "assert";
+import { createWriteStream } from "fs";
+import { Upload } from "../lib/helper/interfaces";
 
 @Service()
 export class UserService extends BaseServiceMixin(UserRepo) {

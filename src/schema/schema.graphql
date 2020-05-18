@@ -104,7 +104,10 @@ type Mutation {
   createNotification(data: AddNotificationRequestType!): Notification!
   updateNotification(data: AddNotificationRequestType!, id: ObjectId!): Notification!
   deleteNotification(id: ObjectId!): String!
+  sendNotificationService(data: AddNotificationRequestType!): Notification!
   createSkillSet(skill: String!, categoryId: ObjectId!): SkillSet!
+  deleteSkillSet(skillSetId: String!): SkillSet!
+  uploadProfileImage(file: Upload!): UploadResponseType!
 }
 
 type Notification {
@@ -223,6 +226,16 @@ input UpdateUserRequest {
   address: String
   birth: String
   image_url: String
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+type UploadResponseType {
+  filename: String!
+  mimetype: String!
+  encoding: String!
+  url: String!
 }
 
 type User {

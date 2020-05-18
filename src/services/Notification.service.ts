@@ -8,4 +8,8 @@ export class NotificationService extends BaseServiceMixin(NotificationRepo) {
   constructor(protected model = Notification) {
     super(model);
   }
+
+  async createNotification(data) {
+    return this.model.create(data);
+  }
 }

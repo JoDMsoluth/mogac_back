@@ -1,18 +1,24 @@
 import * as I from "../../lib/helper/interfaces";
 import { UserType } from "../../models/Users";
-import { Resolver, Query, Arg, Ctx } from "type-graphql";
+import { Resolver, Query, Arg, Ctx, Mutation } from "type-graphql";
 import { UserService } from "../../services/Users.service";
 import { Service } from "typedi";
 import { PaginateArgType } from "../common/PaginateArgType";
 import { ResolveContext } from "../../lib/graphql/resolve-context";
 import { GetAllUserResponseType } from "./dto/getAllUserResponseType";
+import { GraphQLUpload } from "apollo-server-express";
+import { Upload, UploadResponse } from "../../lib/helper/interfaces";
+import { createWriteStream } from "fs";
+import { AWSS3Uploader } from "../../lib/helper/AWSS3Uploader";
+import { UploadResponseType } from "./dto/uploadType";
 
 @Service()
 @Resolver((of) => UserType)
 export class UserResolver {
   constructor(
     // constructor injection of a service
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly AWSS3Uploader: AWSS3Uploader
   ) {}
 
   @Query((_return) => GetAllUserResponseType)
@@ -30,5 +36,15 @@ export class UserResolver {
     @Arg("data") data: PaginateArgType
   ) {
     return this.userService.getAllUsersByTeam(id, data);
+  }
+
+  @Mutation(() => UploadResponseType)
+  async uploadProfileImage(
+    @Arg("file", () => GraphQLUpload) file: Upload
+  ): Promise<UploadResponseType> {
+    console.log("upload params", file);
+    const result = this.AWSS3Uploader.uploadSingleImage({ file });
+    console.log("result", result);
+    return result;
   }
 }

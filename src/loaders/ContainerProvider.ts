@@ -7,6 +7,7 @@ import { UserRepo } from "../repositorys/UserRepo";
 import { NotificationService } from "../services/Notification.service";
 import { MessageService } from "../services/Message.service";
 import { SkillSetService } from "../services/SkillSet.service";
+import { AWSS3Uploader } from "../lib/helper/AWSS3Uploader";
 
 const Container = require("typedi").Container;
 
@@ -22,5 +23,6 @@ export default function ContainerProvier() {
   Container.set("NotificationService", new NotificationService());
   Container.set("MessageService", new MessageService());
   Container.set("SkillSetService", new SkillSetService());
+  Container.set("AWSS3Uploader", new AWSS3Uploader());
   Container.set("UserRepo", new UserRepo());
 }

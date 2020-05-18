@@ -40,4 +40,26 @@ export class CategoryService extends BaseServiceMixin(CategoryRepo) {
 
     return updateDoc.skillset;
   }
+
+  async filterSkill({ categoryId, skillSetId }) {
+    const category = (await this.tryFindById(categoryId)) as I.Maybe<
+      CategoryType
+    >;
+
+    category.skillset.filter((v) => v !== skillSetId);
+
+    const updateDoc = await this.model.findByIdAndUpdate(
+      categoryId,
+      {
+        skillset: category.skillset,
+      },
+      { new: true }
+    );
+    console.log("updateDoc", updateDoc);
+    if (updateDoc == null) {
+      throw new IdNotFoundError(categoryId);
+    }
+
+    return updateDoc.skillset;
+  }
 }

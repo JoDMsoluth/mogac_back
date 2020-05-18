@@ -56,6 +56,7 @@ export class BaseRepo<T extends Mongoose.Model<InstanceType<any>>> {
     if (updatedDoc == null) {
       throw new IdNotFoundError(id);
     }
+    console.log("updated : ", updatedDoc);
     return updatedDoc;
   }
   /**
