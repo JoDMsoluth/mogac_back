@@ -14,7 +14,11 @@ export class CategoryService extends BaseServiceMixin(CategoryRepo) {
   }
 
   async getAllCategory() {
-    const categorys = this.model.find().catch((err) => Log.error(err));
+    const categorys = await this.model
+      .find()
+      .populate({ path: "skillset" })
+      .catch((err) => Log.error(err));
+    console.log(categorys);
     return categorys;
   }
 
