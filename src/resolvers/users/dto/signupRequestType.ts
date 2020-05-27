@@ -23,19 +23,10 @@ export class SignupRequestType implements Credentials {
   gender!: string;
 
   @Field()
-  @IsPhoneNumber("KR")
-  @LengthRange(UserPropLimits.PhoneLength)
-  phone!: string;
-
-  @Field()
   @LengthRange(UserPropLimits.AddressLength)
   address!: string;
 
   @Field()
-  @LengthRange(UserPropLimits.BirthLength)
-  birth!: string;
-
-  @Field()
   @LengthRange(UserPropLimits.ImageUrlLength)
-  image_url: string;
+  image_url?: string;
 }

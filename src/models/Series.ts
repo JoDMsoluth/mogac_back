@@ -6,17 +6,16 @@ import { Field, ObjectType } from "type-graphql";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
 import { PostType } from "./Posts";
+import { UserType } from "./Users";
 
 export namespace SeriesPropLimits {
   export const TitleLength = new IntegerRange(6, 70);
   export const DescriptionLength = new IntegerRange(3, 2000);
-  export const ContentsLength = new IntegerRange(3, 10000);
 }
 
 export interface ISeries {
   title: string;
-  description: string;
-  contents: string;
+  description?: string;
   posts: any[];
 }
 
@@ -41,16 +40,16 @@ export class SeriesType extends Typegoose implements ISeries {
   title!: string;
 
   @Field()
-  @prop({ required: true })
-  description!: string;
-
-  @Field()
-  @prop({ required: true })
-  contents!: string;
+  @prop()
+  description?: string;
 
   @Field((_type) => [String])
   @arrayProp({ itemsRef: PostType })
   posts: Ref<PostType>[];
+
+  @Field((_type) => String)
+  @prop({ ref: "UserType" })
+  seriesBy: Ref<UserType>;
 }
 
 export const Series = Utils.getModelFromTypegoose(SeriesType);

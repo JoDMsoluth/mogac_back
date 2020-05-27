@@ -21,7 +21,6 @@ input AddNotificationRequestType {
 input AddSeriesRequestType {
   title: String!
   description: String!
-  contents: String!
 }
 
 input AddTeamRequestType {
@@ -92,9 +91,6 @@ type Mutation {
   createTeam(data: AddTeamRequestType!): Team!
   updateTeam(data: UpdateTeamRequestType!, id: ObjectId!): Team!
   deleteTeam(id: ObjectId!): String!
-  createSeries(data: AddSeriesRequestType!): Series!
-  updateSeries(data: updateSeriesRequestType!, id: ObjectId!): Series!
-  deleteSeries(id: ObjectId!): String!
   createCategory(data: CuCategoryRequestType!): Category!
   updateCategory(data: CuCategoryRequestType!, id: ObjectId!): Category!
   deleteCategory(id: ObjectId!): String!
@@ -105,6 +101,8 @@ type Mutation {
   updateNotification(data: AddNotificationRequestType!, id: ObjectId!): Notification!
   deleteNotification(id: ObjectId!): String!
   sendNotificationService(data: AddNotificationRequestType!): Notification!
+  createSeries(data: AddSeriesRequestType!): Series!
+  deleteSeries(seriesId: String!): Series!
   createSkillSet(skill: String!, categoryId: ObjectId!): SkillSet!
   deleteSkillSet(skillSetId: String!): SkillSet!
   uploadProfileImage(file: Upload!): UploadResponseType!
@@ -151,13 +149,13 @@ type Query {
   getAllCategory: [Category!]!
   getUserById(id: ObjectId!): User!
   getTeamById(id: ObjectId!): Team!
-  getSeriesById(id: ObjectId!): Series!
   getCategoryById(id: ObjectId!): Category!
   getMessageById(id: ObjectId!): Message!
   getNotificationById(id: ObjectId!): Notification!
   getAllSeries(data: PaginateArgType!): GetAllSeriesResponseType!
   getAllTeam(data: PaginateArgType!): GetAllTeamResponseType!
   getAllUser(data: PaginateArgType!): GetAllUserResponseType!
+  getAllSeriesByUser: User!
   getUsersByTeam(data: PaginateArgType!, id: ObjectId!): [User!]!
 }
 
@@ -167,8 +165,8 @@ type Series {
   updatedAt: DateTime!
   title: String!
   description: String!
-  contents: String!
   posts: [String!]!
+  seriesBy: String!
 }
 
 input SignupRequestType {
@@ -176,9 +174,7 @@ input SignupRequestType {
   password: String!
   name: String!
   gender: String!
-  phone: String!
   address: String!
-  birth: String!
   image_url: String!
 }
 
@@ -203,12 +199,6 @@ type Team {
   adminId: String!
   users: [String!]!
   category: String!
-}
-
-input updateSeriesRequestType {
-  title: String
-  description: String
-  contents: String
 }
 
 input UpdateTeamRequestType {
@@ -245,10 +235,8 @@ type User {
   email: String!
   password: String!
   name: String!
-  phone: String!
   address: String!
   gender: String!
-  birth: String!
   image_url: String!
   point: Int!
   level: Int!
@@ -256,11 +244,12 @@ type User {
   comfirmed: Boolean!
   position: [Float!]!
   favorites: [String!]!
-  friendsId: [String!]!
-  blackListId: [String!]!
-  likePostsId: [String!]!
-  posts: [String!]!
-  teams: [String!]!
+  friendsId: [User!]!
+  blackListId: [User!]!
+  likePostsId: [User!]!
+  posts: [Post!]!
+  teams: [Team!]!
+  series: [Series!]!
   sns: [Sns!]!
   messages: [Message!]!
   notifications: [Notification!]!

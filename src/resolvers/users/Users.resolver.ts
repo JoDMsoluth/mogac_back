@@ -11,6 +11,9 @@ import { Upload, UploadResponse } from "../../lib/helper/interfaces";
 import { createWriteStream } from "fs";
 import { AWSS3Uploader } from "../../lib/helper/AWSS3Uploader";
 import { UploadResponseType } from "./dto/uploadType";
+import { SeriesType } from "../../models/Series";
+import { Log } from "../../lib/helper/debug";
+import { IdNotFoundError } from "../../repositorys/BaseRepo";
 
 @Service()
 @Resolver((of) => UserType)
@@ -28,6 +31,12 @@ export class UserResolver {
   ): Promise<I.Maybe<GetAllUserResponseType>> {
     // 최대 페이지, 현제 페이지 내용 받기
     return await this.userService.getAllUsers(data);
+  }
+
+  @Query((_return) => UserType)
+  async getAllSeriesByUser(@Ctx() ctx: ResolveContext) {
+    console.log("seriesId", ctx.user.series[0]);
+    return await this.userService.getAllSeriesByUser(ctx.user._id);
   }
 
   @Query((_return) => [UserType])

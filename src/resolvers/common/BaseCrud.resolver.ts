@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Arg, Query } from "type-graphql";
+import { Resolver, Mutation, Arg, Query, Ctx } from "type-graphql";
 import * as I from "../../lib/helper/interfaces";
 import { SignupRequestType } from "../users/dto/signupRequestType";
 import { UserType } from "../../models/Users";
@@ -15,10 +15,11 @@ import { CategoryType } from "../../models/Category";
 import { CuCategoryRequestType } from "../category/dto/cuCategoryRequestType";
 import { NotificationType } from "../../models/Notification";
 import { MessageType } from "../../models/Message";
-import { SkillSetType } from "../../models/SkillSet";
+import { ResolveContext } from "../../lib/graphql/resolve-context";
 import { AddNotificationRequestType } from "../notification/dto/addNotificationRequestType";
 import { AddSkillSetRequestType } from "../skillset/dto/addSkillSetRequestType";
 import { AddMessageRequestType } from "../message/dto/addMessageRequestType";
+import { UserService } from "../../services/Users.service";
 
 function createBaseCrudResolver<
   T extends I.ClassType<Typegoose>,
@@ -34,7 +35,11 @@ function createBaseCrudResolver<
   @Resolver((of) => returnType)
   class BaseCrudResolver {
     // constructor injection of a service
-    constructor(@Inject(iocService) private readonly service) {}
+
+    constructor(
+      @Inject(iocService) private readonly service,
+      private readonly userService: UserService
+    ) {}
 
     @Query((_return) => returnType, { name: `get${suffix}ById` })
     async getById(@Arg("id") id: I.ObjectId) {
@@ -78,15 +83,7 @@ export const TeamCrudResolver = createBaseCrudResolver(
   TeamType,
   AddTeamRequestType,
   UpdateTeamRequestType,
-  "UserService"
-);
-
-export const SeriesCrudResolver = createBaseCrudResolver(
-  "Series",
-  SeriesType,
-  AddSeriesRequestType,
-  updateSeriesRequestType,
-  "SeriesService"
+  "TeamService"
 );
 
 export const CategoryCrudResolver = createBaseCrudResolver(

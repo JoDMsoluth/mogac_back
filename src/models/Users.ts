@@ -22,6 +22,7 @@ import { TeamType } from "./Teams";
 import { SnsType, ISns } from "./type/Sns";
 import { MessageType } from "./Message";
 import { NotificationType } from "./Notification";
+import { SeriesType } from "./Series";
 
 export namespace UserPropLimits {
   export const EmailLength = new IntegerRange(5, 50);
@@ -55,7 +56,6 @@ export interface IUser extends Credentials {
   createdAt: Date;
   updatedAt: Date;
   name: string;
-  phone: string;
   address: string;
   image_url: string;
   point: number;
@@ -110,19 +110,11 @@ export class UserType extends Typegoose implements IUser {
 
   @Field()
   @prop({ required: true })
-  phone!: string;
-
-  @Field()
-  @prop({ required: true })
   address!: string;
 
   @Field()
   @prop({ required: true })
   gender!: string;
-
-  @Field()
-  @prop({ required: true })
-  birth!: string;
 
   @Field()
   @prop()
@@ -152,36 +144,40 @@ export class UserType extends Typegoose implements IUser {
   @arrayProp({ items: String })
   favorites: string[];
 
-  @Field((_type) => [String])
+  @Field((_type) => [UserType])
   @arrayProp({ itemsRef: "UserType" })
   friendsId: Ref<UserType>[];
 
-  @Field((_type) => [String])
+  @Field((_type) => [UserType])
   @arrayProp({ itemsRef: "UserType" })
   blackListId: Ref<UserType>[];
 
-  @Field((_type) => [String])
+  @Field((_type) => [UserType])
   @arrayProp({ itemsRef: "UserType" })
   likePostsId: Ref<UserType>[];
 
-  @Field((_type) => [String])
+  @Field((_type) => [PostType])
   @arrayProp({ itemsRef: "PostType" })
   posts: Ref<PostType>[];
 
-  @Field((_type) => [String])
+  @Field((_type) => [TeamType])
   @arrayProp({ itemsRef: "TeamType" })
   teams: Ref<TeamType>[];
+
+  @Field((_type) => [SeriesType])
+  @arrayProp({ itemsRef: "SeriesType" })
+  series: Ref<SeriesType>[];
 
   @Field((_type) => [SnsType])
   @prop()
   sns: ISns[];
 
   @Field((_type) => [MessageType])
-  @arrayProp({ itemsRef: "MessageType" })
+  @arrayProp({ itemsRef: "MessageType", default: [] })
   messages: Ref<MessageType>[];
 
   @Field((_type) => [NotificationType])
-  @arrayProp({ itemsRef: "NotificationType" })
+  @arrayProp({ itemsRef: "NotificationType", default: [] })
   notifications: Ref<NotificationType>[];
 
   @Field()

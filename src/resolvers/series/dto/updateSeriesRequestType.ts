@@ -12,8 +12,4 @@ export class updateSeriesRequestType {
   @Field({ nullable: true })
   @LengthRange(SeriesPropLimits.DescriptionLength)
   description?: string;
-
-  @Field({ nullable: true })
-  @LengthRange(SeriesPropLimits.ContentsLength)
-  contents?: string;
 }
