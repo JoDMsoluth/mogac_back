@@ -21,6 +21,11 @@ export class PostResolver {
     private readonly UserService: UserService
   ) {}
 
+  @Query((_return) => PostType)
+  async getPost(@Arg("postId") postId: string): Promise<PostType> {
+    return await this.PostService.getPostForView(postId);
+  }
+
   @Query((_return) => GetAllPostResponseType)
   async getAllPosts(
     @Arg("page", (_type) => Int) page: number

@@ -181,6 +181,7 @@ type Query {
   getCategoryById(id: ObjectId!): Category!
   getMessageById(id: ObjectId!): Message!
   getNotificationById(id: ObjectId!): Notification!
+  getPost(postId: String!): Post!
   getAllPosts(page: Int!): GetAllPostResponseType!
   getAllSeries(data: PaginateArgType!): GetAllSeriesResponseType!
   getAllTeam(data: PaginateArgType!): GetAllTeamResponseType!

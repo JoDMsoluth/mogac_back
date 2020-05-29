@@ -21,4 +21,17 @@ export class PostRepo extends BaseRepo<PostModel> {
     const lastPage: string = Math.ceil(totalDoc / 9).toString();
     return { lastPage, docs };
   }
+
+  async getPostForView(postId: string) {
+    const doc = await this.model
+      .findById(postId)
+      .populate([
+        { path: "followUser", select: "_id" },
+        { path: "postedBy", select: "_id name image_url" },
+        { path: "series" },
+      ]);
+
+    console.log("get post", doc);
+    return doc;
+  }
 }
