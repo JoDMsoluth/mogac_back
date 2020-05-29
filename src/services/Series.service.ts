@@ -16,9 +16,9 @@ export class SeriesService extends BaseServiceMixin(SeriesRepo) {
   constructor(protected model = Series) {
     super(model);
   }
-  async createSeries(data: AddSeriesRequestType) {
+  async createSeries(data: AddSeriesRequestType, ctx: ResolveContext) {
     try {
-      return await this.model.create(data);
+      return await this.model.create({ ...data, seriesBy: ctx.user._id });
     } catch (e) {
       Log.error(e);
     }

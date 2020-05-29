@@ -26,8 +26,7 @@ export class UserResolver {
 
   @Query((_return) => GetAllUserResponseType)
   async getAllUser(
-    @Arg("data") data: PaginateArgType,
-    @Ctx() ctx: ResolveContext
+    @Arg("data") data: PaginateArgType
   ): Promise<I.Maybe<GetAllUserResponseType>> {
     // 최대 페이지, 현제 페이지 내용 받기
     return await this.userService.getAllUsers(data);

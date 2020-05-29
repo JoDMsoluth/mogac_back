@@ -22,6 +22,9 @@ export interface ISeries {
 @ObjectType("Series")
 export class SeriesType extends Typegoose implements ISeries {
   @Field()
+  _id: I.ObjectId;
+
+  @Field()
   @prop()
   get id(this: Series): I.ObjectId {
     return this._id;
@@ -43,11 +46,11 @@ export class SeriesType extends Typegoose implements ISeries {
   @prop()
   description?: string;
 
-  @Field((_type) => [String])
-  @arrayProp({ itemsRef: PostType })
+  @Field((_type) => [PostType])
+  @arrayProp({ itemsRef: "PostType" })
   posts: Ref<PostType>[];
 
-  @Field((_type) => String)
+  @Field((_type) => UserType)
   @prop({ ref: "UserType" })
   seriesBy: Ref<UserType>;
 }

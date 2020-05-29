@@ -10,17 +10,16 @@ import { TCategory } from "../types/ts/modelTypes";
 import { UserType } from "./Users";
 import { CommentType } from "./Comments";
 import { SeriesType } from "./Series";
-import { TagType } from "./Tag";
 
 export namespace PostPropLimits {
   export const TitleLength = new IntegerRange(6, 70);
-  export const DescriptionLength = new IntegerRange(3, 2000);
+  export const DescLength = new IntegerRange(3, 2000);
   export const ContentsLength = new IntegerRange(3, 10000);
 }
 
 export interface IPost {
   title: string;
-  description: string;
+  desc: string;
   contents: string;
 }
 
@@ -50,7 +49,7 @@ export class PostType extends Typegoose implements IPost {
 
   @Field()
   @prop({ required: true })
-  description!: string; // do not expose password as public GraphQL field
+  desc!: string; // do not expose password as public GraphQL field
 
   @Field()
   @prop({ required: true })
@@ -70,27 +69,27 @@ export class PostType extends Typegoose implements IPost {
 
   @Field()
   @prop({ required: true })
-  category!: TCategory;
+  category!: string;
 
-  @Field((_type) => [String])
+  @Field((_type) => [CommentType])
   @arrayProp({ itemsRef: "CommentType" })
   comments?: Ref<CommentType>[];
 
-  @Field((_type) => [String])
+  @Field((_type) => [UserType])
   @arrayProp({ itemsRef: "UserType" })
   followUser?: Ref<UserType>[];
 
-  @Field((_type) => String)
+  @Field((_type) => SeriesType)
   @prop({ ref: "SeriesType" })
   series?: Ref<SeriesType>;
 
-  @Field((_type) => String)
+  @Field((_type) => UserType)
   @prop({ ref: "UserType" })
   postedBy?: Ref<UserType>;
 
   @Field((_type) => [String])
-  @arrayProp({ itemsRef: "TagType" })
-  tags?: Ref<TagType>[];
+  @arrayProp({ items: String })
+  tags?: string[];
 }
 
 export const Post = Utils.getModelFromTypegoose(PostType);

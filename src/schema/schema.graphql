@@ -18,6 +18,17 @@ input AddNotificationRequestType {
   contents: String!
 }
 
+input AddPostRequestType {
+  title: String!
+  desc: String
+  tags: [String!]
+  contents: String!
+  image_url: [String!]
+  cover_img: String
+  category: String!
+  series: String
+}
+
 input AddSeriesRequestType {
   title: String!
   description: String!
@@ -38,6 +49,16 @@ type Category {
   points: Int!
 }
 
+type Comment {
+  id: ObjectId!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  contents: String!
+  parentPost: User!
+  parentComment: Comment!
+  commentBy: User!
+}
+
 input CuCategoryRequestType {
   name: String!
 }
@@ -46,6 +67,11 @@ input CuCategoryRequestType {
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
 scalar DateTime
+
+type GetAllPostResponseType {
+  lastPage: String!
+  posts: [Post!]!
+}
 
 type GetAllSeriesResponseType {
   lastPage: String!
@@ -101,6 +127,8 @@ type Mutation {
   updateNotification(data: AddNotificationRequestType!, id: ObjectId!): Notification!
   deleteNotification(id: ObjectId!): String!
   sendNotificationService(data: AddNotificationRequestType!): Notification!
+  createPost(data: AddPostRequestType!): Post!
+  deletePost(postId: String!): Post!
   createSeries(data: AddSeriesRequestType!): Series!
   deleteSeries(seriesId: String!): Series!
   createSkillSet(skill: String!, categoryId: ObjectId!): SkillSet!
@@ -131,16 +159,16 @@ type Post {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
-  description: String!
+  desc: String!
   contents: String!
   cover_Img: String!
   image_url: [String!]!
   views: Int!
   category: String!
-  comments: [String!]!
-  followUser: [String!]!
-  series: String!
-  postedBy: String!
+  comments: [Comment!]!
+  followUser: [User!]!
+  series: Series!
+  postedBy: User!
   tags: [String!]!
 }
 
@@ -152,6 +180,7 @@ type Query {
   getCategoryById(id: ObjectId!): Category!
   getMessageById(id: ObjectId!): Message!
   getNotificationById(id: ObjectId!): Notification!
+  getAllPosts(data: PaginateArgType!): GetAllPostResponseType!
   getAllSeries(data: PaginateArgType!): GetAllSeriesResponseType!
   getAllTeam(data: PaginateArgType!): GetAllTeamResponseType!
   getAllUser(data: PaginateArgType!): GetAllUserResponseType!
@@ -160,13 +189,14 @@ type Query {
 }
 
 type Series {
+  _id: ObjectId!
   id: ObjectId!
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
   description: String!
-  posts: [String!]!
-  seriesBy: String!
+  posts: [Post!]!
+  seriesBy: User!
 }
 
 input SignupRequestType {

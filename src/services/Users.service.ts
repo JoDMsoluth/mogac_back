@@ -19,6 +19,22 @@ export class UserService extends BaseServiceMixin(UserRepo) {
     super(model);
   }
 
+  async pushPost(postId, ctx: ResolveContext) {
+    ctx.user.posts.push(postId);
+    const updateDoc = await this.model.findByIdAndUpdate(
+      ctx.user._id,
+      {
+        posts: ctx.user.posts,
+      },
+      { new: true }
+    );
+    console.log("updateDoc", updateDoc);
+    if (updateDoc == null) {
+      throw new IdNotFoundError(postId);
+    }
+
+    return updateDoc.posts;
+  }
   async pushSeries(seriesId, ctx: ResolveContext) {
     console.log("series", ctx.user);
     ctx.user.series.push(seriesId);
@@ -38,9 +54,31 @@ export class UserService extends BaseServiceMixin(UserRepo) {
     return updateDoc.series;
   }
 
+  async filterPost(postId, ctx: ResolveContext) {
+    console.log("series", ctx.user);
+    console.log("postId", postId);
+    // !== 로 하지말고 !=로 해야 지워진다.
+    const filterPost = ctx.user.posts.filter((v) => v != postId);
+    console.log("posts", ctx.user.posts);
+    const updateDoc = await this.model.findByIdAndUpdate(
+      ctx.user._id,
+      {
+        posts: filterPost,
+      },
+      { new: true }
+    );
+    console.log("updateDoc", updateDoc);
+    if (updateDoc == null) {
+      throw new IdNotFoundError(postId);
+    }
+
+    return updateDoc.posts;
+  }
+
   async filterSeries(seriesId, ctx: ResolveContext) {
     console.log("series", ctx.user);
-    const filterSeries = ctx.user.series.filter((v) => v !== seriesId);
+    // !== 로 하지말고 !=로 해야 지워진다.
+    const filterSeries = ctx.user.series.filter((v) => v != seriesId);
     console.log("series", ctx.user.series);
     const updateDoc = await this.model.findByIdAndUpdate(
       ctx.user._id,
