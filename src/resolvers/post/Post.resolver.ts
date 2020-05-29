@@ -1,5 +1,5 @@
 import * as I from "../../lib/helper/interfaces";
-import { Resolver, Query, Arg, Mutation, Ctx } from "type-graphql";
+import { Resolver, Query, Arg, Mutation, Ctx, Int } from "type-graphql";
 import { PostType } from "../../models/Posts";
 import { PostService } from "../../services/Post.service";
 import { PaginateArgType } from "../common/PaginateArgType";
@@ -23,9 +23,9 @@ export class PostResolver {
 
   @Query((_return) => GetAllPostResponseType)
   async getAllPosts(
-    @Arg("data") data: PaginateArgType
+    @Arg("page", (_type) => Int) page: number
   ): Promise<I.Maybe<GetAllPostResponseType>> {
-    return await this.PostService.getAllPosts(data);
+    return await this.PostService.getAllPosts(page);
   }
 
   @Mutation((_type) => PostType)

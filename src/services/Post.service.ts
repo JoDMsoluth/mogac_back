@@ -13,9 +13,8 @@ export class PostService extends BaseServiceMixin(PostRepo) {
     super(model);
   }
 
-  async getAllPosts({ page, limit }) {
-    const query = {};
-    const posts = this.getAll(page, limit, query) as Promise<
+  async getAllPosts(page) {
+    const posts = this.getPostsByPage(page) as Promise<
       I.Maybe<{
         lastPage: string;
         docs: PostType[];

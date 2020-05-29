@@ -155,6 +155,7 @@ input PaginateArgType {
 }
 
 type Post {
+  _id: String!
   id: ObjectId!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -180,7 +181,7 @@ type Query {
   getCategoryById(id: ObjectId!): Category!
   getMessageById(id: ObjectId!): Message!
   getNotificationById(id: ObjectId!): Notification!
-  getAllPosts(data: PaginateArgType!): GetAllPostResponseType!
+  getAllPosts(page: Int!): GetAllPostResponseType!
   getAllSeries(data: PaginateArgType!): GetAllSeriesResponseType!
   getAllTeam(data: PaginateArgType!): GetAllTeamResponseType!
   getAllUser(data: PaginateArgType!): GetAllUserResponseType!
@@ -259,6 +260,7 @@ type UploadResponseType {
 }
 
 type User {
+  _id: String!
   id: ObjectId!
   createdAt: DateTime!
   updatedAt: DateTime!

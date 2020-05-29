@@ -26,6 +26,9 @@ export interface IPost {
 @ObjectType("Post")
 export class PostType extends Typegoose implements IPost {
   @Field()
+  _id: string;
+
+  @Field()
   @prop()
   get id(this: Post): I.ObjectId {
     return this._id;
@@ -56,7 +59,7 @@ export class PostType extends Typegoose implements IPost {
   contents!: string;
 
   @Field()
-  @prop()
+  @prop({ default: "" })
   cover_Img?: string;
 
   @Field(() => [String])

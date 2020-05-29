@@ -83,6 +83,9 @@ export interface IUser extends Credentials {
 @ObjectType("User")
 export class UserType extends Typegoose implements IUser {
   @Field()
+  _id: string;
+
+  @Field()
   @prop()
   get id(this: User): I.ObjectId {
     return this._id;
