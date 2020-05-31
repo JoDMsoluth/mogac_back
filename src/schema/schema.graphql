@@ -3,6 +3,12 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+input AddCommentRequestType {
+  contents: String!
+  parentPost: String!
+  secret: Boolean!
+}
+
 input AddMessageRequestType {
   sendUser: String!
   receiveUser: String!
@@ -29,6 +35,12 @@ input AddPostRequestType {
   series: String
 }
 
+input AddReCommentRequestType {
+  contents: String!
+  parentComment: String!
+  secret: Boolean!
+}
+
 input AddSeriesRequestType {
   title: String!
   description: String!
@@ -50,13 +62,15 @@ type Category {
 }
 
 type Comment {
+  _id: String!
   id: ObjectId!
   createdAt: DateTime!
   updatedAt: DateTime!
   contents: String!
-  parentPost: User!
-  parentComment: Comment!
+  parentComment: String!
+  parentPost: Post!
   commentBy: User!
+  secret: Boolean!
 }
 
 input CuCategoryRequestType {
@@ -111,6 +125,11 @@ type Message {
 type Mutation {
   login(req: LoginRequestType!): LoginResponseType
   logout: Boolean!
+  createComment(data: AddCommentRequestType!): Comment!
+  createReComment(data: AddReCommentRequestType!): Comment!
+  deleteComment(postId: String!, commentId: String!): Comment!
+  deleteReComment(reCommentId: String!): Comment!
+  updateComment(data: UpdateCommentRequestType!): Comment!
   createUser(data: SignupRequestType!): User!
   updateUser(data: UpdateUserRequest!, id: ObjectId!): User!
   deleteUser(id: ObjectId!): String!
@@ -176,6 +195,8 @@ type Post {
 type Query {
   getCurrentUser: User!
   getAllCategory: [Category!]!
+  getAllCommentInPost(postId: String!): [Comment!]!
+  getAllReCommentInComment(commentId: String!): [Comment!]!
   getUserById(id: ObjectId!): User!
   getTeamById(id: ObjectId!): Team!
   getCategoryById(id: ObjectId!): Category!
@@ -188,6 +209,7 @@ type Query {
   getAllUser(data: PaginateArgType!): GetAllUserResponseType!
   getAllSeriesByUser: User!
   getUsersByTeam(data: PaginateArgType!, id: ObjectId!): [User!]!
+  getAllPostsForPostView(name: String!): User!
 }
 
 type Series {
@@ -231,6 +253,12 @@ type Team {
   adminId: String!
   users: [String!]!
   category: String!
+}
+
+input UpdateCommentRequestType {
+  commentId: String!
+  contents: String!
+  secret: Boolean!
 }
 
 input UpdateTeamRequestType {

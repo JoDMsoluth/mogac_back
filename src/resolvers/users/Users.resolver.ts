@@ -46,6 +46,11 @@ export class UserResolver {
     return this.userService.getAllUsersByTeam(id, data);
   }
 
+  @Query((_return) => UserType)
+  async getAllPostsForPostView(@Arg("name") name: string) {
+    return this.userService.getPostsByNmaeForPostView(name);
+  }
+
   @Mutation(() => UploadResponseType)
   async uploadProfileImage(
     @Arg("file", () => GraphQLUpload) file: Upload

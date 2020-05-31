@@ -8,6 +8,7 @@ import { BaseRepo } from "../repositorys/BaseRepo";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
 import { UserType } from "./Users";
+import { PostType } from "./Posts";
 
 export namespace CommentPropLimits {
   export const TitleLength = new IntegerRange(6, 70);
@@ -17,14 +18,18 @@ export namespace CommentPropLimits {
 
 export interface IComment {
   contents: string;
-  parentPost: any;
+  parentPost?: any;
   parentComment?: any;
   commentBy: any;
   likeUser?: any[];
+  secret: boolean;
 }
 
 @ObjectType("Comment")
 export class CommentType extends Typegoose implements IComment {
+  @Field()
+  _id: string;
+
   @Field()
   @prop()
   get id(this: Comment): I.ObjectId {
@@ -47,17 +52,21 @@ export class CommentType extends Typegoose implements IComment {
   @prop({ required: true })
   contents!: string;
 
-  @Field((_type) => UserType)
-  @prop({ ref: "UserType" })
-  parentPost: Ref<UserType>;
+  @Field()
+  @prop()
+  parentComment?: string;
 
-  @Field(() => CommentType)
-  @prop({ ref: "CommentType" })
-  parentComment?: Ref<CommentType>;
+  @Field(() => PostType)
+  @prop({ default: "" })
+  parentPost?: Ref<PostType>;
 
   @Field((_type) => UserType)
   @prop({ ref: "UserType" })
   commentBy: Ref<UserType>;
+
+  @Field((_type) => Boolean)
+  @prop({ default: false })
+  secret: boolean;
 }
 
 export const Comment = Utils.getModelFromTypegoose(CommentType);

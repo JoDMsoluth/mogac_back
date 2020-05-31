@@ -33,7 +33,7 @@ export class PostResolver {
     return await this.PostService.getAllPosts(page);
   }
 
-  @Mutation((_type) => PostType)
+  @Mutation((_return) => PostType)
   async createPost(
     @Arg("data") data: AddPostRequestType,
     @Ctx() ctx: ResolveContext
@@ -48,7 +48,7 @@ export class PostResolver {
     }
   }
 
-  @Mutation((_type) => PostType)
+  @Mutation((_return) => PostType)
   async deletePost(
     @Arg("postId") postId: string,
     @Ctx() ctx: ResolveContext

@@ -48,7 +48,7 @@ export class BaseRepo<T extends Mongoose.Model<InstanceType<any>>> {
    * @throws IdNotFoundError | Error
    * If no such document was found or mongoose ODM throws an error.
    */
-  async tryUpdateById(id: ObjectId, update: any) {
+  async tryUpdateById(id: any, update: any) {
     const updatedDoc = await this.model
       .findByIdAndUpdate(id, update, { new: true })
       .lean()

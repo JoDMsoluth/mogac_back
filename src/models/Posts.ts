@@ -83,7 +83,7 @@ export class PostType extends Typegoose implements IPost {
   followUser?: Ref<UserType>[];
 
   @Field((_type) => SeriesType)
-  @prop({ ref: "SeriesType" })
+  @prop({ ref: "SeriesType", default:"" })
   series?: Ref<SeriesType>;
 
   @Field((_type) => UserType)

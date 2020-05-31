@@ -1,6 +1,6 @@
 import { Service } from "typedi";
-import { BaseRepo } from "./BaseRepo";
-import { PostModel, PostData, Post } from "../models/Posts";
+import { BaseRepo, IdNotFoundError } from "./BaseRepo";
+import { PostModel, PostData, Post, PostType } from "../models/Posts";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 
 @Service()
@@ -30,8 +30,50 @@ export class PostRepo extends BaseRepo<PostModel> {
         { path: "postedBy", select: "_id name image_url" },
         { path: "series" },
       ]);
-
     console.log("get post", doc);
     return doc;
+  }
+
+  async pushComment(postId, commentId) {
+    console.log("comments, post", commentId, postId);
+    const post = (await this.tryFindById(postId)) as PostType;
+    console.log("post", post);
+    post.comments.push(commentId);
+    console.log("post.comments", post.comments);
+    const updateDoc = await this.model.findByIdAndUpdate(
+      postId,
+      {
+        comments: post.comments,
+      },
+      { new: true }
+    );
+    console.log("updateDoc", updateDoc);
+    if (updateDoc == null) {
+      throw new IdNotFoundError(postId);
+    }
+
+    return updateDoc.comments;
+  }
+
+  async filterComment(postId, commentId) {
+    console.log("comments, post", commentId, postId);
+    // !== 로 하지말고 !=로 해야 지워진다.
+    const post = (await this.tryFindById(postId)) as PostType;
+    console.log("post", post);
+    const filterComment = post.comments.filter((v) => v != commentId);
+    console.log("filterComment", filterComment);
+    const updateDoc = await this.model.findByIdAndUpdate(
+      postId,
+      {
+        comments: filterComment,
+      },
+      { new: true }
+    );
+    console.log("updateDoc", updateDoc);
+    if (updateDoc == null) {
+      throw new IdNotFoundError(postId);
+    }
+
+    return updateDoc.comments;
   }
 }

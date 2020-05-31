@@ -108,7 +108,7 @@ export class UserType extends Typegoose implements IUser {
   password!: string; // do not expose password as public GraphQL field
 
   @Field()
-  @prop({ required: true })
+  @prop({ required: true, unique })
   name!: string;
 
   @Field()
