@@ -6,6 +6,7 @@ import {
   Comment,
   CommentType,
 } from "../models/Comments";
+import * as I from "../lib/helper/interfaces";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { Log } from "../lib/helper/debug";
 import { ResolveContext } from "../lib/graphql/resolve-context";
@@ -22,7 +23,11 @@ export class CommentRepo extends BaseRepo<CommentModel> {
   });
   async getAllCommentByPostId(postId) {
     try {
-      return await this.model.find({ parentPost: postId }).lean().exec();
+      return await this.model
+        .find({ parentPost: postId })
+        .populate({ path: "commentBy", select: "_id name image_url" })
+        .lean()
+        .exec();
     } catch (e) {
       Log.error(e);
     }
@@ -30,25 +35,25 @@ export class CommentRepo extends BaseRepo<CommentModel> {
 
   async getAllReCommentByCommentId(commentId) {
     try {
-      return await this.model.find({ parentComment: commentId }).lean().exec();
+      return await this.model
+        .find({ parentComment: commentId })
+        .populate({ path: "commentBy", select: "_id name image_url" })
+        .lean()
+        .exec();
     } catch (e) {
       Log.error(e);
     }
   }
 
   async createComment(data: AddCommentRequestType, ctx: ResolveContext) {
-    console.log("ctx.user._id", ctx.user._id);
-    if (ctx.user._id) {
-      try {
-        return await this.model.create({
-          ...data,
-          commentBy: ctx.user._id,
-        });
-      } catch (e) {
-        Log.error(e);
-      }
+    try {
+      return await this.model.create({
+        ...data,
+        commentBy: ctx.user._id,
+      });
+    } catch (e) {
+      Log.error(e);
     }
-    Log.error("Please Login");
   }
 
   async createReComment(data: AddReCommentRequestType, ctx: ResolveContext) {
@@ -69,7 +74,19 @@ export class CommentRepo extends BaseRepo<CommentModel> {
 
   async deleteComment(commentId: string) {
     try {
-      return await this.model.findByIdAndRemove(commentId);
+      return await await this.model.findByIdAndRemove(commentId);
+    } catch (e) {
+      Log.error(e);
+    }
+  }
+
+  async findCommentByUserDetail(commentId: string) {
+    try {
+      return await this.model
+        .findById(commentId)
+        .populate({ path: "commentBy", select: "_id name image_url" })
+        .lean()
+        .exec();
     } catch (e) {
       Log.error(e);
     }
@@ -81,5 +98,22 @@ export class CommentRepo extends BaseRepo<CommentModel> {
       .sort({ createdAt: -1 })
       .lean()
       .exec();
+  }
+
+  async updateComment(data: UpdateCommentRequestType) {
+    const updatedDoc = await this.model
+      .findByIdAndUpdate(
+        data.commentId,
+        { contents: data.contents, secret: data.secret },
+        { new: true }
+      )
+      .populate({ path: "commentBy", select: "_id image_url name" })
+      .lean()
+      .exec();
+    if (updatedDoc == null) {
+      throw new IdNotFoundError((data.commentId as unknown) as I.ObjectId);
+    }
+    console.log("updated : ", updatedDoc);
+    return updatedDoc;
   }
 }

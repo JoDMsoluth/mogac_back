@@ -56,12 +56,10 @@ export class PostRepo extends BaseRepo<PostModel> {
   }
 
   async filterComment(postId, commentId) {
-    console.log("comments, post", commentId, postId);
     // !== 로 하지말고 !=로 해야 지워진다.
     const post = (await this.tryFindById(postId)) as PostType;
-    console.log("post", post);
     const filterComment = post.comments.filter((v) => v != commentId);
-    console.log("filterComment", filterComment);
+
     const updateDoc = await this.model.findByIdAndUpdate(
       postId,
       {
@@ -69,7 +67,6 @@ export class PostRepo extends BaseRepo<PostModel> {
       },
       { new: true }
     );
-    console.log("updateDoc", updateDoc);
     if (updateDoc == null) {
       throw new IdNotFoundError(postId);
     }

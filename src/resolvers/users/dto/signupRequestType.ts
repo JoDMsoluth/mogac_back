@@ -22,11 +22,12 @@ export class SignupRequestType implements Credentials {
   @LengthRange(UserPropLimits.GenderLength)
   gender!: string;
 
-  @Field()
-  @LengthRange(UserPropLimits.AddressLength)
-  address!: string;
+  @Field((_type) => [String])
+  ableLocation!: string[];
+
+  @Field((_type) => [String])
+  ableSkillSet?: string[];
 
   @Field()
-  @LengthRange(UserPropLimits.ImageUrlLength)
   image_url?: string;
 }

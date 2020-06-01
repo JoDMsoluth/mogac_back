@@ -7,7 +7,10 @@ import * as I from "../lib/helper/interfaces";
 import { PostType } from "../models/Posts";
 import { ResolveContext } from "../lib/graphql/resolve-context";
 import { userInfo } from "os";
-import { UpdateCommentRequestType } from "../resolvers/comment/dto/CommentRequestType";
+import {
+  UpdateCommentRequestType,
+  AddCommentRequestType,
+} from "../resolvers/comment/dto/CommentRequestType";
 
 @Service()
 export class CommentService extends BaseServiceMixin(CommentRepo) {
@@ -16,12 +19,13 @@ export class CommentService extends BaseServiceMixin(CommentRepo) {
   }
 
   async checkWriter(commentId, ctx: ResolveContext) {
-    const comment = (await this.tryFindById(commentId)) as CommentType;
-    return comment.commentBy == commentId;
+    const comment = (await this.tryFindById(commentId)) as any;
+    // objectID 와 objectId 끼리 비교하기 위해선 equals 함수를 사용
+    return comment.commentBy.equals(ctx.user._id);
   }
 
   async deleteCommentById(commentId, ctx: ResolveContext) {
-    if (this.checkWriter(commentId, ctx)) {
+    if (await this.checkWriter(commentId, ctx)) {
       return await this.deleteComment(commentId);
     } else {
       Log.error("Please Login");
@@ -29,13 +33,25 @@ export class CommentService extends BaseServiceMixin(CommentRepo) {
   }
 
   async updateCommentById(data: UpdateCommentRequestType, ctx: ResolveContext) {
-    if (this.checkWriter(data.commentId, ctx)) {
-      return await this.tryUpdateById(data.commentId, {
-        contents: data.contents,
-        secret: data.secret,
-      });
+    console.log("ctx", ctx.user._id);
+    if (await this.checkWriter(data.commentId, ctx)) {
+      return await this.updateComment(data);
     } else {
       Log.error("Please Login");
     }
+  }
+
+  async createCommentInPost(data: AddCommentRequestType, ctx: ResolveContext) {
+    console.log("ctx.user._id", ctx.user._id);
+    if (ctx.user._id) {
+      try {
+        return await this.createComment(data, ctx)
+          .then((result) => this.findCommentByUserDetail(result._id))
+          .then((comment) => comment);
+      } catch (err) {
+        Log.error(err);
+      }
+    }
+    Log.error("Please Login");
   }
 }

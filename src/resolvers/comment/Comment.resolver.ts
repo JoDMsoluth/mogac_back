@@ -33,7 +33,7 @@ export class CommentResolver {
     @Arg("data") data: AddCommentRequestType,
     @Ctx() ctx: ResolveContext
   ) {
-    const comment = await this.CommentService.createComment(data, ctx)
+    const comment = await this.CommentService.createCommentInPost(data, ctx)
       .then((result) => {
         this.PostService.pushComment(data.parentPost, result._id);
         return result;
@@ -57,12 +57,12 @@ export class CommentResolver {
   @Mutation((_return) => CommentType)
   async deleteComment(
     @Arg("commentId") commentId: string,
-    @Arg("postId") postId: string,
     @Ctx() ctx: ResolveContext
   ) {
     return await this.CommentService.deleteCommentById(commentId, ctx)
       .then((comment) => {
-        this.PostService.filterComment(postId, comment._id);
+        //commentId 는 string, comment._id는 object이므로 commentId를 보내야 함
+        this.PostService.filterComment(comment.parentPost, commentId);
         return comment;
       })
       .catch((err) => Log.error(err));
@@ -84,6 +84,6 @@ export class CommentResolver {
     @Arg("data") data: UpdateCommentRequestType,
     @Ctx() ctx: ResolveContext
   ) {
-    return await this.updateComment;
+    return await this.CommentService.updateCommentById(data, ctx);
   }
 }

@@ -127,7 +127,7 @@ type Mutation {
   logout: Boolean!
   createComment(data: AddCommentRequestType!): Comment!
   createReComment(data: AddReCommentRequestType!): Comment!
-  deleteComment(postId: String!, commentId: String!): Comment!
+  deleteComment(commentId: String!): Comment!
   deleteReComment(reCommentId: String!): Comment!
   updateComment(data: UpdateCommentRequestType!): Comment!
   createUser(data: SignupRequestType!): User!
@@ -228,7 +228,8 @@ input SignupRequestType {
   password: String!
   name: String!
   gender: String!
-  address: String!
+  ableLocation: [String!]!
+  ableSkillSet: [String!]!
   image_url: String!
 }
 
@@ -296,7 +297,6 @@ type User {
   email: String!
   password: String!
   name: String!
-  address: String!
   gender: String!
   image_url: String!
   point: Int!
@@ -311,6 +311,8 @@ type User {
   posts: [Post!]!
   teams: [Team!]!
   series: [Series!]!
+  ableSkillSet: [String!]!
+  ableLocation: [String!]!
   sns: [Sns!]!
   messages: [Message!]!
   notifications: [Notification!]!

@@ -27,8 +27,8 @@ import { SeriesType } from "./Series";
 export namespace UserPropLimits {
   export const EmailLength = new IntegerRange(5, 50);
   export const PasswordLength = new IntegerRange(6, 30);
-  export const GenderLength = new IntegerRange(2, 6);
-  export const NameLength = new IntegerRange(2, 20);
+  export const GenderLength = new IntegerRange(1, 7);
+  export const NameLength = new IntegerRange(1, 20);
   export const PhoneLength = new IntegerRange(10, 20);
   export const AddressLength = new IntegerRange(15, 255);
   export const BirthLength = new IntegerRange(4, 13);
@@ -56,7 +56,7 @@ export interface IUser extends Credentials {
   createdAt: Date;
   updatedAt: Date;
   name: string;
-  address: string;
+  ableLocation: string[];
   image_url: string;
   point: number;
   level: number;
@@ -71,6 +71,7 @@ export interface IUser extends Credentials {
   teams: any[];
   role: UserRole;
   jwt: string;
+  ableSkillSet: string[];
 }
 
 @pre<UserType>("save", function (next: CallableFunction) {
@@ -110,10 +111,6 @@ export class UserType extends Typegoose implements IUser {
   @Field()
   @prop({ required: true, unique })
   name!: string;
-
-  @Field()
-  @prop({ required: true })
-  address!: string;
 
   @Field()
   @prop({ required: true })
@@ -170,6 +167,14 @@ export class UserType extends Typegoose implements IUser {
   @Field((_type) => [SeriesType])
   @arrayProp({ itemsRef: "SeriesType" })
   series: Ref<SeriesType>[];
+
+  @Field((_type) => [String])
+  @arrayProp({ items: String })
+  ableSkillSet: string[];
+
+  @Field((_type) => [String])
+  @arrayProp({ items: String })
+  ableLocation: string[];
 
   @Field((_type) => [SnsType])
   @prop()

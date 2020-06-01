@@ -57,7 +57,7 @@ export class CommentType extends Typegoose implements IComment {
   parentComment?: string;
 
   @Field(() => PostType)
-  @prop({ default: "" })
+  @prop({ ref: "PostType" })
   parentPost?: Ref<PostType>;
 
   @Field((_type) => UserType)
