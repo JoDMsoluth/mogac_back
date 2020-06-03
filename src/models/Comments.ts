@@ -3,7 +3,7 @@ import * as I from "../lib/helper/interfaces";
 
 import "reflect-metadata";
 import { Typegoose, prop, arrayProp, Ref } from "@hasezoey/typegoose";
-import { Field, ObjectType } from "type-graphql";
+import { Field, ObjectType, Int } from "type-graphql";
 import { BaseRepo } from "../repositorys/BaseRepo";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
@@ -59,6 +59,10 @@ export class CommentType extends Typegoose implements IComment {
   @Field(() => PostType)
   @prop({ ref: "PostType" })
   parentPost?: Ref<PostType>;
+
+  @Field(() => Int)
+  @prop({ default: 0 })
+  reComments: number;
 
   @Field((_type) => UserType)
   @prop({ ref: "UserType" })

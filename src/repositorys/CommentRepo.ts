@@ -74,7 +74,7 @@ export class CommentRepo extends BaseRepo<CommentModel> {
 
   async deleteComment(commentId: string) {
     try {
-      return await await this.model.findByIdAndRemove(commentId);
+      return await this.model.findByIdAndRemove(commentId);
     } catch (e) {
       Log.error(e);
     }
@@ -82,6 +82,7 @@ export class CommentRepo extends BaseRepo<CommentModel> {
 
   async findCommentByUserDetail(commentId: string) {
     try {
+      console.log("commentId", commentId);
       return await this.model
         .findById(commentId)
         .populate({ path: "commentBy", select: "_id name image_url" })
@@ -93,11 +94,7 @@ export class CommentRepo extends BaseRepo<CommentModel> {
   }
 
   async getCommentByPostId(postId) {
-    const doc = await this.model
-      .find({ parentPost: postId })
-      .sort({ createdAt: -1 })
-      .lean()
-      .exec();
+    const doc = await this.model.find({ parentPost: postId }).lean().exec();
   }
 
   async updateComment(data: UpdateCommentRequestType) {

@@ -47,7 +47,10 @@ export class CommentResolver {
     @Arg("data") data: AddReCommentRequestType,
     @Ctx() ctx: ResolveContext
   ) {
-    const reComment = await this.CommentService.createReComment(data, ctx)
+    const reComment = await this.CommentService.createReCommentInComment(
+      data,
+      ctx
+    )
       .then((comment) => comment)
       .catch((err) => Log.error(err));
     console.log("reComment", reComment);
@@ -73,7 +76,7 @@ export class CommentResolver {
     @Arg("reCommentId") reCommentId: string,
     @Ctx() ctx: ResolveContext
   ) {
-    return await this.CommentService.deleteCommentById(
+    return await this.CommentService.deleteReCommentById(
       reCommentId,
       ctx
     ).catch((err) => Log.error(err));

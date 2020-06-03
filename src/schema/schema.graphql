@@ -69,6 +69,7 @@ type Comment {
   contents: String!
   parentComment: String!
   parentPost: Post!
+  reComments: Int!
   commentBy: User!
   secret: Boolean!
 }
