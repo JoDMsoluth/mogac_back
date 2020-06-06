@@ -35,12 +35,6 @@ input AddPostRequestType {
   series: String
 }
 
-input AddReCommentRequestType {
-  contents: String!
-  parentComment: String!
-  secret: Boolean!
-}
-
 input AddSeriesRequestType {
   title: String!
   description: String!
@@ -67,9 +61,7 @@ type Comment {
   createdAt: DateTime!
   updatedAt: DateTime!
   contents: String!
-  parentComment: String!
   parentPost: Post!
-  reComments: Int!
   commentBy: User!
   secret: Boolean!
 }
@@ -127,9 +119,7 @@ type Mutation {
   login(req: LoginRequestType!): LoginResponseType
   logout: Boolean!
   createComment(data: AddCommentRequestType!): Comment!
-  createReComment(data: AddReCommentRequestType!): Comment!
   deleteComment(commentId: String!): Comment!
-  deleteReComment(reCommentId: String!): Comment!
   updateComment(data: UpdateCommentRequestType!): Comment!
   createUser(data: SignupRequestType!): User!
   updateUser(data: UpdateUserRequest!, id: ObjectId!): User!
@@ -197,7 +187,6 @@ type Query {
   getCurrentUser: User!
   getAllCategory: [Category!]!
   getAllCommentInPost(postId: String!): [Comment!]!
-  getAllReCommentInComment(commentId: String!): [Comment!]!
   getUserById(id: ObjectId!): User!
   getTeamById(id: ObjectId!): Team!
   getCategoryById(id: ObjectId!): Category!

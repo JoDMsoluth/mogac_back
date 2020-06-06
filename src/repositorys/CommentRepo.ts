@@ -14,7 +14,6 @@ import {
   AddCommentRequestType,
   UpdateCommentRequestType,
 } from "../resolvers/comment/dto/CommentRequestType";
-import { AddReCommentRequestType } from "../resolvers/comment/dto/addReCommentRequestType";
 
 @Service()
 export class CommentRepo extends BaseRepo<CommentModel> {
@@ -25,19 +24,10 @@ export class CommentRepo extends BaseRepo<CommentModel> {
     try {
       return await this.model
         .find({ parentPost: postId })
-        .populate({ path: "commentBy", select: "_id name image_url" })
-        .lean()
-        .exec();
-    } catch (e) {
-      Log.error(e);
-    }
-  }
-
-  async getAllReCommentByCommentId(commentId) {
-    try {
-      return await this.model
-        .find({ parentComment: commentId })
-        .populate({ path: "commentBy", select: "_id name image_url" })
+        .populate({
+          path: "commentBy",
+          select: "_id name image_url ableSkillSet",
+        })
         .lean()
         .exec();
     } catch (e) {
@@ -56,22 +46,6 @@ export class CommentRepo extends BaseRepo<CommentModel> {
     }
   }
 
-  async createReComment(data: AddReCommentRequestType, ctx: ResolveContext) {
-    console.log("ctx.user._id", ctx.user._id);
-    console.log("data", data);
-    if (ctx.user._id) {
-      try {
-        return await this.model.create({
-          ...data,
-          commentBy: ctx.user._id,
-        });
-      } catch (e) {
-        Log.error(e);
-      }
-    }
-    Log.error("Please Login");
-  }
-
   async deleteComment(commentId: string) {
     try {
       return await this.model.findByIdAndRemove(commentId);
@@ -85,7 +59,10 @@ export class CommentRepo extends BaseRepo<CommentModel> {
       console.log("commentId", commentId);
       return await this.model
         .findById(commentId)
-        .populate({ path: "commentBy", select: "_id name image_url" })
+        .populate({
+          path: "commentBy",
+          select: "_id name image_url ableSkillSet",
+        })
         .lean()
         .exec();
     } catch (e) {
@@ -104,7 +81,10 @@ export class CommentRepo extends BaseRepo<CommentModel> {
         { contents: data.contents, secret: data.secret },
         { new: true }
       )
-      .populate({ path: "commentBy", select: "_id image_url name" })
+      .populate({
+        path: "commentBy",
+        select: "_id image_url name ableSkillSet",
+      })
       .lean()
       .exec();
     if (updatedDoc == null) {

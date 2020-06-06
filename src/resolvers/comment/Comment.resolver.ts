@@ -9,7 +9,6 @@ import {
 import { ResolveContext } from "../../lib/graphql/resolve-context";
 import { PostService } from "../../services/post.service";
 import { Log } from "../../lib/helper/debug";
-import { AddReCommentRequestType } from "./dto/addReCommentRequestType";
 
 @Resolver((of) => CommentType)
 export class CommentResolver {
@@ -21,11 +20,6 @@ export class CommentResolver {
   @Query((_return) => [CommentType])
   async getAllCommentInPost(@Arg("postId") postId: string) {
     return await this.CommentService.getAllCommentByPostId(postId);
-  }
-
-  @Query((_return) => [CommentType])
-  async getAllReCommentInComment(@Arg("commentId") commentId: string) {
-    return await this.CommentService.getAllReCommentByCommentId(commentId);
   }
 
   @Mutation((_return) => CommentType)
@@ -43,21 +37,6 @@ export class CommentResolver {
   }
 
   @Mutation((_return) => CommentType)
-  async createReComment(
-    @Arg("data") data: AddReCommentRequestType,
-    @Ctx() ctx: ResolveContext
-  ) {
-    const reComment = await this.CommentService.createReCommentInComment(
-      data,
-      ctx
-    )
-      .then((comment) => comment)
-      .catch((err) => Log.error(err));
-    console.log("reComment", reComment);
-    return reComment;
-  }
-
-  @Mutation((_return) => CommentType)
   async deleteComment(
     @Arg("commentId") commentId: string,
     @Ctx() ctx: ResolveContext
@@ -69,17 +48,6 @@ export class CommentResolver {
         return comment;
       })
       .catch((err) => Log.error(err));
-  }
-
-  @Mutation((_return) => CommentType)
-  async deleteReComment(
-    @Arg("reCommentId") reCommentId: string,
-    @Ctx() ctx: ResolveContext
-  ) {
-    return await this.CommentService.deleteReCommentById(
-      reCommentId,
-      ctx
-    ).catch((err) => Log.error(err));
   }
 
   @Mutation((_return) => CommentType)
