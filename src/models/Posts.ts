@@ -1,13 +1,13 @@
 import * as Utils from "../lib/helper/utils";
 import * as I from "../lib/helper/interfaces";
 
-import { Typegoose, prop, arrayProp, Ref } from "@hasezoey/typegoose";
+import { Typegoose, prop, arrayProp, Ref, pre } from "@hasezoey/typegoose";
 import { Field, ObjectType, Int } from "type-graphql";
 import { BaseRepo } from "../repositorys/BaseRepo";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { IntegerRange } from "../lib/helper/integer-range";
 import { TCategory } from "../types/ts/modelTypes";
-import { UserType } from "./Users";
+import { UserType, User } from "./Users";
 import { CommentType } from "./Comments";
 import { SeriesType } from "./Series";
 

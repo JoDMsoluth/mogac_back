@@ -200,6 +200,7 @@ type Query {
   getAllSeriesByUser: User!
   getUsersByTeam(data: PaginateArgType!, id: ObjectId!): [User!]!
   getAllPostsForPostView(name: String!): User!
+  getAllUserBySearch(ableSkillSet: [String!]!, ableLocation: [String!]!): [User!]!
 }
 
 type Series {

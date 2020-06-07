@@ -51,6 +51,15 @@ export class UserResolver {
     return this.userService.getPostsByNmaeForPostView(name);
   }
 
+  // 매칭된 유저검색
+  @Query((_return) => [UserType])
+  async getAllUserBySearch(
+    @Arg("ableLocation", (_type) => [String]) ableLocation: string[],
+    @Arg("ableSkillSet", (_type) => [String]) ableSkillSet: string[]
+  ) {
+    return this.userService.getUsersByMatching(ableLocation, ableSkillSet);
+  }
+
   @Mutation(() => UploadResponseType)
   async uploadProfileImage(
     @Arg("file", () => GraphQLUpload) file: Upload

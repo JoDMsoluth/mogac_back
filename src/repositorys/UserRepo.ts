@@ -12,7 +12,7 @@ export class UserRepo extends BaseRepo<UserModel> {
     super(model);
   }
 
-  async getPostsByNmaeForPostView(name: string) {
+  async getPostsByNameForPostView(name: string) {
     // 포스트리스트(작성시간, 작성시간순으로, title, contents,  id)
     const doc = await this.model
       .findOne({ name })
@@ -25,5 +25,17 @@ export class UserRepo extends BaseRepo<UserModel> {
       throw new NotFoundError(name);
     }
     return doc;
+  }
+
+  async getUsersByMatching(ableLocation, ableSkillSet) {
+    const a = await this.model
+      .find({
+        ableLocation: { $in: ableLocation },
+        ableSkillSet: { $in: ableSkillSet },
+      })
+      .lean()
+      .exec();
+    console.log(a);
+    return a;
   }
 }
