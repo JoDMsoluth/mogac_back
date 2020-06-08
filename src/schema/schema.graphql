@@ -144,6 +144,7 @@ type Mutation {
   createSkillSet(skill: String!, categoryId: ObjectId!): SkillSet!
   deleteSkillSet(skillSetId: String!): SkillSet!
   uploadProfileImage(file: Upload!): UploadResponseType!
+  updateUserPosition(position: [Float!]!): User!
 }
 
 type Notification {

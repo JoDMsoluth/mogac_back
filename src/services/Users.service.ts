@@ -35,6 +35,7 @@ export class UserService extends BaseServiceMixin(UserRepo) {
 
     return updateDoc.posts;
   }
+
   async pushSeries(seriesId, ctx: ResolveContext) {
     console.log("series", ctx.user);
     ctx.user.series.push(seriesId);
@@ -50,7 +51,6 @@ export class UserService extends BaseServiceMixin(UserRepo) {
     if (updateDoc == null) {
       throw new IdNotFoundError(seriesId);
     }
-
     return updateDoc.series;
   }
 
@@ -128,6 +128,12 @@ export class UserService extends BaseServiceMixin(UserRepo) {
     if (!users) {
       throw new NotFoundError();
     }
+    return users;
+  }
+
+  async updatePosition(position: number[], ctx: ResolveContext) {
+    const users = this.tryUpdateById(ctx.user._id, { position });
+    console.log("updatePositon service result", users);
     return users;
   }
 }

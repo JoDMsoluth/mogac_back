@@ -1,6 +1,6 @@
 import * as I from "../../lib/helper/interfaces";
 import { UserType } from "../../models/Users";
-import { Resolver, Query, Arg, Ctx, Mutation } from "type-graphql";
+import { Resolver, Query, Arg, Ctx, Mutation, Int, Float } from "type-graphql";
 import { UserService } from "../../services/Users.service";
 import { Service } from "typedi";
 import { PaginateArgType } from "../common/PaginateArgType";
@@ -67,6 +67,16 @@ export class UserResolver {
     console.log("upload params", file);
     const result = this.AWSS3Uploader.uploadSingleImage({ file });
     console.log("result", result);
+    return result;
+  }
+
+  @Mutation(() => UserType)
+  async updateUserPosition(
+    @Arg("position", () => [Float]) position: number[],
+    @Ctx() ctx: ResolveContext
+  ) {
+    const result = this.userService.updatePosition(position, ctx);
+    console.log("updatePosition Result");
     return result;
   }
 }
