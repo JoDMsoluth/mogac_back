@@ -48,7 +48,7 @@ export class UserResolver {
 
   @Query((_return) => UserType)
   async getAllPostsForPostView(@Arg("name") name: string) {
-    return this.userService.getPostsByNmaeForPostView(name);
+    return this.userService.getPostsByNameForPostView(name);
   }
 
   // 매칭된 유저검색
