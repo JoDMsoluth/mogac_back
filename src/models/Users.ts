@@ -59,10 +59,11 @@ export interface IUser extends Credentials {
   ableLocation: string[];
   image_url: string;
   point: number;
-  level: number;
+  level: string[];
   check_Found: boolean;
   comfirmed: boolean;
-  position: number[];
+  x_pos: number;
+  y_pos: number;
   favorites: string[];
   friendsId: any[];
   blackListId: any[];
@@ -124,9 +125,9 @@ export class UserType extends Typegoose implements IUser {
   @prop()
   point: number;
 
-  @Field(() => Int)
-  @prop()
-  level: number;
+  @Field(() => [String])
+  @arrayProp({ items: String })
+  level: string[];
 
   @Field(() => Boolean)
   @prop({ default: true })
@@ -136,9 +137,13 @@ export class UserType extends Typegoose implements IUser {
   @prop({ default: false })
   comfirmed: boolean;
 
-  @Field(() => [Float])
-  @arrayProp({ items: String })
-  position: number[];
+  @Field(() => Float)
+  @prop()
+  x_pos: number;
+
+  @Field(() => Float)
+  @prop()
+  y_pos: number;
 
   @Field(() => [String])
   @arrayProp({ items: String })

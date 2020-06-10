@@ -10,7 +10,7 @@ export class AddSeriesRequestType {
   @LengthRange(SeriesPropLimits.TitleLength)
   title: string;
 
-  @Field()
+  @Field({ defaultValue: "" })
   @LengthRange(SeriesPropLimits.DescriptionLength)
   description?: string;
 }

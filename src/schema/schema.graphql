@@ -27,17 +27,17 @@ input AddNotificationRequestType {
 input AddPostRequestType {
   title: String!
   desc: String
-  tags: [String!]
+  tags: [String!] = []
   contents: String!
   image_url: [String!]
-  cover_img: String
+  cover_img: String = ""
   category: String!
-  series: String
+  series: String!
 }
 
 input AddSeriesRequestType {
   title: String!
-  description: String!
+  description: String = ""
 }
 
 input AddTeamRequestType {
@@ -170,6 +170,7 @@ type Post {
   id: ObjectId!
   createdAt: DateTime!
   updatedAt: DateTime!
+  like: Int!
   title: String!
   desc: String!
   contents: String!
@@ -202,6 +203,9 @@ type Query {
   getUsersByTeam(data: PaginateArgType!, id: ObjectId!): [User!]!
   getAllPostsForPostView(name: String!): User!
   getAllUserBySearch(ableSkillSet: [String!]!, ableLocation: [String!]!): [User!]!
+  getNearUsersByMatching(ableSkillSet: [String!]!, ableLocation: [String!]!): [User!]!
+  checkUniqueEmail(email: String!): Boolean!
+  checkUniqueName(name: String!): Boolean!
 }
 
 type Series {
@@ -220,6 +224,7 @@ input SignupRequestType {
   password: String!
   name: String!
   gender: String!
+  level: [String!]!
   ableLocation: [String!]!
   ableSkillSet: [String!]!
   image_url: String!
@@ -292,10 +297,11 @@ type User {
   gender: String!
   image_url: String!
   point: Int!
-  level: Int!
+  level: [String!]!
   check_Found: Boolean!
   comfirmed: Boolean!
-  position: [Float!]!
+  x_pos: Float!
+  y_pos: Float!
   favorites: [String!]!
   friendsId: [User!]!
   blackListId: [User!]!

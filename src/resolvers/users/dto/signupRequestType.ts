@@ -23,6 +23,9 @@ export class SignupRequestType implements Credentials {
   gender!: string;
 
   @Field((_type) => [String])
+  level: string[];
+
+  @Field((_type) => [String])
   ableLocation!: string[];
 
   @Field((_type) => [String])

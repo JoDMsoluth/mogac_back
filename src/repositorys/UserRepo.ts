@@ -4,6 +4,8 @@ import { UserModel, UserData, User } from "../models/Users";
 import { Paginator } from "../lib/mongoose-utils/paginate";
 import { NotFoundError } from "../lib/helper/statused-error";
 import * as I from "../lib/helper/interfaces";
+import { ResolveContext } from "../lib/graphql/resolve-context";
+import { Allow } from "class-validator";
 
 @Service()
 export class UserRepo extends BaseRepo<UserModel> {
@@ -28,14 +30,29 @@ export class UserRepo extends BaseRepo<UserModel> {
   }
 
   async getUsersByMatching(ableLocation, ableSkillSet) {
-    const a = await this.model
+    const users = await this.model
       .find({
         ableLocation: { $in: ableLocation },
         ableSkillSet: { $in: ableSkillSet },
       })
       .lean()
       .exec();
-    console.log(a);
-    return a;
+    console.log(users);
+    return users;
+  }
+
+  async getNearUsersByMatching(
+    ableLocation,
+    ableSkillSet,
+    ctx: ResolveContext
+  ) {
+    const users = await this.model.find({
+      ableLocation: { $in: ableLocation },
+      ableSkillSet: { $in: ableSkillSet },
+      x_pos: { $gte: ctx.user.x_pos - 0.1, $lte: ctx.user.x_pos + 0.1 },
+      y_pos: { $gte: ctx.user.y_pos - 0.1, $lte: ctx.user.y_pos + 0.1 },
+    });
+    console.log(users);
+    return users;
   }
 }

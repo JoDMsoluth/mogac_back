@@ -12,9 +12,10 @@ import { CommentType } from "./Comments";
 import { SeriesType } from "./Series";
 
 export namespace PostPropLimits {
-  export const TitleLength = new IntegerRange(6, 70);
-  export const DescLength = new IntegerRange(3, 2000);
-  export const ContentsLength = new IntegerRange(3, 10000);
+  export const TitleLength = new IntegerRange(1, 50);
+  export const DescLength = new IntegerRange(0, 500);
+  export const ContentsLength = new IntegerRange(1, 20000);
+  export const TagsLength = new IntegerRange(0, 30);
 }
 
 export interface IPost {
@@ -45,6 +46,9 @@ export class PostType extends Typegoose implements IPost {
   // @Field()
   // @prop({ required : true, default: false })
   // disabled!: boolean;
+  @Field((_type) => Int) // must be explicitly forwarded when using enums
+  @prop({ required: true, default: 0 })
+  like!: number;
 
   @Field() // must be explicitly forwarded when using enums
   @prop({ required: true })
@@ -91,7 +95,7 @@ export class PostType extends Typegoose implements IPost {
   postedBy?: Ref<UserType>;
 
   @Field((_type) => [String])
-  @arrayProp({ items: String })
+  @arrayProp({ items: String, default: [] })
   tags?: string[];
 }
 

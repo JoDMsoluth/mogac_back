@@ -15,22 +15,22 @@ export class AddPostRequestType {
   @LengthRange(PostPropLimits.DescLength)
   desc?: string;
 
-  @Field((_type) => [String], { nullable: true })
+  @Field((_type) => [String], { nullable: true, defaultValue: [] })
   tags?: string[];
 
   @Field()
-  @LengthRange(PostPropLimits.TitleLength)
+  @LengthRange(PostPropLimits.ContentsLength)
   contents!: string;
 
   @Field((_type) => [String], { nullable: true })
   image_url?: string[];
 
-  @Field({ nullable: true })
+  @Field({ nullable: true, defaultValue: "" })
   cover_img?: string;
 
   @Field()
   category!: string;
 
-  @Field({ nullable: true })
+  @Field()
   series?: string;
 }

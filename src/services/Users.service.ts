@@ -12,6 +12,7 @@ import { createWriteStream } from "fs";
 import { Upload } from "../lib/helper/interfaces";
 import { ResolveContext } from "../lib/graphql/resolve-context";
 import { IdNotFoundError } from "../repositorys/BaseRepo";
+import { Log } from "../lib/helper/debug";
 
 @Service()
 export class UserService extends BaseServiceMixin(UserRepo) {
@@ -131,8 +132,56 @@ export class UserService extends BaseServiceMixin(UserRepo) {
     return users;
   }
 
+  async checkUniqueEmail(email: string) {
+    try {
+      const check = await this.model.find({ email }).lean().exec();
+      console.log(check);
+      if (check.length > 0) return false;
+      return true;
+    } catch (e) {
+      Log.error(e);
+    }
+  }
+  async checkUniqueName(name: string) {
+    try {
+      const check = await this.model.find({ name }).lean().exec();
+      console.log(check);
+      if (check.length > 0) return false;
+      return true;
+    } catch (e) {
+      Log.error(e);
+    }
+  }
+
   async updatePosition(position: number[], ctx: ResolveContext) {
-    const users = this.tryUpdateById(ctx.user._id, { position });
+    const users = this.tryUpdateById(ctx.user._id, {
+      x_pos: position[0],
+      y_pos: position[1],
+    });
+    console.log("updatePositon service result");
     return users;
+  }
+
+  async plusSkilllevel(skill: string, point: number, ctx: ResolveContext) {
+    try {
+      const setSkillSetArray = [];
+      for (const level of ctx.user.level) {
+        const skillset = level.split("/");
+        const skillName: string = skillset[0];
+        let skillLevel: number = parseInt(skillset[1], 10);
+        if (skillName === skill) {
+          skillLevel += point;
+          console.log("skillName", skillName, "skillLevel", skillLevel);
+        }
+        const setSkillSet = skillName.concat(`/${skillLevel}`);
+        setSkillSetArray.push(setSkillSet);
+      }
+      console.log("setSkillSetArray", setSkillSetArray);
+      return await this.tryUpdateById(ctx.user._id, {
+        level: setSkillSetArray,
+      });
+    } catch (error) {
+      Log.error(error);
+    }
   }
 }

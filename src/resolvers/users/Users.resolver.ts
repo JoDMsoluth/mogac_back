@@ -60,6 +60,28 @@ export class UserResolver {
     return this.userService.getUsersByMatching(ableLocation, ableSkillSet);
   }
 
+  @Query((_return) => [UserType])
+  async getNearUsersByMatching(
+    @Arg("ableLocation", (_type) => [String]) ableLocation: string[],
+    @Arg("ableSkillSet", (_type) => [String]) ableSkillSet: string[],
+    @Ctx() ctx: ResolveContext
+  ) {
+    return this.userService.getNearUsersByMatching(
+      ableLocation,
+      ableSkillSet,
+      ctx
+    );
+  }
+
+  @Query((_return) => Boolean)
+  async checkUniqueEmail(@Arg("email") email: string) {
+    return this.userService.checkUniqueEmail(email);
+  }
+  @Query((_return) => Boolean)
+  async checkUniqueName(@Arg("name") name: string) {
+    return this.userService.checkUniqueName(name);
+  }
+
   @Mutation(() => UploadResponseType)
   async uploadProfileImage(
     @Arg("file", () => GraphQLUpload) file: Upload

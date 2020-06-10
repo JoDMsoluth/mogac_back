@@ -43,7 +43,8 @@ export class PostResolver {
     if (ctx.user._id) {
       const post = await this.PostService.createPost(data, ctx);
       console.log("get post id", post);
-      await this.UserService.pushPost(post.id, ctx);
+      await this.UserService.pushPost(post._id, ctx);
+      await this.UserService.plusSkilllevel(data.category, 10, ctx);
       return post;
     }
   }

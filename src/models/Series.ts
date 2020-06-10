@@ -9,8 +9,8 @@ import { PostType } from "./Posts";
 import { UserType } from "./Users";
 
 export namespace SeriesPropLimits {
-  export const TitleLength = new IntegerRange(6, 70);
-  export const DescriptionLength = new IntegerRange(3, 2000);
+  export const TitleLength = new IntegerRange(1, 50);
+  export const DescriptionLength = new IntegerRange(0, 500);
 }
 
 export interface ISeries {
@@ -43,7 +43,7 @@ export class SeriesType extends Typegoose implements ISeries {
   title!: string;
 
   @Field()
-  @prop()
+  @prop({ default: "" })
   description?: string;
 
   @Field((_type) => [PostType])
