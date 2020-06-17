@@ -167,7 +167,6 @@ input PaginateArgType {
 
 type Post {
   _id: String!
-  id: ObjectId!
   createdAt: DateTime!
   updatedAt: DateTime!
   like: Int!

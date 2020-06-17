@@ -33,7 +33,7 @@ export class UserRepo extends BaseRepo<UserModel> {
     const users = await this.model
       .find({
         ableLocation: { $in: ableLocation },
-        ableSkillSet: { $in: ableSkillSet },
+        level: { $in: ableSkillSet },
       })
       .lean()
       .exec();
@@ -48,7 +48,7 @@ export class UserRepo extends BaseRepo<UserModel> {
   ) {
     const users = await this.model.find({
       ableLocation: { $in: ableLocation },
-      ableSkillSet: { $in: ableSkillSet },
+      level: { $in: ableSkillSet },
       x_pos: { $gte: ctx.user.x_pos - 0.1, $lte: ctx.user.x_pos + 0.1 },
       y_pos: { $gte: ctx.user.y_pos - 0.1, $lte: ctx.user.y_pos + 0.1 },
     });

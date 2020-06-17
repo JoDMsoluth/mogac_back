@@ -29,12 +29,6 @@ export class PostType extends Typegoose implements IPost {
   @Field()
   _id: string;
 
-  @Field()
-  @prop()
-  get id(this: Post): I.ObjectId {
-    return this._id;
-  }
-
   @Field((_type) => Date)
   @prop({ required: true, default: Date.now })
   createdAt!: Date;
