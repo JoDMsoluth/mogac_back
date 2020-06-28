@@ -8,14 +8,13 @@ import { IntegerRange } from "../lib/helper/integer-range";
 import { UserType } from "./Users";
 
 export namespace TeamPropLimits {
-  export const TitleLength = new IntegerRange(6, 70);
-  export const DescriptionLength = new IntegerRange(3, 2000);
-  export const CategoryLength = new IntegerRange(3, 10000);
+  export const TitleLength = new IntegerRange(1, 50);
+  export const DescLength = new IntegerRange(1, 200);
 }
 
 export interface ITeam {
   title: string;
-  description: string;
+  desc: string;
   adminId?: any;
   users: any[];
   category?: string;
@@ -24,10 +23,7 @@ export interface ITeam {
 @ObjectType("Team")
 export class TeamType extends Typegoose implements ITeam {
   @Field()
-  @prop()
-  get id(this: Team): I.ObjectId {
-    return this._id;
-  }
+  _id: I.ObjectId;
 
   @Field((_type) => Date)
   @prop({ default: Date.now })
@@ -37,29 +33,33 @@ export class TeamType extends Typegoose implements ITeam {
   @prop({ default: Date.now })
   updatedAt: Date;
 
-  // @Field()
-  // @prop({ required : true, default: false })
-  // disabled!: boolean;
-
   @Field()
   @prop({ required: true })
   title!: string;
 
   @Field()
   @prop({ required: true })
-  description!: string;
+  desc!: string;
 
-  @Field((_type) => String)
+  @Field((_type) => UserType)
   @prop({ ref: "UserType" })
   adminId?: Ref<UserType>;
 
-  @Field(() => [String])
+  @Field(() => [UserType])
   @arrayProp({ itemsRef: "UserType" })
   users: Ref<UserType>[];
 
   @Field()
   @prop({ required: true })
   category!: string;
+
+  @Field()
+  @prop({ required: true })
+  location!: string;
+
+  @Field()
+  @prop({ required: false, default: "" })
+  notice?: string;
 }
 
 export const Team = Utils.getModelFromTypegoose(TeamType);

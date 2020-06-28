@@ -10,10 +10,12 @@ export class AddTeamRequestType {
   title: string;
 
   @Field()
-  @LengthRange(TeamPropLimits.DescriptionLength)
-  description: string;
+  @LengthRange(TeamPropLimits.DescLength)
+  desc: string;
 
   @Field()
-  @LengthRange(TeamPropLimits.CategoryLength)
   category: string;
+
+  @Field()
+  location: string;
 }

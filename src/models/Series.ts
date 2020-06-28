@@ -23,13 +23,6 @@ export interface ISeries {
 export class SeriesType extends Typegoose implements ISeries {
   @Field()
   _id: I.ObjectId;
-
-  @Field()
-  @prop()
-  get id(this: Series): I.ObjectId {
-    return this._id;
-  }
-
   @Field((_type) => Date)
   @prop({ required: true, default: Date.now })
   createdAt!: Date;

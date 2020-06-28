@@ -5,15 +5,17 @@ import { TeamPropLimits } from "../../../models/Teams";
 
 @InputType()
 export class UpdateTeamRequestType {
-  @Field({ nullable: true })
+  @Field()
   @LengthRange(TeamPropLimits.TitleLength)
-  title?: string;
+  title: string;
 
-  @Field({ nullable: true })
-  @LengthRange(TeamPropLimits.DescriptionLength)
-  description?: string;
+  @Field()
+  @LengthRange(TeamPropLimits.DescLength)
+  desc: string;
 
-  @Field({ nullable: true })
-  @LengthRange(TeamPropLimits.CategoryLength)
-  category?: string;
+  @Field()
+  category: string;
+
+  @Field()
+  location: string;
 }

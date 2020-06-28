@@ -22,10 +22,7 @@ export interface ISkillSet {
 @ObjectType("SkillSet")
 export class SkillSetType extends Typegoose implements ISkillSet {
   @Field()
-  @prop()
-  get id(this: SkillSet): I.ObjectId {
-    return this._id;
-  }
+  _id: I.ObjectId;
 
   @Field()
   @prop({ required: true, unique: true })

@@ -42,8 +42,9 @@ input AddSeriesRequestType {
 
 input AddTeamRequestType {
   title: String!
-  description: String!
+  desc: String!
   category: String!
+  location: String!
 }
 
 type Category {
@@ -209,7 +210,6 @@ type Query {
 
 type Series {
   _id: ObjectId!
-  id: ObjectId!
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
@@ -230,7 +230,7 @@ input SignupRequestType {
 }
 
 type SkillSet {
-  id: ObjectId!
+  _id: ObjectId!
   skill: String!
   posts: [Post!]!
   level: Int!
@@ -242,14 +242,16 @@ type Sns {
 }
 
 type Team {
-  id: ObjectId!
+  _id: ObjectId!
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
-  description: String!
-  adminId: String!
-  users: [String!]!
+  desc: String!
+  adminId: User!
+  users: [User!]!
   category: String!
+  location: String!
+  notice: String!
 }
 
 input UpdateCommentRequestType {
@@ -259,9 +261,10 @@ input UpdateCommentRequestType {
 }
 
 input UpdateTeamRequestType {
-  title: String
-  description: String
-  category: String
+  title: String!
+  desc: String!
+  category: String!
+  location: String!
 }
 
 input UpdateUserRequest {
