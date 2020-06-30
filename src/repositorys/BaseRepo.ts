@@ -92,13 +92,16 @@ export class BaseRepo<T extends Mongoose.Model<InstanceType<any>>> {
   }
 
   async getAll(page, limit, query) {
+    console.log(query);
     const docs = await this.model
       .find(query)
-      .sort({ likes: -1 })
+      .sort({ updatedAt: -1 })
       .limit(limit)
       .skip((page - 1) * limit)
       .lean()
       .exec();
+
+    console.log(docs);
 
     const totalDoc: number = await this.model.find(query).count();
     const lastPage: string = Math.ceil(totalDoc / limit).toString();

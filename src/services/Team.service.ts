@@ -20,4 +20,19 @@ export class TeamService extends BaseServiceMixin(TeamRepo) {
     >;
     return { lastPage: (await teams).lastPage, teams: (await teams).docs };
   }
+  async getFilterTeams({ page, category = null, location = null, limit }) {
+    console.log(category, location);
+    let query = null;
+    if (category && location) {
+      query = { category, location };
+    } else query = { $or: [{ category: category }, { location: location }] };
+
+    const teams = this.getAll(page, limit, query) as Promise<
+      I.Maybe<{
+        lastPage: string;
+        docs: TeamType[];
+      }>
+    >;
+    return { lastPage: (await teams).lastPage, teams: (await teams).docs };
+  }
 }

@@ -76,6 +76,13 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+input FilterPaginateArgType {
+  page: Float!
+  limit: Float!
+  category: String
+  location: String
+}
+
 type GetAllPostResponseType {
   lastPage: String!
   posts: [Post!]!
@@ -198,6 +205,7 @@ type Query {
   getAllPosts(page: Int!): GetAllPostResponseType!
   getAllSeries(data: PaginateArgType!): GetAllSeriesResponseType!
   getAllTeam(data: PaginateArgType!): GetAllTeamResponseType!
+  getFilterTeam(data: FilterPaginateArgType!): GetAllTeamResponseType!
   getAllUser(data: PaginateArgType!): GetAllUserResponseType!
   getAllSeriesByUser: User!
   getUsersByTeam(data: PaginateArgType!, id: ObjectId!): [User!]!

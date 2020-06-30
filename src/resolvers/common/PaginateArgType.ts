@@ -11,3 +11,20 @@ export class PaginateArgType {
   @IsInt()
   limit: number;
 }
+
+@InputType()
+export class FilterPaginateArgType {
+  @Field()
+  @IsInt()
+  page: number;
+
+  @Field()
+  @IsInt()
+  limit: number;
+
+  @Field({ nullable: true })
+  category?: string;
+
+  @Field({ nullable: true })
+  location?: string;
+}

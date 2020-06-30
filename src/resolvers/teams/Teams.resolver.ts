@@ -3,7 +3,10 @@ import { User } from "../../models/Users";
 import { Resolver, Query, Arg, Mutation } from "type-graphql";
 import { TeamType, Team } from "../../models/Teams";
 import { GetAllTeamResponseType } from "./dto/getAllTeamResponsetype";
-import { PaginateArgType } from "../common/PaginateArgType";
+import {
+  PaginateArgType,
+  FilterPaginateArgType,
+} from "../common/PaginateArgType";
 import { TeamService } from "../../services/Team.service";
 
 @Resolver((of) => TeamType)
@@ -19,5 +22,13 @@ export class TeamsResolver {
   ): Promise<I.Maybe<GetAllTeamResponseType>> {
     // 최대 페이지, 현제 페이지 내용 받기
     return await this.teamService.getAllTeams(data);
+  }
+
+  @Query((_return) => GetAllTeamResponseType)
+  async getFilterTeam(
+    @Arg("data") data: FilterPaginateArgType
+  ): Promise<I.Maybe<GetAllTeamResponseType>> {
+    // 최대 페이지, 현제 페이지 내용 받기
+    return await this.teamService.getFilterTeams(data);
   }
 }
