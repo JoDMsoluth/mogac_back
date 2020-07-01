@@ -203,6 +203,9 @@ type Query {
   getNotificationById(id: ObjectId!): Notification!
   getPost(postId: String!): Post!
   getAllPosts(page: Int!): GetAllPostResponseType!
+  totalSearchUser(page: Float!, searchWord: String!): GetAllUserResponseType!
+  totalSearchPost(page: Float!, searchWord: String!): GetAllPostResponseType!
+  totalSearchTeam(page: Float!, searchWord: String!): GetAllTeamResponseType!
   getAllSeries(data: PaginateArgType!): GetAllSeriesResponseType!
   getAllTeam(data: PaginateArgType!): GetAllTeamResponseType!
   getFilterTeam(data: FilterPaginateArgType!): GetAllTeamResponseType!
