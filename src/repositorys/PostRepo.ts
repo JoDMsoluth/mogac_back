@@ -22,6 +22,21 @@ export class PostRepo extends BaseRepo<PostModel> {
     return { lastPage, docs };
   }
 
+  async getPostsByQuery(page, query) {
+    const docs = await this.model
+      .find(query)
+      .populate({ path: "postedBy" })
+      .sort({ likes: -1 })
+      .limit(9)
+      .skip((page - 1) * 9)
+      .lean()
+      .exec();
+
+    const totalDoc: number = await this.model.find().count();
+    const lastPage: string = Math.ceil(totalDoc / 9).toString();
+    return { lastPage, docs };
+  }
+
   async getPostForView(postId: string) {
     const doc = await this.model
       .findById(postId)

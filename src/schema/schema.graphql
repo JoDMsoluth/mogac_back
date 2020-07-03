@@ -211,8 +211,9 @@ type Query {
   getFilterTeam(data: FilterPaginateArgType!): GetAllTeamResponseType!
   getAllUser(data: PaginateArgType!): GetAllUserResponseType!
   getAllSeriesByUser: User!
+  getAllPostsByUser(page: Int!, userId: String!): User!
   getUsersByTeam(data: PaginateArgType!, id: ObjectId!): [User!]!
-  getAllPostsForPostView(name: String!): User!
+  getAllPostsForPostView(userId: String!): User!
   getAllUserBySearch(ableSkillSet: [String!]!, ableLocation: [String!]!): [User!]!
   getNearUsersByMatching(ableSkillSet: [String!]!, ableLocation: [String!]!): [User!]!
   checkUniqueEmail(email: String!): Boolean!

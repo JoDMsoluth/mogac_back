@@ -14,17 +14,17 @@ export class UserRepo extends BaseRepo<UserModel> {
     super(model);
   }
 
-  async getPostsByNameForPostView(name: string) {
+  async getPostsByNameForPostView(userId: string) {
     // 포스트리스트(작성시간, 작성시간순으로, title, contents,  id)
     const doc = await this.model
-      .findOne({ name })
+      .findOne({ _id: userId })
       .populate({ path: "posts", select: "_id title createdAt desc" })
       .sort({ createdAt: -1 })
       .lean()
       .exec();
     console.log("doc", doc);
     if (!doc) {
-      throw new NotFoundError(name);
+      throw new NotFoundError(userId);
     }
     return doc;
   }

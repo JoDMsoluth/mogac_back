@@ -119,6 +119,18 @@ export class UserService extends BaseServiceMixin(UserRepo) {
     }
   }
 
+  async getAllPostsByUser(page, userId) {
+    try {
+      console.log("userId", userId);
+      const user = await this.model
+        .findById(userId)
+        .populate({ path: "posts" });
+      console.log("user.posts", user);
+      return user;
+    } catch (e) {
+      throw new IdNotFoundError(userId);
+    }
+  }
   async getAllUsersByTeam(id, { page, limit }) {
     const users = Team.findById({ id })
       .populate({ path: "users" })

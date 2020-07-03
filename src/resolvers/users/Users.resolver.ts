@@ -38,6 +38,14 @@ export class UserResolver {
     return await this.userService.getAllSeriesByUser(ctx.user._id);
   }
 
+  @Query((_return) => UserType)
+  async getAllPostsByUser(
+    @Arg("userId", (_type) => String) userId: string,
+    @Arg("page", (_type) => Int) page: number
+  ): Promise<I.Maybe<UserType>> {
+    return await this.userService.getAllPostsByUser(page, userId);
+  }
+
   @Query((_return) => [UserType])
   async getUsersByTeam(
     @Arg("id") id: I.ObjectId,
@@ -47,8 +55,8 @@ export class UserResolver {
   }
 
   @Query((_return) => UserType)
-  async getAllPostsForPostView(@Arg("name") name: string) {
-    return this.userService.getPostsByNameForPostView(name);
+  async getAllPostsForPostView(@Arg("userId") userId: string) {
+    return this.userService.getPostsByNameForPostView(userId);
   }
 
   // 매칭된 유저검색

@@ -26,7 +26,7 @@ export class SearchResolver {
     @Arg("page") page: number
   ) {
     const query = {
-      name: { $regex: `/${searchWord}/i` },
+      name: { $regex: new RegExp(".*" + searchWord + ".*", "i") },
     };
     const result = (await this.userService.getAll(page, 9, query)) as I.Maybe<{
       lastPage: string;
@@ -41,9 +41,12 @@ export class SearchResolver {
     @Arg("page") page: number
   ) {
     const query = {
-      title: { $regex: `/${searchWord}/i` },
+      title: { $regex: new RegExp(".*" + searchWord + ".*", "i") },
     };
-    const result = (await this.postService.getAll(page, 9, query)) as I.Maybe<{
+    const result = (await this.postService.getPostsByQuery(
+      page,
+      query
+    )) as I.Maybe<{
       lastPage: string;
       docs: PostType[];
     }>;
@@ -56,7 +59,7 @@ export class SearchResolver {
     @Arg("page") page: number
   ) {
     const query = {
-      title: { $regex: `/${searchWord}/i` },
+      title: { $regex: new RegExp(".*" + searchWord + ".*", "i") },
     };
     const result = (await this.teamService.getAll(page, 9, query)) as I.Maybe<{
       lastPage: string;

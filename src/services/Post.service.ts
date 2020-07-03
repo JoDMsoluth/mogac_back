@@ -24,7 +24,6 @@ export class PostService extends BaseServiceMixin(PostRepo) {
     return { lastPage: (await posts).lastPage, posts: (await posts).docs };
   }
 
-
   async createPost(data: AddPostRequestType, ctx: ResolveContext) {
     try {
       return await this.model.create({
