@@ -151,6 +151,7 @@ type Mutation {
   deleteSeries(seriesId: String!): Series!
   createSkillSet(skill: String!, categoryId: ObjectId!): SkillSet!
   deleteSkillSet(skillSetId: String!): SkillSet!
+  addBlackList(teamId: String!, userId: String!): Team!
   uploadProfileImage(file: Upload!): UploadResponseType!
   updateUserPosition(position: [Float!]!): User!
 }
@@ -264,6 +265,7 @@ type Team {
   category: String!
   location: String!
   notice: String!
+  blackList: [String!]!
 }
 
 input UpdateCommentRequestType {

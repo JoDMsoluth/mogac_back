@@ -31,4 +31,13 @@ export class TeamsResolver {
     // 최대 페이지, 현제 페이지 내용 받기
     return await this.teamService.getFilterTeams(data);
   }
+
+  @Mutation(() => TeamType)
+  async addBlackList(
+    @Arg("userId") userId: string,
+    @Arg("teamId") teamId: string
+  ) {
+    const result = this.teamService.addBlackList(userId, teamId);
+    return result;
+  }
 }

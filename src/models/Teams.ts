@@ -60,6 +60,10 @@ export class TeamType extends Typegoose implements ITeam {
   @Field()
   @prop({ required: false, default: "" })
   notice?: string;
+  
+  @Field(() => [String])
+  @arrayProp({ items: String })
+  blackList?: string[];
 }
 
 export const Team = Utils.getModelFromTypegoose(TeamType);

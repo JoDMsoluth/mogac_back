@@ -35,4 +35,14 @@ export class TeamService extends BaseServiceMixin(TeamRepo) {
     >;
     return { lastPage: (await teams).lastPage, teams: (await teams).docs };
   }
+
+  async addBlackList(userId, teamId) {
+    const getTeam = (await this.tryFindById(teamId)) as I.Maybe<TeamType>;
+    if (!getTeam.blackList.includes(userId)) {
+      getTeam.blackList.push(userId);
+      return await this.tryUpdateById(teamId, {
+        blackList: getTeam.blackList,
+      });
+    }
+  }
 }
