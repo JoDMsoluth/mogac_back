@@ -1,6 +1,6 @@
 import * as I from "../../lib/helper/interfaces";
 import { User } from "../../models/Users";
-import { Resolver, Query, Arg, Mutation } from "type-graphql";
+import { Resolver, Query, Arg, Mutation, Ctx } from "type-graphql";
 import { TeamType, Team } from "../../models/Teams";
 import { GetAllTeamResponseType } from "./dto/getAllTeamResponsetype";
 import {
@@ -8,6 +8,7 @@ import {
   FilterPaginateArgType,
 } from "../common/PaginateArgType";
 import { TeamService } from "../../services/Team.service";
+import { ResolveContext } from "../../lib/graphql/resolve-context";
 
 @Resolver((of) => TeamType)
 export class TeamsResolver {
@@ -32,6 +33,12 @@ export class TeamsResolver {
     return await this.teamService.getFilterTeams(data);
   }
 
+  @Query(() => TeamType)
+  async getTeamById(@Arg("teamId") teamId: I.ObjectId) {
+    const result = this.teamService.tryFindById(teamId);
+    return result;
+  }
+
   @Mutation(() => TeamType)
   async addBlackList(
     @Arg("userId") userId: string,
@@ -39,5 +46,18 @@ export class TeamsResolver {
   ) {
     const result = this.teamService.addBlackList(userId, teamId);
     return result;
+  }
+
+  @Mutation(() => TeamType)
+  async addChatData(
+    @Arg("chat") chat: string,
+    @Arg("teamId") teamId: I.ObjectId,
+    @Ctx() ctx: ResolveContext
+  ) {
+    if (ctx.user) {
+      const chatData = `${ctx.user.name}/${Date.now()}/${chat}`;
+      const result = this.teamService.addChatData(chatData, teamId);
+      return result;
+    }
   }
 }

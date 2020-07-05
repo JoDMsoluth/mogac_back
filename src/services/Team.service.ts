@@ -44,5 +44,27 @@ export class TeamService extends BaseServiceMixin(TeamRepo) {
         blackList: getTeam.blackList,
       });
     }
+    return getTeam;
+  }
+
+  async filterBlackList(userId, teamId) {
+    const getTeam = (await this.tryFindById(teamId)) as I.Maybe<TeamType>;
+    if (getTeam && getTeam.blackList.includes(userId)) {
+      getTeam.blackList.filter((id) => id !== userId);
+      return await this.tryUpdateById(teamId, {
+        blackList: getTeam.blackList,
+      });
+    }
+    return getTeam;
+  }
+
+  async addChatData(chatData, teamId) {
+    const getTeam = (await this.tryFindById(teamId)) as I.Maybe<TeamType>;
+    if (getTeam) {
+      getTeam.chatData.push(chatData);
+      return await this.tryUpdateById(teamId, {
+        chatData: getTeam.chatData,
+      });
+    }
   }
 }

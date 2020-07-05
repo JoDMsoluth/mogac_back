@@ -152,6 +152,7 @@ type Mutation {
   createSkillSet(skill: String!, categoryId: ObjectId!): SkillSet!
   deleteSkillSet(skillSetId: String!): SkillSet!
   addBlackList(teamId: String!, userId: String!): Team!
+  addChatData(teamId: ObjectId!, chat: String!): Team!
   uploadProfileImage(file: Upload!): UploadResponseType!
   updateUserPosition(position: [Float!]!): User!
 }
@@ -198,7 +199,7 @@ type Query {
   getAllCategory: [Category!]!
   getAllCommentInPost(postId: String!): [Comment!]!
   getUserById(id: ObjectId!): User!
-  getTeamById(id: ObjectId!): Team!
+  getTeamById(teamId: ObjectId!): Team!
   getCategoryById(id: ObjectId!): Category!
   getMessageById(id: ObjectId!): Message!
   getNotificationById(id: ObjectId!): Notification!
@@ -266,6 +267,7 @@ type Team {
   location: String!
   notice: String!
   blackList: [String!]!
+  chatData: [String!]!
 }
 
 input UpdateCommentRequestType {
