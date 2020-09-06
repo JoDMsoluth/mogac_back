@@ -217,7 +217,7 @@ type Query {
   getUsersByTeam(data: PaginateArgType!, id: ObjectId!): [User!]!
   getAllPostsForPostView(userId: String!): User!
   getAllUserBySearch(ableSkillSet: [String!]!, ableLocation: [String!]!): [User!]!
-  getNearUsersByMatching(ableSkillSet: [String!]!, ableLocation: [String!]!): [User!]!
+  getNearUsersByMatching(y_pos: Float!, x_pos: Float!, ableSkillSet: [String!]!, ableLocation: [String!]!): [User!]!
   checkUniqueEmail(email: String!): Boolean!
   checkUniqueName(name: String!): Boolean!
 }

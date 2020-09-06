@@ -170,7 +170,7 @@ export class UserService extends BaseServiceMixin(UserRepo) {
       x_pos: position[0],
       y_pos: position[1],
     });
-    console.log("updatePositon service result");
+    console.log("updatePositon service result", position[0], position[1]);
     return users;
   }
 

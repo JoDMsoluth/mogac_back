@@ -72,12 +72,14 @@ export class UserResolver {
   async getNearUsersByMatching(
     @Arg("ableLocation", (_type) => [String]) ableLocation: string[],
     @Arg("ableSkillSet", (_type) => [String]) ableSkillSet: string[],
-    @Ctx() ctx: ResolveContext
+    @Arg("x_pos", (_type) => Float) x_pos: number,
+    @Arg("y_pos", (_type) => Float) y_pos: number
   ) {
     return this.userService.getNearUsersByMatching(
       ableLocation,
       ableSkillSet,
-      ctx
+      x_pos,
+      y_pos
     );
   }
 

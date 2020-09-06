@@ -41,16 +41,12 @@ export class UserRepo extends BaseRepo<UserModel> {
     return users;
   }
 
-  async getNearUsersByMatching(
-    ableLocation,
-    ableSkillSet,
-    ctx: ResolveContext
-  ) {
+  async getNearUsersByMatching(ableLocation, ableSkillSet, x_pos, y_pos) {
     const users = await this.model.find({
       ableLocation: { $in: ableLocation },
       level: { $in: ableSkillSet },
-      x_pos: { $gte: ctx.user.x_pos - 0.1, $lte: ctx.user.x_pos + 0.1 },
-      y_pos: { $gte: ctx.user.y_pos - 0.1, $lte: ctx.user.y_pos + 0.1 },
+      x_pos: { $gte: x_pos - 0.1, $lte: x_pos + 0.1 },
+      y_pos: { $gte: y_pos - 0.1, $lte: y_pos + 0.1 },
     });
     console.log(users);
     return users;
