@@ -36,6 +36,7 @@ export class UserService extends BaseServiceMixin(UserRepo) {
 
     return updateDoc.posts;
   }
+
   async pushSeries(seriesId, ctx: ResolveContext) {
     console.log("series", ctx.user);
     ctx.user.series.push(seriesId);

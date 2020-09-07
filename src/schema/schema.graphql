@@ -132,9 +132,6 @@ type Mutation {
   createUser(data: SignupRequestType!): User!
   updateUser(data: UpdateUserRequest!, id: ObjectId!): User!
   deleteUser(id: ObjectId!): String!
-  createTeam(data: AddTeamRequestType!): Team!
-  updateTeam(data: UpdateTeamRequestType!, id: ObjectId!): Team!
-  deleteTeam(id: ObjectId!): String!
   createCategory(data: CuCategoryRequestType!): Category!
   updateCategory(data: CuCategoryRequestType!, id: ObjectId!): Category!
   deleteCategory(id: ObjectId!): String!
@@ -151,6 +148,9 @@ type Mutation {
   deleteSeries(seriesId: String!): Series!
   createSkillSet(skill: String!, categoryId: ObjectId!): SkillSet!
   deleteSkillSet(skillSetId: String!): SkillSet!
+  createTeam(data: AddTeamRequestType!): Team!
+  inviteUserToTeam(teamId: String!, userId: String!): Team!
+  KickUserOutTeam(teamId: String!, userId: String!): Team!
   addBlackList(teamId: String!, userId: String!): Team!
   addChatData(teamId: ObjectId!, chat: String!): Team!
   uploadProfileImage(file: Upload!): UploadResponseType!
@@ -199,7 +199,6 @@ type Query {
   getAllCategory: [Category!]!
   getAllCommentInPost(postId: String!): [Comment!]!
   getUserById(id: ObjectId!): User!
-  getTeamById(teamId: ObjectId!): Team!
   getCategoryById(id: ObjectId!): Category!
   getMessageById(id: ObjectId!): Message!
   getNotificationById(id: ObjectId!): Notification!
@@ -211,6 +210,8 @@ type Query {
   getAllSeries(data: PaginateArgType!): GetAllSeriesResponseType!
   getAllTeam(data: PaginateArgType!): GetAllTeamResponseType!
   getFilterTeam(data: FilterPaginateArgType!): GetAllTeamResponseType!
+  getTeamById(teamId: ObjectId!): Team!
+  getAllTeamsByUser: [Team!]!
   getAllUser(data: PaginateArgType!): GetAllUserResponseType!
   getAllSeriesByUser: User!
   getAllPostsByUser(page: Int!, userId: String!): User!
@@ -261,8 +262,8 @@ type Team {
   updatedAt: DateTime!
   title: String!
   desc: String!
-  adminId: User!
-  users: [User!]!
+  adminId: String!
+  users: [String!]!
   category: String!
   location: String!
   notice: String!
@@ -274,13 +275,6 @@ input UpdateCommentRequestType {
   commentId: String!
   contents: String!
   secret: Boolean!
-}
-
-input UpdateTeamRequestType {
-  title: String!
-  desc: String!
-  category: String!
-  location: String!
 }
 
 input UpdateUserRequest {

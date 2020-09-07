@@ -1,3 +1,4 @@
+import { AddTeamRequestType } from "./dto/addTeamRequestType";
 import * as I from "../../lib/helper/interfaces";
 import { User } from "../../models/Users";
 import { Resolver, Query, Arg, Mutation, Ctx } from "type-graphql";
@@ -37,6 +38,45 @@ export class TeamsResolver {
   async getTeamById(@Arg("teamId") teamId: I.ObjectId) {
     const result = this.teamService.tryFindById(teamId);
     return result;
+  }
+
+  @Query(() => [TeamType])
+  async getAllTeamsByUser(@Ctx() ctx: ResolveContext) {
+    const result = this.teamService.getAllTeamsByUser(ctx);
+    return result;
+  }
+
+  @Mutation((_return) => TeamType)
+  async createTeam(
+    @Arg("data") data: AddTeamRequestType,
+    @Ctx() ctx: ResolveContext
+  ): Promise<TeamType> {
+    console.log("ctx", ctx);
+    if (ctx.user._id) {
+      const team = await this.teamService.createSeries(data, ctx);
+      console.log("getsereis", team);
+      return team;
+    }
+  }
+
+  @Mutation((_return) => TeamType)
+  async inviteUserToTeam(
+    @Arg("userId") userId: string,
+    @Arg("teamId") teamId: string
+  ): Promise<TeamType> {
+    const team = await this.teamService.pushTeamUser(userId, teamId);
+    console.log("getsereis", team);
+    return team;
+  }
+
+  @Mutation((_return) => TeamType)
+  async KickUserOutTeam(
+    @Arg("userId") userId: string,
+    @Arg("teamId") teamId: string
+  ): Promise<TeamType> {
+    const team = await this.teamService.filterTeamUser(userId, teamId);
+    console.log("getsereis", team);
+    return team;
   }
 
   @Mutation(() => TeamType)

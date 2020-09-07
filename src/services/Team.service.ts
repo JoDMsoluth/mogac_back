@@ -1,8 +1,12 @@
+import { AddTeamRequestType } from "./../resolvers/teams/dto/addTeamRequestType";
 import { Service, Inject } from "typedi";
 import BaseServiceMixin from "./BaseServiceMixin";
 import { TeamRepo } from "../repositorys/TeamRepo";
 import { Team, TeamType } from "../models/Teams";
 import * as I from "../lib/helper/interfaces";
+import { ResolveContext } from "../lib/graphql/resolve-context";
+import { Log } from "../lib/helper/debug";
+import { IdNotFoundError } from "../repositorys/BaseRepo";
 
 @Service()
 export class TeamService extends BaseServiceMixin(TeamRepo) {
@@ -47,6 +51,15 @@ export class TeamService extends BaseServiceMixin(TeamRepo) {
     return getTeam;
   }
 
+  async createSeries(data: AddTeamRequestType, ctx: ResolveContext) {
+    try {
+      return await this.model.create({ ...data, adminId: ctx.user._id });
+    } catch (e) {
+      Log.error(e);
+    }
+    return;
+  }
+
   async filterBlackList(userId, teamId) {
     const getTeam = (await this.tryFindById(teamId)) as I.Maybe<TeamType>;
     if (getTeam && getTeam.blackList.includes(userId)) {
@@ -65,6 +78,44 @@ export class TeamService extends BaseServiceMixin(TeamRepo) {
       return await this.tryUpdateById(teamId, {
         chatData: getTeam.chatData,
       });
+    }
+  }
+
+  async getAllTeamsByUser(ctx: ResolveContext) {
+    try {
+      console.log("ctx.user._id", ctx.user._id);
+      return await this.model.find({ adminId: ctx.user._id });
+    } catch (e) {
+      Log.error(e);
+    }
+    return;
+  }
+
+  async pushTeamUser(userId, teamId) {
+    const getTeam = (await this.tryFindById(teamId)) as I.Maybe<TeamType>;
+    if (getTeam) {
+      if (!getTeam.users.includes(userId)) getTeam.users.push(userId);
+      const updateDoc = (await this.tryUpdateById(teamId, getTeam)) as I.Maybe<
+        TeamType
+      >;
+      console.log("updateDoc", updateDoc);
+      return updateDoc;
+    } else {
+      throw new IdNotFoundError(teamId);
+    }
+  }
+
+  async filterTeamUser(userId, teamId) {
+    const getTeam = (await this.tryFindById(teamId)) as I.Maybe<TeamType>;
+    if (getTeam && getTeam.users.includes(userId)) {
+      const filteredUsers = getTeam.users.filter((v) => v != userId);
+      const updateDoc = (await this.tryUpdateById(teamId, {
+        users: filteredUsers,
+      })) as I.Maybe<TeamType>;
+      console.log("updateDoc", updateDoc);
+      return updateDoc;
+    } else {
+      throw new IdNotFoundError(teamId);
     }
   }
 }

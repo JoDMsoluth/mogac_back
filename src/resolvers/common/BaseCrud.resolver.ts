@@ -78,14 +78,6 @@ export const UserCrudResolver = createBaseCrudResolver(
   "UserService"
 );
 
-export const TeamCrudResolver = createBaseCrudResolver(
-  "Team",
-  TeamType,
-  AddTeamRequestType,
-  UpdateTeamRequestType,
-  "TeamService"
-);
-
 export const CategoryCrudResolver = createBaseCrudResolver(
   "Category",
   CategoryType,
