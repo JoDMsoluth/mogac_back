@@ -7,6 +7,8 @@ import * as cookieParser from "cookie-parser";
 import * as session from "express-session";
 import * as passport from "passport";
 
+const subscriptionHandler = require("../api/subscriptionHandler");
+
 export default async ({ app }: { app: express.Application }) => {
   app.get("/status", (req, res) => {
     res.status(200).end();
@@ -18,7 +20,7 @@ export default async ({ app }: { app: express.Application }) => {
 
   app.use(cors());
   app.use(require("morgan")("dev"));
-  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
   app.use(cookieParser());
   app.use(
     session({
@@ -34,6 +36,12 @@ export default async ({ app }: { app: express.Application }) => {
   app.use(express.static(config.Frontend.AssetsDir));
 
   // ...More middlewares
+
+  app.post(
+    "/subscription",
+    subscriptionHandler.handlePushNotificationSubscription
+  );
+  app.get("/subscription/:id", subscriptionHandler.sendPushNotification);
 
   // Return the express app
   return app;
