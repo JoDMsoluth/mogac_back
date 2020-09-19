@@ -37,6 +37,24 @@ export class UserService extends BaseServiceMixin(UserRepo) {
     return updateDoc.posts;
   }
 
+  async pushTeam(teamId, userId: I.ObjectId) {
+    const getUser = (await this.tryFindById(userId)) as I.Maybe<UserType>;
+    getUser.teams.push(teamId);
+    const updateDoc = await this.model.findByIdAndUpdate(
+      userId,
+      {
+        teams: getUser.teams,
+      },
+      { new: true }
+    );
+    console.log("updateDoc", updateDoc);
+    if (updateDoc == null) {
+      throw new IdNotFoundError(teamId);
+    }
+
+    return updateDoc.teams;
+  }
+
   async pushSeries(seriesId, ctx: ResolveContext) {
     console.log("series", ctx.user);
     ctx.user.series.push(seriesId);
@@ -75,6 +93,27 @@ export class UserService extends BaseServiceMixin(UserRepo) {
     }
 
     return updateDoc.posts;
+  }
+
+  async filterTeam(teamId, ctx: ResolveContext) {
+    console.log("series", ctx.user);
+    console.log("teamId", teamId);
+    // !== 로 하지말고 !=로 해야 지워진다.
+    const filterTeam = ctx.user.teams.filter((v) => v != teamId);
+    console.log("teams", ctx.user.teams);
+    const updateDoc = await this.model.findByIdAndUpdate(
+      ctx.user._id,
+      {
+        teams: filterTeam,
+      },
+      { new: true }
+    );
+    console.log("updateDoc", updateDoc);
+    if (updateDoc == null) {
+      throw new IdNotFoundError(teamId);
+    }
+
+    return updateDoc.teams;
   }
 
   async filterSeries(seriesId, ctx: ResolveContext) {
@@ -132,6 +171,20 @@ export class UserService extends BaseServiceMixin(UserRepo) {
       throw new IdNotFoundError(userId);
     }
   }
+
+  async getAllTeamsByUser(page, userId) {
+    try {
+      console.log("userId", userId);
+      const user = await this.model
+        .findById(userId)
+        .populate({ path: "teams" });
+      console.log("user.teams", user);
+      return user;
+    } catch (e) {
+      throw new IdNotFoundError(userId);
+    }
+  }
+
   async getAllUsersByTeam(id, { page, limit }) {
     const users = Team.findById({ id })
       .populate({ path: "users" })

@@ -46,6 +46,14 @@ export class UserResolver {
     return await this.userService.getAllPostsByUser(page, userId);
   }
 
+  @Query((_return) => UserType)
+  async getAllTeamsByUser(
+    @Arg("userId", (_type) => String) userId: string,
+    @Arg("page", (_type) => Int) page: number
+  ): Promise<I.Maybe<UserType>> {
+    return await this.userService.getAllTeamsByUser(page, userId);
+  }
+
   @Query((_return) => [UserType])
   async getUsersByTeam(
     @Arg("id") id: I.ObjectId,

@@ -51,7 +51,7 @@ export class TeamService extends BaseServiceMixin(TeamRepo) {
     return getTeam;
   }
 
-  async createSeries(data: AddTeamRequestType, ctx: ResolveContext) {
+  async createTeam(data: AddTeamRequestType, ctx: ResolveContext) {
     try {
       return await this.model.create({ ...data, adminId: ctx.user._id });
     } catch (e) {
@@ -91,10 +91,11 @@ export class TeamService extends BaseServiceMixin(TeamRepo) {
     return;
   }
 
-  async pushTeamUser(userId, teamId) {
+  async pushTeamUser(userId: I.ObjectId, teamId) {
     const getTeam = (await this.tryFindById(teamId)) as I.Maybe<TeamType>;
     if (getTeam) {
-      if (!getTeam.users.includes(userId)) getTeam.users.push(userId);
+      if (!getTeam.users.includes(userId.toHexString()))
+        getTeam.users.push(userId.toHexString());
       const updateDoc = (await this.tryUpdateById(teamId, getTeam)) as I.Maybe<
         TeamType
       >;

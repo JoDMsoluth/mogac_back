@@ -149,7 +149,7 @@ type Mutation {
   createSkillSet(skill: String!, categoryId: ObjectId!): SkillSet!
   deleteSkillSet(skillSetId: String!): SkillSet!
   createTeam(data: AddTeamRequestType!): Team!
-  inviteUserToTeam(teamId: String!, userId: String!): Team!
+  inviteUserToTeam(teamId: ObjectId!, userId: ObjectId!): Team!
   KickUserOutTeam(teamId: String!, userId: String!): Team!
   addBlackList(teamId: String!, userId: String!): Team!
   addChatData(teamId: ObjectId!, chat: String!): Team!
@@ -211,10 +211,11 @@ type Query {
   getAllTeam(data: PaginateArgType!): GetAllTeamResponseType!
   getFilterTeam(data: FilterPaginateArgType!): GetAllTeamResponseType!
   getTeamById(teamId: ObjectId!): Team!
-  getAllTeamsByUser: [Team!]!
+  getAllTeamsByMe: [Team!]!
   getAllUser(data: PaginateArgType!): GetAllUserResponseType!
   getAllSeriesByUser: User!
   getAllPostsByUser(page: Int!, userId: String!): User!
+  getAllTeamsByUser(page: Int!, userId: String!): User!
   getUsersByTeam(data: PaginateArgType!, id: ObjectId!): [User!]!
   getAllPostsForPostView(userId: String!): User!
   getAllUserBySearch(ableSkillSet: [String!]!, ableLocation: [String!]!): [User!]!

@@ -10,12 +10,14 @@ import {
 } from "../common/PaginateArgType";
 import { TeamService } from "../../services/Team.service";
 import { ResolveContext } from "../../lib/graphql/resolve-context";
+import { UserService } from "../../services/Users.service";
 
 @Resolver((of) => TeamType)
 export class TeamsResolver {
   constructor(
     // constructor injection of a service
-    private readonly teamService: TeamService
+    private readonly teamService: TeamService,
+    private readonly UserService: UserService
   ) {}
 
   @Query((_return) => GetAllTeamResponseType)
@@ -41,7 +43,7 @@ export class TeamsResolver {
   }
 
   @Query(() => [TeamType])
-  async getAllTeamsByUser(@Ctx() ctx: ResolveContext) {
+  async getAllTeamsByMe(@Ctx() ctx: ResolveContext) {
     const result = this.teamService.getAllTeamsByUser(ctx);
     return result;
   }
@@ -51,20 +53,22 @@ export class TeamsResolver {
     @Arg("data") data: AddTeamRequestType,
     @Ctx() ctx: ResolveContext
   ): Promise<TeamType> {
-    console.log("ctx", ctx);
+    console.log("user._id", ctx.user._id);
     if (ctx.user._id) {
-      const team = await this.teamService.createSeries(data, ctx);
-      console.log("getsereis", team);
+      const team = await this.teamService.createTeam(data, ctx);
+      console.log("get team id", team);
+      await this.UserService.pushTeam(team._id, ctx.user._id);
       return team;
     }
   }
 
   @Mutation((_return) => TeamType)
   async inviteUserToTeam(
-    @Arg("userId") userId: string,
-    @Arg("teamId") teamId: string
+    @Arg("userId") userId: I.ObjectId,
+    @Arg("teamId") teamId: I.ObjectId
   ): Promise<TeamType> {
     const team = await this.teamService.pushTeamUser(userId, teamId);
+    await this.UserService.pushTeam(team._id, userId);
     console.log("getsereis", team);
     return team;
   }

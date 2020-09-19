@@ -1,3 +1,6 @@
+// 참고 : https://medium.com/@seladir/how-to-implement-web-push-notifications-in-your-node-react-app-9bed79b53f34https://medium.com/@seladir/how-to-implement-web-push-notifications-in-your-node-react-app-9bed79b53f34
+// 참고 : https://developers.google.com/web/fundamentals/push-notifications/subscribing-a-user
+
 const subscriptions = {};
 import * as crypto from "crypto";
 import * as webpush from "web-push";
