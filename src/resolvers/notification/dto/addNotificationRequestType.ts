@@ -1,5 +1,4 @@
 import { Field, InputType } from "type-graphql";
-
 import { LengthRange } from "../../../lib/decorators/length-range";
 import { NotificationPropLimits } from "../../../models/Notification";
 
@@ -9,10 +8,7 @@ export class AddNotificationRequestType {
   url: string;
 
   @Field()
-  kinds: string;
-
-  @Field()
-  receiveUser: string;
+  userId: string;
 
   @Field()
   @LengthRange(NotificationPropLimits.titleLength)

@@ -40,8 +40,8 @@ function sendPushNotification(req, res) {
     .sendNotification(
       pushSubscription,
       JSON.stringify({
-        title: "New Product Available ",
-        text: "HEY! Take a look at this brand new t-shirt!",
+        title: "팀 초대",
+        text: "팀에 초대받으셨습니다.",
         image: "/images/jason-leung-HM6TMmevbZQ-unsplash.jpg",
         tag: "new-product",
         url: "/new-product-jason-leung-HM6TMmevbZQ-unsplash.html",

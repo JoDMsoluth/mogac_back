@@ -10,16 +10,15 @@ input AddCommentRequestType {
 }
 
 input AddMessageRequestType {
-  sendUser: String!
-  receiveUser: String!
+  sendUser: ObjectId!
+  userId: String!
   title: String!
   contents: String!
 }
 
 input AddNotificationRequestType {
   url: String!
-  kinds: String!
-  receiveUser: String!
+  userId: String!
   title: String!
   contents: String!
 }
@@ -83,6 +82,16 @@ input FilterPaginateArgType {
   location: String
 }
 
+type getAllMessageResponseType {
+  lastPage: String!
+  docs: [Message!]!
+}
+
+type GetAllNotificationResponseType {
+  lastPage: String!
+  docs: [Notification!]!
+}
+
 type GetAllPostResponseType {
   lastPage: String!
   posts: [Post!]!
@@ -114,13 +123,13 @@ type LoginResponseType {
 }
 
 type Message {
+  _id: String!
   id: ObjectId!
-  sendDate: DateTime!
-  receiveDate: DateTime!
+  userId: String!
   title: String!
   contents: String!
   sendUser: User!
-  receiveUser: User!
+  isView: Boolean!
 }
 
 type Mutation {
@@ -141,7 +150,8 @@ type Mutation {
   createNotification(data: AddNotificationRequestType!): Notification!
   updateNotification(data: AddNotificationRequestType!, id: ObjectId!): Notification!
   deleteNotification(id: ObjectId!): String!
-  sendNotificationService(data: AddNotificationRequestType!): Notification!
+  viewMessage(id: ObjectId!): Message!
+  viewNotification(id: ObjectId!): Notification!
   createPost(data: AddPostRequestType!): Post!
   deletePost(postId: String!): Post!
   createSeries(data: AddSeriesRequestType!): Series!
@@ -158,13 +168,13 @@ type Mutation {
 }
 
 type Notification {
+  _id: String!
   id: ObjectId!
-  sendDate: DateTime!
-  receiveDate: DateTime!
+  userId: String!
   title: String!
   contents: String!
   url: String!
-  kinds: String!
+  isView: Boolean!
 }
 
 """Bson ObjectId unique identifier (hexadecimal string)."""
@@ -202,6 +212,8 @@ type Query {
   getCategoryById(id: ObjectId!): Category!
   getMessageById(id: ObjectId!): Message!
   getNotificationById(id: ObjectId!): Notification!
+  getAllMessages(page: Int!): getAllMessageResponseType!
+  getAllNotifications(page: Int!): GetAllNotificationResponseType!
   getPost(postId: String!): Post!
   getAllPosts(page: Int!): GetAllPostResponseType!
   totalSearchUser(page: Float!, searchWord: String!): GetAllUserResponseType!

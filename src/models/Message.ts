@@ -14,29 +14,27 @@ export namespace MessagePropLimits {
 }
 
 export interface IMessage {
-  sendDate: Date;
-  receiveDate: Date;
+  userId: any;
   title: string;
   contents: string;
   sendUser: any;
-  receiveUser: any;
+  isView: boolean;
 }
 
 @ObjectType("Message")
 export class MessageType extends Typegoose implements IMessage {
+  @Field()
+  _id: string;
+
   @Field()
   @prop()
   get id(this: Message): I.ObjectId {
     return this._id;
   }
 
-  @Field((_type) => Date)
+  @Field()
   @prop({ required: true })
-  sendDate!: Date;
-
-  @Field((_type) => Date)
-  @prop({ required: true })
-  receiveDate!: Date;
+  userId: string;
 
   @Field()
   @prop({ required: true })
@@ -50,9 +48,9 @@ export class MessageType extends Typegoose implements IMessage {
   @prop({ required: true })
   sendUser: Ref<UserType>;
 
-  @Field((_type) => UserType)
-  @prop({ required: true })
-  receiveUser: Ref<UserType>;
+  @Field((_type) => Boolean)
+  @prop({ default: false })
+  isView: boolean;
 }
 
 export const Message = Utils.getModelFromTypegoose(MessageType);
