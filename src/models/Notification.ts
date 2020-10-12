@@ -16,6 +16,8 @@ export namespace NotificationPropLimits {
 export interface INotification {
   userId: any;
   title: string;
+  createdAt: Date;
+  updatedAt: Date;
   contents: string;
   url: string;
   isView: boolean;
@@ -31,6 +33,13 @@ export class NotificationType extends Typegoose implements INotification {
   get id(this: Notification): I.ObjectId {
     return this._id;
   }
+  @Field((_type) => Date)
+  @prop({ default: Date.now })
+  createdAt: Date;
+
+  @Field((_type) => Date)
+  @prop({ default: Date.now })
+  updatedAt: Date;
 
   @Field()
   @prop({ required: true })

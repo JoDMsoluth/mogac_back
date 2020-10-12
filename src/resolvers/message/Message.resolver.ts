@@ -13,6 +13,9 @@ export class MessageResolver {
     private readonly MessageService: MessageService
   ) {}
 
+  // 메시지 작성
+  
+
   @Query((_return) => getAllMessageResponseType)
   async getAllMessages(
     @Arg("page", (_type) => Int) page: number,

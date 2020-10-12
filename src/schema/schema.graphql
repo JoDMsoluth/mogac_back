@@ -10,10 +10,12 @@ input AddCommentRequestType {
 }
 
 input AddMessageRequestType {
-  sendUser: ObjectId!
+  sendUser: String!
   userId: String!
   title: String!
   contents: String!
+  sendUserName: String!
+  sendUserEmail: String!
 }
 
 input AddNotificationRequestType {
@@ -125,10 +127,14 @@ type LoginResponseType {
 type Message {
   _id: String!
   id: ObjectId!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   userId: String!
   title: String!
   contents: String!
-  sendUser: User!
+  sendUser: String!
+  sendUserName: String!
+  sendUserEmail: String!
   isView: Boolean!
 }
 
@@ -165,11 +171,14 @@ type Mutation {
   addChatData(teamId: ObjectId!, chat: String!): Team!
   uploadProfileImage(file: Upload!): UploadResponseType!
   updateUserPosition(position: [Float!]!): User!
+  signup(data: SignupRequestType!): User!
 }
 
 type Notification {
   _id: String!
   id: ObjectId!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   userId: String!
   title: String!
   contents: String!

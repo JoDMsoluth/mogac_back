@@ -11,6 +11,7 @@ export class PostRepo extends BaseRepo<PostModel> {
     const docs = await this.model
       .find()
       .populate({ path: "postedBy" })
+      .sort({ createdAt: -1 })
       .sort({ likes: -1 })
       .limit(9)
       .skip((page - 1) * 9)
@@ -26,6 +27,7 @@ export class PostRepo extends BaseRepo<PostModel> {
     const docs = await this.model
       .find(query)
       .populate({ path: "postedBy" })
+      .sort({ createdAt: -1 })
       .sort({ likes: -1 })
       .limit(9)
       .skip((page - 1) * 9)

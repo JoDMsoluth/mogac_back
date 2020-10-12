@@ -7,7 +7,7 @@ import { MessagePropLimits } from "../../../models/Message";
 @InputType()
 export class AddMessageRequestType {
   @Field()
-  sendUser: ObjectId;
+  sendUser: string;
 
   @Field()
   userId: string;
@@ -19,4 +19,10 @@ export class AddMessageRequestType {
   @Field()
   @LengthRange(MessagePropLimits.contentsLength)
   contents: string;
+  
+  @Field()
+  sendUserName: string;
+  
+  @Field()
+  sendUserEmail: string;
 }

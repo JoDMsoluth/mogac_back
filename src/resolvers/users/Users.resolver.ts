@@ -1,3 +1,5 @@
+import { NotificationService } from "./../../services/Notification.service";
+import { SignupRequestType } from "./dto/signupRequestType";
 import * as I from "../../lib/helper/interfaces";
 import { UserType } from "../../models/Users";
 import { Resolver, Query, Arg, Ctx, Mutation, Int, Float } from "type-graphql";
@@ -21,7 +23,8 @@ export class UserResolver {
   constructor(
     // constructor injection of a service
     private readonly userService: UserService,
-    private readonly AWSS3Uploader: AWSS3Uploader
+    private readonly AWSS3Uploader: AWSS3Uploader,
+    private readonly notificationService: NotificationService
   ) {}
 
   @Query((_return) => GetAllUserResponseType)
@@ -117,6 +120,22 @@ export class UserResolver {
   ) {
     const result = this.userService.updatePosition(position, ctx);
     console.log("updatePosition Result");
+    return result;
+  }
+
+  @Mutation(() => UserType)
+  async signup(@Arg("data", () => SignupRequestType) data: SignupRequestType) {
+    const result = await this.userService.create(data);
+    console.log("result", result);
+    if (result) {
+      const noti = await this.notificationService.create({
+        url: "http://localhost:3000",
+        userId: result._id,
+        title: "첫가입",
+        contents: "가입 축하드립니다.",
+      });
+      console.log("noti", noti);
+    }
     return result;
   }
 }

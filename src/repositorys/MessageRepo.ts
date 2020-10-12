@@ -12,7 +12,6 @@ export class MessageRepo extends BaseRepo<MessageModel> {
   async getMessagesByPage(page, userId) {
     const docs = (await this.model
       .find({ userId })
-      .populate({ path: "sendUser" })
       .sort({ isView: -1 })
       .sort({ createdAt: -1 })
       .limit(9)

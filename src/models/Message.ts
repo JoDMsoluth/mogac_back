@@ -16,6 +16,8 @@ export namespace MessagePropLimits {
 export interface IMessage {
   userId: any;
   title: string;
+  createdAt: Date;
+  updatedAt: Date;
   contents: string;
   sendUser: any;
   isView: boolean;
@@ -32,6 +34,14 @@ export class MessageType extends Typegoose implements IMessage {
     return this._id;
   }
 
+  @Field((_type) => Date)
+  @prop({ default: Date.now })
+  createdAt: Date;
+
+  @Field((_type) => Date)
+  @prop({ default: Date.now })
+  updatedAt: Date;
+
   @Field()
   @prop({ required: true })
   userId: string;
@@ -44,9 +54,17 @@ export class MessageType extends Typegoose implements IMessage {
   @prop({ required: true })
   contents: string;
 
-  @Field((_type) => UserType)
+  @Field()
   @prop({ required: true })
-  sendUser: Ref<UserType>;
+  sendUser: string;
+
+  @Field()
+  @prop({ required: true })
+  sendUserName: string;
+  
+  @Field()
+  @prop({ required: true })
+  sendUserEmail: string;
 
   @Field((_type) => Boolean)
   @prop({ default: false })

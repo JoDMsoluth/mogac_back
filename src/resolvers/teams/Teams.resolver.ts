@@ -1,3 +1,4 @@
+import { NotificationService } from "./../../services/Notification.service";
 import { AddTeamRequestType } from "./dto/addTeamRequestType";
 import * as I from "../../lib/helper/interfaces";
 import { User } from "../../models/Users";
@@ -17,7 +18,8 @@ export class TeamsResolver {
   constructor(
     // constructor injection of a service
     private readonly teamService: TeamService,
-    private readonly UserService: UserService
+    private readonly UserService: UserService,
+    private readonly notificationService: NotificationService
   ) {}
 
   @Query((_return) => GetAllTeamResponseType)
@@ -69,7 +71,14 @@ export class TeamsResolver {
   ): Promise<TeamType> {
     const team = await this.teamService.pushTeamUser(userId, teamId);
     await this.UserService.pushTeam(team._id, userId);
+    await this.notificationService.create({
+      url: `http://localhost:3000/team`,
+      userId: userId.toHexString(),
+      title: "팀초대",
+      contents: "팀 초대 받았습니다.",
+    });
     console.log("getsereis", team);
+
     return team;
   }
 
