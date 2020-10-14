@@ -16,15 +16,15 @@ export class NotificationRepo extends BaseRepo<NotificationModel> {
   async getNotificationByPage(page, userId) {
     const docs = (await this.model
       .find({ userId })
-      .sort({ isView: -1 })
       .sort({ createdAt: -1 })
-      .limit(9)
-      .skip((page - 1) * 9)
+      // .limit(9)
+      // .skip((page - 1) * 9)
       .lean()
       .exec()) as any;
 
     const totalDoc: number = await this.model.find().count();
     const lastPage: string = Math.ceil(totalDoc / 9).toString();
-    return { lastPage, docs };
+    const totalIsView: number = await this.model.find({userId, isView:false}).count();
+    return { lastPage, docs, totalIsView };
   }
 }

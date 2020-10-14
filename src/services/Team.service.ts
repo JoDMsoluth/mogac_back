@@ -53,7 +53,7 @@ export class TeamService extends BaseServiceMixin(TeamRepo) {
 
   async createTeam(data: AddTeamRequestType, ctx: ResolveContext) {
     try {
-      return await this.model.create({ ...data, adminId: ctx.user._id });
+      return await this.model.create({ ...data, adminId: ctx.user._id, adminName : ctx.user.name, adminEmail : ctx.user.email });
     } catch (e) {
       Log.error(e);
     }

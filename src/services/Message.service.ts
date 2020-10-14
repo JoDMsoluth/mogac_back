@@ -32,4 +32,13 @@ export class MessageService extends BaseServiceMixin(MessageRepo) {
 
     return message;
   }
+
+  
+  async updateIsView(id) {
+    const message = this.tryUpdateById(id, { isView: true }) as Promise<
+      I.Maybe<MessageType>
+    >;
+    console.log("updateIsView service result", message);
+    return message;
+  }
 }

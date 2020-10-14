@@ -28,4 +28,10 @@ export class MessageResolver {
   async viewMessage(@Arg("id") id: I.ObjectId): Promise<I.Maybe<MessageType>> {
     return await this.MessageService.viewMessage(id);
   }
+
+  
+  @Mutation((_return) => MessageType)
+  async updateMessageIsView(@Arg("id") id: string): Promise<I.Maybe<MessageType>> {
+    return await this.MessageService.updateIsView(id);
+  }
 }

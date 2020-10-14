@@ -1,5 +1,5 @@
 import { MessageType } from "./../../../models/Message";
-import { Field, ObjectType } from "type-graphql";
+import { Field, Int, ObjectType } from "type-graphql";
 
 @ObjectType()
 export class getAllMessageResponseType {
@@ -8,4 +8,7 @@ export class getAllMessageResponseType {
 
   @Field((_type) => [MessageType])
   docs: MessageType[];
+
+  @Field((_type) => Int)
+  totalIsView: number;
 }

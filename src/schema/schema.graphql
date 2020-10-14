@@ -87,11 +87,13 @@ input FilterPaginateArgType {
 type getAllMessageResponseType {
   lastPage: String!
   docs: [Message!]!
+  totalIsView: Int!
 }
 
 type GetAllNotificationResponseType {
   lastPage: String!
   docs: [Notification!]!
+  totalIsView: Int!
 }
 
 type GetAllPostResponseType {
@@ -157,7 +159,9 @@ type Mutation {
   updateNotification(data: AddNotificationRequestType!, id: ObjectId!): Notification!
   deleteNotification(id: ObjectId!): String!
   viewMessage(id: ObjectId!): Message!
+  updateMessageIsView(id: String!): Message!
   viewNotification(id: ObjectId!): Notification!
+  updateNotificationIsView(id: String!): Notification!
   createPost(data: AddPostRequestType!): Post!
   deletePost(postId: String!): Post!
   createSeries(data: AddSeriesRequestType!): Series!
@@ -285,6 +289,8 @@ type Team {
   title: String!
   desc: String!
   adminId: String!
+  adminName: String!
+  adminEmail: String!
   users: [String!]!
   category: String!
   location: String!

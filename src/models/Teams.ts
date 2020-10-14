@@ -44,6 +44,14 @@ export class TeamType extends Typegoose implements ITeam {
   @Field()
   @prop({ required: true })
   adminId!: string;
+  
+  @Field()
+  @prop({ required: true })
+  adminName!: string;
+
+  @Field()
+  @prop({ required: true })
+  adminEmail!: string;
 
   @Field(() => [String])
   @arrayProp({ items: String })

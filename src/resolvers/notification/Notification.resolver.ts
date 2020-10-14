@@ -1,3 +1,4 @@
+import { model } from 'mongoose';
 import { GetAllNotificationResponseType } from "./dto/getAllNotificationResponseType";
 import * as I from "../../lib/helper/interfaces";
 import { Resolver, Query, Arg, Mutation, Int, Ctx } from "type-graphql";
@@ -30,5 +31,12 @@ export class NotificationResolver {
     @Arg("id") id: I.ObjectId
   ): Promise<I.Maybe<NotificationType>> {
     return await this.NotificationService.viewNotification(id);
+  }
+  
+  @Mutation((_return) => NotificationType)
+  async updateNotificationIsView(
+    @Arg("id") id: string
+  ): Promise<I.Maybe<NotificationType>> {
+    return await this.NotificationService.updateIsView(id)
   }
 }

@@ -1,5 +1,5 @@
 import { NotificationType } from "./../../../models/Notification";
-import { Field, ObjectType } from "type-graphql";
+import { Field, Int, ObjectType } from "type-graphql";
 
 @ObjectType()
 export class GetAllNotificationResponseType {
@@ -8,4 +8,7 @@ export class GetAllNotificationResponseType {
 
   @Field((_type) => [NotificationType])
   docs: NotificationType[];
+
+  @Field((_type) => Int)
+  totalIsView: number;
 }

@@ -32,4 +32,15 @@ export class NotificationService extends BaseServiceMixin(NotificationRepo) {
 
     return notification;
   }
+
+  
+  async updateIsView(id) {
+    const notification = this.tryUpdateById(id, {
+      isView : true
+    }) as Promise<
+      I.Maybe<NotificationType>
+    >;
+    console.log("updateIsView service result", notification);
+    return notification;
+  }
 }
