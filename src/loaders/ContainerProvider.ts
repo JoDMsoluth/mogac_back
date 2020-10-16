@@ -8,6 +8,7 @@ import { NotificationService } from "../services/Notification.service";
 import { MessageService } from "../services/Message.service";
 import { SkillSetService } from "../services/SkillSet.service";
 import { AWSS3Uploader } from "../lib/helper/AWSS3Uploader";
+import { RecommendService } from "../services/Recommend.service";
 
 const Container = require("typedi").Container;
 
@@ -19,6 +20,7 @@ export default function ContainerProvier() {
   Container.set("SeriesService", new SeriesService());
   Container.set("TeamService", new TeamService());
   Container.set("PostService", new PostService());
+  Container.set("RecommendService", new RecommendService());
   Container.set("CategoryService", new CategoryService());
   Container.set("NotificationService", new NotificationService());
   Container.set("MessageService", new MessageService());
