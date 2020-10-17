@@ -19,11 +19,11 @@ export class RecommendResolver {
   async getAllRecommends(
     @Arg("page", (_type) => Int) page: number,
     @Arg("skillName") skillName : string,
-    @Ctx() ctx: ResolveContext
+    @Arg("userId") userId : string,
   ): Promise<I.Maybe<GetAllRecommendResponseType>> {
     return await this.RecommendService.getRecommendsBySkill(
       page,
-      ctx.user._id,
+      userId,
       skillName
     );
   }

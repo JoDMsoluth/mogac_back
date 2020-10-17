@@ -124,6 +124,10 @@ export class UserType extends Typegoose implements IUser {
   @Field(() => Int)
   @prop()
   point: number;
+  
+  @Field(() => [String])
+  @arrayProp({ items: String })
+  recommendPoint: string[];
 
   @Field(() => [String])
   @arrayProp({ items: String })

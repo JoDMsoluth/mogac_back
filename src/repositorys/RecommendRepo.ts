@@ -2,6 +2,7 @@ import { Service } from "typedi";
 import { BaseRepo } from "./BaseRepo";
 import { RecommendModel, RecommendData, Recommend } from "../models/Recommend";
 import { Paginator } from "../lib/mongoose-utils/paginate";
+import { ObjectId } from "../lib/helper/interfaces";
 
 @Service()
 export class RecommendRepo extends BaseRepo<RecommendModel> {
@@ -11,7 +12,7 @@ export class RecommendRepo extends BaseRepo<RecommendModel> {
 
   async getRecommendsBySkill(page, userId, skillName) {
     const docs = (await this.model
-      .find({ userId : userId.toString(), skillName })
+      .find({ userId, skillName })
       .populate({ path: "recommendedBy" })
       .sort({ createdAt: -1 })
       // .limit(9)

@@ -243,7 +243,7 @@ type Query {
   getAllNotifications(page: Int!): GetAllNotificationResponseType!
   getPost(postId: String!): Post!
   getAllPosts(page: Int!): GetAllPostResponseType!
-  getAllRecommends(skillName: String!, page: Int!): GetAllRecommendResponseType!
+  getAllRecommends(userId: String!, skillName: String!, page: Int!): GetAllRecommendResponseType!
   totalSearchUser(page: Float!, searchWord: String!): GetAllUserResponseType!
   totalSearchPost(page: Float!, searchWord: String!): GetAllPostResponseType!
   totalSearchTeam(page: Float!, searchWord: String!): GetAllTeamResponseType!
@@ -293,6 +293,7 @@ input SignupRequestType {
   name: String!
   gender: String!
   level: [String!]!
+  recommendPoint: [String!]!
   ableLocation: [String!]!
   ableSkillSet: [String!]!
   image_url: String!
@@ -365,6 +366,7 @@ type User {
   gender: String!
   image_url: String!
   point: Int!
+  recommendPoint: [String!]!
   level: [String!]!
   check_Found: Boolean!
   comfirmed: Boolean!

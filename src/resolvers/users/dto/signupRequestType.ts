@@ -24,6 +24,9 @@ export class SignupRequestType implements Credentials {
 
   @Field((_type) => [String])
   level: string[];
+  
+  @Field((_type) => [String])
+  recommendPoint: string[];
 
   @Field((_type) => [String])
   ableLocation!: string[];
