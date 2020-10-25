@@ -366,6 +366,7 @@ type User {
   gender: String!
   image_url: String!
   point: Int!
+  totalPoint: Int!
   recommendPoint: [String!]!
   level: [String!]!
   check_Found: Boolean!

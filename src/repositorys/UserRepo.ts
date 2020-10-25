@@ -35,8 +35,10 @@ export class UserRepo extends BaseRepo<UserModel> {
         ableLocation: { $in: ableLocation },
         level: { $in: ableSkillSet },
       })
+      .sort({point : -1})
       .lean()
       .exec();
+    
     console.log(users);
     return users;
   }

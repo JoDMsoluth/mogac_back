@@ -250,4 +250,86 @@ export class UserService extends BaseServiceMixin(UserRepo) {
       Log.error(error);
     }
   }
+
+  async plusRecommendPoint(userId, skill: string, point: number) {
+    try {
+      const user = await this.tryFindById(userId) as I.Maybe<UserType>
+      
+      const setRecommendSetArray = [];
+
+      if (!user) return;
+      
+      for (const recommend of user.recommendPoint) {
+        const recommendSet = recommend.split("/");
+        const recommendName: string = recommendSet[0];
+        let recommendLevel: number = parseInt(recommendSet[1], 10);
+
+        if (recommendName === skill) {
+          recommendLevel += point;
+          console.log("recommendName", recommendName, "recommendLevel", recommendLevel);
+        }
+        const setRecommendSet = recommendName.concat(`/${recommendLevel}`);
+        setRecommendSetArray.push(setRecommendSet);
+      }
+      console.log("setRecommendSetArray", setRecommendSetArray);
+
+      // 리프레시 토탈 포인트
+      this.refreshPoint(userId);
+      return await this.tryUpdateById(userId, {
+        recommendPoint: setRecommendSetArray,
+      });
+    } catch (error) {
+      Log.error(error);
+    }
+  }
+
+  async plusPoint(userId, point: number) {
+    try {
+      const user = await this.tryFindById(userId) as I.Maybe<UserType>;
+
+      if (!user) return;
+
+      user.point += point;
+
+      const updatedUser = await this.tryUpdateById(userId, {
+        point: user.point,
+       });
+      // 리프레시 토탈 포인트
+      this.refreshPoint(userId);
+      
+      return updatedUser;
+    } catch (error) {
+      Log.error(error);
+    }
+  }
+
+  async refreshPoint(userId) {
+    try {
+      const user = await this.tryFindById(userId) as I.Maybe<UserType>
+      
+      if (!user) return;
+
+      // 추천 기술 점수
+      const totalRecommendPoint = user.recommendPoint.map(v => parseInt(v.split("/")[1], 10))
+        .reduce((sum, currValue) => sum + currValue * 1000, 0);
+      // 기술 실력
+      const totalLevelPoint = user.level.map(v => parseInt(v.split("/")[1], 10))
+        .reduce((sum, currValue) => sum + currValue * 100, 0);
+      // 활동 점수
+
+      const totalPoint = user.point + totalRecommendPoint + totalLevelPoint;
+
+      console.log('totalPoint', totalPoint)
+
+      const updatedUser = await this.tryUpdateById(userId, {
+        totalPoint
+      });
+
+      return updatedUser;
+    }
+    catch (error) {
+      Log.error(error);
+    }
+  }
 }
+

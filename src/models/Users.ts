@@ -122,8 +122,12 @@ export class UserType extends Typegoose implements IUser {
   image_url: string;
 
   @Field(() => Int)
-  @prop()
+  @prop({required:false, default:0})
   point: number;
+
+  @Field(() => Int)
+  @prop({required:false, default:0})
+  totalPoint: number;  
   
   @Field(() => [String])
   @arrayProp({ items: String })
