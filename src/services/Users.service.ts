@@ -273,11 +273,14 @@ export class UserService extends BaseServiceMixin(UserRepo) {
       }
       console.log("setRecommendSetArray", setRecommendSetArray);
 
-      // 리프레시 토탈 포인트
-      this.refreshPoint(userId);
-      return await this.tryUpdateById(userId, {
+      const updatedUser = await this.tryUpdateById(userId, {
         recommendPoint: setRecommendSetArray,
       });
+      
+      // 리프레시 토탈 포인트
+      await this.refreshPoint(userId);
+      
+      return updatedUser;
     } catch (error) {
       Log.error(error);
     }
@@ -310,10 +313,11 @@ export class UserService extends BaseServiceMixin(UserRepo) {
       if (!user) return;
 
       // 추천 기술 점수
-      const totalRecommendPoint = user.recommendPoint.map(v => parseInt(v.split("/")[1], 10))
+      const totalRecommendPoint = await user.recommendPoint.map(v => parseInt(v.split("/")[1], 10))
         .reduce((sum, currValue) => sum + currValue * 1000, 0);
+      console.log("totalRecommendPoint",totalRecommendPoint, user.recommendPoint)
       // 기술 실력
-      const totalLevelPoint = user.level.map(v => parseInt(v.split("/")[1], 10))
+      const totalLevelPoint = await user.level.map(v => parseInt(v.split("/")[1], 10))
         .reduce((sum, currValue) => sum + currValue * 100, 0);
       // 활동 점수
 

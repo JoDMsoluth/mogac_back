@@ -1,3 +1,4 @@
+import { NotificationService } from './../../services/Notification.service';
 import { isValidObjectId, model } from 'mongoose';
 import { GetAllRecommendResponseType } from "./dto/getAllRecommendResponseType";
 import * as I from "../../lib/helper/interfaces";
@@ -14,7 +15,8 @@ export class RecommendResolver {
   constructor(
     // constructor injection of a service
     private readonly RecommendService: RecommendService,
-    private readonly UserService: UserService
+    private readonly UserService: UserService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   @Query((_return) => GetAllRecommendResponseType)
@@ -37,9 +39,17 @@ export class RecommendResolver {
   ): Promise<RecommendType> {
     //data 속에 seriesId가 들어갈 수 있다.
     console.log("user._id", ctx.user._id);
+
     if (ctx.user._id) {
       const recommend = await this.RecommendService.createRecommend(data, ctx);
-      if(recommend) {
+      if (recommend) {
+        const noti = await this.notificationService.create({
+          url: `http://localhost:3000/blog?userId=${ctx.user._id}`,
+          userId: data.userId,
+          title: `기술추천`,
+          contents: `${ctx.user.name}님의 기술추천`,
+        });
+        
         await this.UserService.plusRecommendPoint(data.userId, data.skillName,  1);
       }
       return recommend;

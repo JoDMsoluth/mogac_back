@@ -134,6 +134,7 @@ export class UserResolver {
         title: "첫가입",
         contents: "가입 축하드립니다.",
       });
+      await this.userService.refreshPoint(result._id);
       console.log("noti", noti);
     }
     return result;
