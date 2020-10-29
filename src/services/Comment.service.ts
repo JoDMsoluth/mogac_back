@@ -32,7 +32,7 @@ export class CommentService extends BaseServiceMixin(CommentRepo) {
   }
 
   async updateCommentById(data: UpdateCommentRequestType, ctx: ResolveContext) {
-    console.log("ctx", ctx.user._id);
+    
     if (await this.checkWriter(data.commentId, ctx)) {
       return await this.updateComment(data);
     } else {
@@ -41,7 +41,7 @@ export class CommentService extends BaseServiceMixin(CommentRepo) {
   }
 
   async createCommentInPost(data: AddCommentRequestType, ctx: ResolveContext) {
-    console.log("ctx.user._id", ctx.user._id);
+    
     if (ctx.user._id) {
       try {
         return await this.createComment(data, ctx)

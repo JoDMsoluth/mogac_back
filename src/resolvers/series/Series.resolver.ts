@@ -29,10 +29,10 @@ export class SeriesResolver {
     @Arg("data") data: AddSeriesRequestType,
     @Ctx() ctx: ResolveContext
   ): Promise<SeriesType> {
-    console.log("ctx", ctx);
+    
     if (ctx.user._id) {
       const series = await this.SeriesService.createSeries(data, ctx);
-      console.log("getsereis", series);
+      
       await this.UserService.pushSeries(series.id, ctx);
       return series;
     }

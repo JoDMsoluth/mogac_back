@@ -47,16 +47,16 @@ export class PostRepo extends BaseRepo<PostModel> {
         { path: "postedBy", select: "_id name image_url" },
         { path: "series" },
       ]);
-    console.log("get post", doc);
+    
     return doc;
   }
 
   async pushComment(postId, commentId) {
-    console.log("comments, post", commentId, postId);
+    
     const post = (await this.tryFindById(postId)) as PostType;
-    console.log("post", post);
+    
     post.comments.push(commentId);
-    console.log("post.comments", post.comments);
+    
     const updateDoc = await this.model.findByIdAndUpdate(
       postId,
       {
@@ -64,7 +64,7 @@ export class PostRepo extends BaseRepo<PostModel> {
       },
       { new: true }
     );
-    console.log("updateDoc", updateDoc);
+    
     if (updateDoc == null) {
       throw new IdNotFoundError(postId);
     }

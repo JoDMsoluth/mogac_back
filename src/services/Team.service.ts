@@ -25,7 +25,7 @@ export class TeamService extends BaseServiceMixin(TeamRepo) {
     return { lastPage: (await teams).lastPage, teams: (await teams).docs };
   }
   async getFilterTeams({ page, category = null, location = null, limit }) {
-    console.log(category, location);
+    
     let query = null;
     if (category && location) {
       query = { category, location };
@@ -83,7 +83,7 @@ export class TeamService extends BaseServiceMixin(TeamRepo) {
 
   async getAllTeamsByUser(ctx: ResolveContext) {
     try {
-      console.log("ctx.user._id", ctx.user._id);
+      
       return await this.model.find({ adminId: ctx.user._id });
     } catch (e) {
       Log.error(e);
@@ -99,7 +99,7 @@ export class TeamService extends BaseServiceMixin(TeamRepo) {
       const updateDoc = (await this.tryUpdateById(teamId, getTeam)) as I.Maybe<
         TeamType
       >;
-      console.log("updateDoc", updateDoc);
+      
       return updateDoc;
     } else {
       throw new IdNotFoundError(teamId);
@@ -113,7 +113,7 @@ export class TeamService extends BaseServiceMixin(TeamRepo) {
       const updateDoc = (await this.tryUpdateById(teamId, {
         users: filteredUsers,
       })) as I.Maybe<TeamType>;
-      console.log("updateDoc", updateDoc);
+      
       return updateDoc;
     } else {
       throw new IdNotFoundError(teamId);

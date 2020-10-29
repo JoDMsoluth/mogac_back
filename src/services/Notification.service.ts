@@ -18,7 +18,7 @@ export class NotificationService extends BaseServiceMixin(NotificationRepo) {
         docs: NotificationType[];
       }>
     >;
-    console.log("notifications", notifications);
+    
     return {
       lastPage: (await notifications).lastPage,
       posts: (await notifications).docs,
@@ -40,7 +40,7 @@ export class NotificationService extends BaseServiceMixin(NotificationRepo) {
     }) as Promise<
       I.Maybe<NotificationType>
     >;
-    console.log("updateIsView service result", notification);
+    
     return notification;
   }
 }

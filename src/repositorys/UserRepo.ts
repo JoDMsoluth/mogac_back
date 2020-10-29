@@ -22,7 +22,7 @@ export class UserRepo extends BaseRepo<UserModel> {
       .sort({ createdAt: -1 })
       .lean()
       .exec();
-    console.log("doc", doc);
+    
     if (!doc) {
       throw new NotFoundError(userId);
     }
@@ -39,7 +39,7 @@ export class UserRepo extends BaseRepo<UserModel> {
       .lean()
       .exec();
     
-    console.log(users);
+    
     return users;
   }
 
@@ -50,7 +50,7 @@ export class UserRepo extends BaseRepo<UserModel> {
       x_pos: { $gte: x_pos - 0.1, $lte: x_pos + 0.1 },
       y_pos: { $gte: y_pos - 0.1, $lte: y_pos + 0.1 },
     });
-    console.log(users);
+    
     return users;
   }
 }

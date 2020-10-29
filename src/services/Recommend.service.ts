@@ -21,7 +21,7 @@ export class RecommendService extends BaseServiceMixin(RecommendRepo) {
         docs: RecommendType[];
       }>
     >;
-    console.log("recommends", recommends);
+    
     return {
       lastPage: (await recommends).lastPage,
       posts: (await recommends).docs,

@@ -43,7 +43,7 @@ function createBaseCrudResolver<
 
     @Query((_return) => returnType, { name: `get${suffix}ById` })
     async getById(@Arg("id") id: I.ObjectId) {
-      console.dir(this.service);
+    
 
       return this.service.tryFindById(id);
     }

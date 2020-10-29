@@ -37,7 +37,7 @@ export class UserResolver {
 
   @Query((_return) => UserType)
   async getAllSeriesByUser(@Ctx() ctx: ResolveContext) {
-    console.log("seriesId", ctx.user.series[0]);
+    
     return await this.userService.getAllSeriesByUser(ctx.user._id);
   }
 
@@ -107,9 +107,9 @@ export class UserResolver {
   async uploadProfileImage(
     @Arg("file", () => GraphQLUpload) file: Upload
   ): Promise<UploadResponseType> {
-    console.log("upload params", file);
+    
     const result = this.AWSS3Uploader.uploadSingleImage({ file });
-    console.log("result", result);
+    
     return result;
   }
 
@@ -119,14 +119,14 @@ export class UserResolver {
     @Ctx() ctx: ResolveContext
   ) {
     const result = this.userService.updatePosition(position, ctx);
-    console.log("updatePosition Result");
+    
     return result;
   }
 
   @Mutation(() => UserType)
   async signup(@Arg("data", () => SignupRequestType) data: SignupRequestType) {
     const result = await this.userService.create(data);
-    console.log("result", result);
+    
     if (result) {
       const noti = await this.notificationService.create({
         url: "http://localhost:3000",
@@ -135,7 +135,7 @@ export class UserResolver {
         contents: "가입 축하드립니다.",
       });
       await this.userService.refreshPoint(result._id);
-      console.log("noti", noti);
+      
     }
     return result;
   }

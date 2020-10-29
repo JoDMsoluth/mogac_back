@@ -20,7 +20,7 @@ export class PostService extends BaseServiceMixin(PostRepo) {
         docs: PostType[];
       }>
     >;
-    console.log("posts", posts);
+    
     return { lastPage: (await posts).lastPage, posts: (await posts).docs };
   }
 

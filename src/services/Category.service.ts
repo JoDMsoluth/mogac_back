@@ -18,7 +18,7 @@ export class CategoryService extends BaseServiceMixin(CategoryRepo) {
       .find()
       .populate({ path: "skillset" })
       .catch((err) => Log.error(err));
-    console.log(categorys);
+    
     return categorys;
   }
 
@@ -37,7 +37,7 @@ export class CategoryService extends BaseServiceMixin(CategoryRepo) {
       },
       { new: true }
     );
-    console.log("updateDoc", updateDoc);
+    
     if (updateDoc == null) {
       throw new IdNotFoundError(categoryId);
     }
@@ -59,7 +59,7 @@ export class CategoryService extends BaseServiceMixin(CategoryRepo) {
       },
       { new: true }
     );
-    console.log("updateDoc", updateDoc);
+    
     if (updateDoc == null) {
       throw new IdNotFoundError(categoryId);
     }

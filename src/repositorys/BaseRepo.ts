@@ -56,7 +56,7 @@ export class BaseRepo<T extends Mongoose.Model<InstanceType<any>>> {
     if (updatedDoc == null) {
       throw new IdNotFoundError(id);
     }
-    console.log("updated : ", updatedDoc);
+    
     return updatedDoc;
   }
   /**
@@ -92,7 +92,7 @@ export class BaseRepo<T extends Mongoose.Model<InstanceType<any>>> {
   }
 
   async getAll(page, limit, query) {
-    console.log(query);
+    
     const docs = await this.model
       .find(query)
       .sort({ updatedAt: -1 })
@@ -101,7 +101,7 @@ export class BaseRepo<T extends Mongoose.Model<InstanceType<any>>> {
       .lean()
       .exec();
 
-    console.log(docs);
+    
 
     const totalDoc: number = await this.model.find(query).count();
     const lastPage: string = Math.ceil(totalDoc / limit).toString();

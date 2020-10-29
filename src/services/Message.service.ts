@@ -18,7 +18,7 @@ export class MessageService extends BaseServiceMixin(MessageRepo) {
         docs: MessageType[];
       }>
     >;
-    console.log("messages", messages);
+    
     return {
       lastPage: (await messages).lastPage,
       posts: (await messages).docs,
@@ -38,7 +38,7 @@ export class MessageService extends BaseServiceMixin(MessageRepo) {
     const message = this.tryUpdateById(id, { isView: true }) as Promise<
       I.Maybe<MessageType>
     >;
-    console.log("updateIsView service result", message);
+    
     return message;
   }
 }

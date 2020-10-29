@@ -39,10 +39,10 @@ export class PostResolver {
     @Ctx() ctx: ResolveContext
   ): Promise<PostType> {
     //data 속에 seriesId가 들어갈 수 있다.
-    console.log("user._id", ctx.user._id);
+    
     if (ctx.user._id) {
       const post = await this.PostService.createPost(data, ctx);
-      console.log("get post id", post);
+      
       await this.UserService.pushPost(post._id, ctx);
       await this.UserService.plusPoint(ctx.user._id, 10);
       return post;

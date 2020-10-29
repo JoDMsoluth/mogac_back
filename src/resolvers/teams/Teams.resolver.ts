@@ -55,10 +55,10 @@ export class TeamsResolver {
     @Arg("data") data: AddTeamRequestType,
     @Ctx() ctx: ResolveContext
   ): Promise<TeamType> {
-    console.log("user._id", ctx.user._id);
+    
     if (ctx.user._id) {
       const team = await this.teamService.createTeam(data, ctx);
-      console.log("get team id", team);
+      
       await this.UserService.pushTeam(team._id, ctx.user._id);
       return team;
     }
@@ -77,7 +77,7 @@ export class TeamsResolver {
       title: "팀초대",
       contents: "팀 초대 받았습니다.",
     });
-    console.log("getsereis", team);
+    
 
     return team;
   }
@@ -88,7 +88,7 @@ export class TeamsResolver {
     @Arg("teamId") teamId: string
   ): Promise<TeamType> {
     const team = await this.teamService.filterTeamUser(userId, teamId);
-    console.log("getsereis", team);
+    
     return team;
   }
 

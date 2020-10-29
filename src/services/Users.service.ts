@@ -29,7 +29,7 @@ export class UserService extends BaseServiceMixin(UserRepo) {
       },
       { new: true }
     );
-    console.log("updateDoc", updateDoc);
+    
     if (updateDoc == null) {
       throw new IdNotFoundError(postId);
     }
@@ -47,7 +47,7 @@ export class UserService extends BaseServiceMixin(UserRepo) {
       },
       { new: true }
     );
-    console.log("updateDoc", updateDoc);
+    
     if (updateDoc == null) {
       throw new IdNotFoundError(teamId);
     }
@@ -56,9 +56,9 @@ export class UserService extends BaseServiceMixin(UserRepo) {
   }
 
   async pushSeries(seriesId, ctx: ResolveContext) {
-    console.log("series", ctx.user);
+    
     ctx.user.series.push(seriesId);
-    console.log("series", ctx.user.series);
+    
     const updateDoc = await this.model.findByIdAndUpdate(
       ctx.user._id,
       {
@@ -66,7 +66,7 @@ export class UserService extends BaseServiceMixin(UserRepo) {
       },
       { new: true }
     );
-    console.log("updateDoc", updateDoc);
+    
     if (updateDoc == null) {
       throw new IdNotFoundError(seriesId);
     }
@@ -75,11 +75,11 @@ export class UserService extends BaseServiceMixin(UserRepo) {
   }
 
   async filterPost(postId, ctx: ResolveContext) {
-    console.log("series", ctx.user);
-    console.log("postId", postId);
+    
+    
     // !== 로 하지말고 !=로 해야 지워진다.
     const filterPost = ctx.user.posts.filter((v) => v != postId);
-    console.log("posts", ctx.user.posts);
+    
     const updateDoc = await this.model.findByIdAndUpdate(
       ctx.user._id,
       {
@@ -87,7 +87,7 @@ export class UserService extends BaseServiceMixin(UserRepo) {
       },
       { new: true }
     );
-    console.log("updateDoc", updateDoc);
+    
     if (updateDoc == null) {
       throw new IdNotFoundError(postId);
     }
@@ -96,11 +96,11 @@ export class UserService extends BaseServiceMixin(UserRepo) {
   }
 
   async filterTeam(teamId, ctx: ResolveContext) {
-    console.log("series", ctx.user);
-    console.log("teamId", teamId);
+    
+    
     // !== 로 하지말고 !=로 해야 지워진다.
     const filterTeam = ctx.user.teams.filter((v) => v != teamId);
-    console.log("teams", ctx.user.teams);
+    
     const updateDoc = await this.model.findByIdAndUpdate(
       ctx.user._id,
       {
@@ -108,7 +108,7 @@ export class UserService extends BaseServiceMixin(UserRepo) {
       },
       { new: true }
     );
-    console.log("updateDoc", updateDoc);
+    
     if (updateDoc == null) {
       throw new IdNotFoundError(teamId);
     }
@@ -117,10 +117,10 @@ export class UserService extends BaseServiceMixin(UserRepo) {
   }
 
   async filterSeries(seriesId, ctx: ResolveContext) {
-    console.log("series", ctx.user);
+    
     // !== 로 하지말고 !=로 해야 지워진다.
     const filterSeries = ctx.user.series.filter((v) => v != seriesId);
-    console.log("series", ctx.user.series);
+    
     const updateDoc = await this.model.findByIdAndUpdate(
       ctx.user._id,
       {
@@ -128,7 +128,7 @@ export class UserService extends BaseServiceMixin(UserRepo) {
       },
       { new: true }
     );
-    console.log("updateDoc", updateDoc);
+    
     if (updateDoc == null) {
       throw new IdNotFoundError(seriesId);
     }
@@ -148,11 +148,11 @@ export class UserService extends BaseServiceMixin(UserRepo) {
   }
   async getAllSeriesByUser(userId) {
     try {
-      console.log("userId", userId);
+      
       const user = await this.model
         .findById(userId)
         .populate({ path: "series" });
-      console.log("user.series", user);
+      
       return user;
     } catch (e) {
       throw new IdNotFoundError(userId);
@@ -161,11 +161,11 @@ export class UserService extends BaseServiceMixin(UserRepo) {
 
   async getAllPostsByUser(page, userId) {
     try {
-      console.log("userId", userId);
+      
       const user = await this.model
         .findById(userId)
         .populate({ path: "posts" });
-      console.log("user.posts", user);
+      
       return user;
     } catch (e) {
       throw new IdNotFoundError(userId);
@@ -174,11 +174,13 @@ export class UserService extends BaseServiceMixin(UserRepo) {
 
   async getAllTeamsByUser(page, userId) {
     try {
-      console.log("userId", userId);
+      
       const user = await this.model
         .findById(userId)
-        .populate({ path: "teams" });
-      console.log("user.teams", user);
+        .populate({ path: "teams" })
+        .sort({ createdAt: -1 })
+        .exec();
+      
       return user;
     } catch (e) {
       throw new IdNotFoundError(userId);
@@ -201,7 +203,7 @@ export class UserService extends BaseServiceMixin(UserRepo) {
   async checkUniqueEmail(email: string) {
     try {
       const check = await this.model.find({ email }).lean().exec();
-      console.log(check);
+      
       if (check.length > 0) return false;
       return true;
     } catch (e) {
@@ -211,7 +213,7 @@ export class UserService extends BaseServiceMixin(UserRepo) {
   async checkUniqueName(name: string) {
     try {
       const check = await this.model.find({ name }).lean().exec();
-      console.log(check);
+      
       if (check.length > 0) return false;
       return true;
     } catch (e) {
@@ -224,7 +226,7 @@ export class UserService extends BaseServiceMixin(UserRepo) {
       x_pos: position[0],
       y_pos: position[1],
     });
-    console.log("updatePositon service result", position[0], position[1]);
+    
     return users;
   }
 
@@ -237,12 +239,12 @@ export class UserService extends BaseServiceMixin(UserRepo) {
         let skillLevel: number = parseInt(skillset[1], 10);
         if (skillName === skill) {
           skillLevel += point;
-          console.log("skillName", skillName, "skillLevel", skillLevel);
+          
         }
         const setSkillSet = skillName.concat(`/${skillLevel}`);
         setSkillSetArray.push(setSkillSet);
       }
-      console.log("setSkillSetArray", setSkillSetArray);
+      
       return await this.tryUpdateById(ctx.user._id, {
         level: setSkillSetArray,
       });
@@ -266,12 +268,12 @@ export class UserService extends BaseServiceMixin(UserRepo) {
 
         if (recommendName === skill) {
           recommendLevel += point;
-          console.log("recommendName", recommendName, "recommendLevel", recommendLevel);
+          
         }
         const setRecommendSet = recommendName.concat(`/${recommendLevel}`);
         setRecommendSetArray.push(setRecommendSet);
       }
-      console.log("setRecommendSetArray", setRecommendSetArray);
+      
 
       const updatedUser = await this.tryUpdateById(userId, {
         recommendPoint: setRecommendSetArray,
@@ -315,7 +317,7 @@ export class UserService extends BaseServiceMixin(UserRepo) {
       // 추천 기술 점수
       const totalRecommendPoint = await user.recommendPoint.map(v => parseInt(v.split("/")[1], 10))
         .reduce((sum, currValue) => sum + currValue * 1000, 0);
-      console.log("totalRecommendPoint",totalRecommendPoint, user.recommendPoint)
+      
       // 기술 실력
       const totalLevelPoint = await user.level.map(v => parseInt(v.split("/")[1], 10))
         .reduce((sum, currValue) => sum + currValue * 100, 0);
@@ -323,7 +325,7 @@ export class UserService extends BaseServiceMixin(UserRepo) {
 
       const totalPoint = user.point + totalRecommendPoint + totalLevelPoint;
 
-      console.log('totalPoint', totalPoint)
+      
 
       const updatedUser = await this.tryUpdateById(userId, {
         totalPoint

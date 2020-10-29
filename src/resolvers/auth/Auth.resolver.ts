@@ -13,7 +13,6 @@ import passport = require("passport");
 export class AuthResolver {
   @Query((_type) => UserType)
   async getCurrentUser(@Ctx() ctx: ResolveContext) {
-    console.log("ctx.user", ctx.user);
     return ctx.user;
   }
 

@@ -56,7 +56,7 @@ export class CommentRepo extends BaseRepo<CommentModel> {
 
   async findCommentByUserDetail(commentId: string) {
     try {
-      console.log("commentId", commentId);
+      
       return await this.model
         .findById(commentId)
         .populate({
@@ -90,7 +90,7 @@ export class CommentRepo extends BaseRepo<CommentModel> {
     if (updatedDoc == null) {
       throw new IdNotFoundError((data.commentId as unknown) as I.ObjectId);
     }
-    console.log("updated : ", updatedDoc);
+    
     return updatedDoc;
   }
 }

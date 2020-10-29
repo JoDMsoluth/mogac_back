@@ -38,7 +38,7 @@ export class RecommendResolver {
     @Ctx() ctx: ResolveContext
   ): Promise<RecommendType> {
     //data 속에 seriesId가 들어갈 수 있다.
-    console.log("user._id", ctx.user._id);
+    
 
     if (ctx.user._id) {
       const recommend = await this.RecommendService.createRecommend(data, ctx);
